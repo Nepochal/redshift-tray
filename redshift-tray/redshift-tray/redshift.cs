@@ -11,11 +11,12 @@ namespace redshift_tray
 {
   class Redshift
   {
-
-    private static Redshift Instance;
-    private Process _RedshiftProcess;
     private readonly static string REDSHIFTPATH = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "redshift.exe");
     public readonly static int[] MIN_REDSHIFT_VERSION = { 1, 10 };
+
+    private static Redshift Instance;
+
+    private Process _RedshiftProcess;
 
     public static RedshiftError Check()
     {

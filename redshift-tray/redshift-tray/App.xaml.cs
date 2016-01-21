@@ -14,8 +14,23 @@ namespace redshift_tray
   public partial class App : Application
   {
 
+    private static DebugConsole debugConsole;
+    public static bool DEBUG = false;
+
+    public static void WriteDebugMessage(string message)
+    {
+      //Todo
+    }
+
     void Main(object sender, StartupEventArgs e)
     {
+
+      if(e.Args.Contains("/debug"))
+      {
+        debugConsole = new DebugConsole();
+        debugConsole.Show();
+      }
+
       switch(Redshift.Check())
       {
         case Redshift.RedshiftError.NotFound:

@@ -47,7 +47,7 @@ namespace redshift_tray
           break;
       }
 
-      Application.Current.Shutdown(0);
+      //Application.Current.Shutdown(0);
     }
 
   }

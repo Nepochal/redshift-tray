@@ -34,5 +34,15 @@ namespace redshift_tray
       App.DEBUG = false;
     }
 
+    private void ButtonClipboard_Click(object sender, RoutedEventArgs e)
+    {
+      Clipboard.SetText(Output.Text);
+    }
+
+    private void ButtonClose_Click(object sender, RoutedEventArgs e)
+    {
+      Close();
+    }
+
   }
 }

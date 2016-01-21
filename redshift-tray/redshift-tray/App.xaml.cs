@@ -13,5 +13,11 @@ namespace redshift_tray
   /// </summary>
   public partial class App : Application
   {
+
+    void Main(object sender, StartupEventArgs e)
+    {
+      Application.Current.Shutdown(0);
+    }
+
   }
 }

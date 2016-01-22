@@ -45,8 +45,11 @@ namespace redshift_tray
 
     public void WriteLog(string message, LogType logType)
     {
-      string log = string.Format("{0} {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), logType.ToString(), message);
-      Output.Text += log + Environment.NewLine;
+      Output.Dispatcher.Invoke(() =>
+      {
+        string log = string.Format("{0} {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), logType.ToString(), message);
+        Output.Text += log + Environment.NewLine;
+      });
     }
 
     public enum LogType 

@@ -66,10 +66,10 @@ namespace redshift_tray
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
-    private static void Create(bool asyncOutput, params string[] Args)
+    public static void Create(bool asyncOutput, params string[] Args)
     {
-      if(Instance != null)
-        throw new Exception("Only one instance is allowed!");
+      if(Instance != null && !Instance.RedshiftProcess.HasExited)
+        throw new Exception("Only one running instance is allowed!");
 
       Instance = new Redshift(asyncOutput, Args);
     }
@@ -88,12 +88,14 @@ namespace redshift_tray
       RedshiftProcess.StartInfo.RedirectStandardOutput = true;
       RedshiftProcess.Start();
 
+      ReadOutputAsync = asyncOutput;
       if(asyncOutput)
       {
         RedshiftProcess.BeginOutputReadLine();
+        AddOutputAsyncEventHandler(
+          (object sender, DataReceivedEventArgs e) => App.WriteLogMessage(e.Data, DebugConsole.LogType.Redshift)
+          );
       }
-
-      ReadOutputAsync = asyncOutput;
     }
 
     public string GetOutputSync()

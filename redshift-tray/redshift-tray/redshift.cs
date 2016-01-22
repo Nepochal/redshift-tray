@@ -46,7 +46,10 @@ namespace redshift_tray
       int.TryParse(versionnr[0], out majorversion);
       int.TryParse(versionnr[1], out minorVersion);
 
-      return (majorversion >= MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
+      if(majorversion > MIN_REDSHIFT_VERSION[0])
+        return true;
+
+      return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
     private static void Create(params string[] Args)

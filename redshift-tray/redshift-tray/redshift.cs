@@ -61,6 +61,8 @@ namespace redshift_tray
     {
       string arglist = string.Join(" ", Args);
 
+      App.WriteLogMessage(string.Format("Starting redshift with args '{0}'", arglist), DebugConsole.LogType.Info);
+
       RedshiftProcess = new Process();
       RedshiftProcess.StartInfo.FileName = REDSHIFTPATH;
       RedshiftProcess.StartInfo.Arguments = arglist;
@@ -75,7 +77,10 @@ namespace redshift_tray
       if(RedshiftProcess == null || RedshiftProcess.StandardOutput.EndOfStream)
         return string.Empty;
 
-      return RedshiftProcess.StandardOutput.ReadLine();
+      string line = RedshiftProcess.StandardOutput.ReadLine();
+      App.WriteLogMessage(line, DebugConsole.LogType.Redshift);
+
+      return line;
     }
 
     public enum RedshiftError

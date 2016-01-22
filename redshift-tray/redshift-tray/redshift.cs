@@ -20,17 +20,30 @@ namespace redshift_tray
 
     public static RedshiftError Check()
     {
+      App.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
+
       if(!File.Exists(REDSHIFTPATH))
+      {
+        App.WriteLogMessage("Redshift executable not found", DebugConsole.LogType.Error);
         return RedshiftError.NotFound;
+      }
 
       Create("-V");
       string[] version = Instance.getOutputLine().Split(' ');
 
       if(version.Length < 2 || version[0] != "redshift")
+      {
+        App.WriteLogMessage("Redshift executable is not a valid redshift binary", DebugConsole.LogType.Error);
         return RedshiftError.WrongApplication;
+      }
+
+      App.WriteLogMessage(string.Format("Checking redshift version >= {0}.{1}", MIN_REDSHIFT_VERSION[0], MIN_REDSHIFT_VERSION[1]), DebugConsole.LogType.Info);
 
       if(!CheckVersion(version[1]))
+      {
+        App.WriteLogMessage("Redshift version is too low", DebugConsole.LogType.Error);
         return RedshiftError.WrongVersion;
+      }
 
       return RedshiftError.Ok;
     }

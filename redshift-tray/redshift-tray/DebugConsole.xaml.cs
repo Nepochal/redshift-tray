@@ -19,19 +19,18 @@ namespace redshift_tray
   /// </summary>
   public partial class DebugConsole : Window
   {
+
+    public bool isOpen { get; private set; }
+
     public DebugConsole()
     {
       InitializeComponent();
-    }
-
-    private void Window_Loaded(object sender, RoutedEventArgs e)
-    {
-      App.DEBUG = true;
+      isOpen = true;
     }
 
     private void Window_Closed(object sender, EventArgs e)
     {
-      App.DEBUG = false;
+      isOpen = false;
     }
 
     private void ButtonClipboard_Click(object sender, RoutedEventArgs e)
@@ -42,6 +41,19 @@ namespace redshift_tray
     private void ButtonClose_Click(object sender, RoutedEventArgs e)
     {
       Close();
+    }
+
+    public void WriteLog(string message, LogType logType)
+    {
+      string log = string.Format("{0} {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), logType.ToString(), message);
+      Output.Text += log + Environment.NewLine;
+    }
+
+    public enum LogType 
+    {
+      Info,
+      Error,
+      Redshift
     }
 
   }

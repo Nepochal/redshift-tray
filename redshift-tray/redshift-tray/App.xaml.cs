@@ -15,11 +15,13 @@ namespace redshift_tray
   {
 
     private static DebugConsole debugConsole;
-    public static bool DEBUG = false;
 
-    public static void WriteDebugMessage(string message)
+    public static void WriteLogMessage(string message, DebugConsole.LogType logType)
     {
-      //Todo
+      if(debugConsole != null && debugConsole.isOpen)
+      {
+        debugConsole.WriteLog(message, logType);
+      }
     }
 
     void Main(object sender, StartupEventArgs e)
@@ -47,7 +49,7 @@ namespace redshift_tray
           break;
       }
 
-      //Application.Current.Shutdown(0);
+      Application.Current.Shutdown(0);
     }
 
   }

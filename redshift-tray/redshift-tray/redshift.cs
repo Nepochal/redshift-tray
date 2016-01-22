@@ -16,7 +16,7 @@ namespace redshift_tray
 
     private static Redshift Instance;
 
-    private Process _RedshiftProcess;
+    private Process RedshiftProcess;
 
     public static RedshiftError Check()
     {
@@ -61,21 +61,21 @@ namespace redshift_tray
     {
       string arglist = string.Join(" ", Args);
 
-      _RedshiftProcess = new Process();
-      _RedshiftProcess.StartInfo.FileName = REDSHIFTPATH;
-      _RedshiftProcess.StartInfo.Arguments = arglist;
-      _RedshiftProcess.StartInfo.UseShellExecute = false;
-      _RedshiftProcess.StartInfo.CreateNoWindow = true;
-      _RedshiftProcess.StartInfo.RedirectStandardOutput = true;
-      _RedshiftProcess.Start();
+      RedshiftProcess = new Process();
+      RedshiftProcess.StartInfo.FileName = REDSHIFTPATH;
+      RedshiftProcess.StartInfo.Arguments = arglist;
+      RedshiftProcess.StartInfo.UseShellExecute = false;
+      RedshiftProcess.StartInfo.CreateNoWindow = true;
+      RedshiftProcess.StartInfo.RedirectStandardOutput = true;
+      RedshiftProcess.Start();
     }
 
     public string getOutputLine()
     {
-      if(_RedshiftProcess.StandardOutput.EndOfStream)
+      if(RedshiftProcess == null || RedshiftProcess.StandardOutput.EndOfStream)
         return string.Empty;
 
-      return _RedshiftProcess.StandardOutput.ReadLine();
+      return RedshiftProcess.StandardOutput.ReadLine();
     }
 
     public enum RedshiftError

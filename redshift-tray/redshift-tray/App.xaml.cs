@@ -33,23 +33,27 @@ namespace redshift_tray
         debugConsole.Show();
       }
 
+      bool error = false;
       switch(Redshift.Check())
       {
         case Redshift.RedshiftError.NotFound:
           MessageBox.Show("Can not find a redshift.exe in the application startup path.");
+          error = true;
           break;
         case Redshift.RedshiftError.WrongApplication:
           MessageBox.Show("Your redshift.exe seems not to be a valid redshift binary.");
+          error = true;
           break;
         case Redshift.RedshiftError.WrongVersion:
           MessageBox.Show(string.Format("Your redshift.exe seems to be too old. Please use at least version {0}.{1}", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]));
-          break;
-        case Redshift.RedshiftError.Ok:
-          MessageBox.Show("Check complete without error.");
+          error = true;
           break;
       }
 
-      Application.Current.Shutdown(0);
+      if(error)
+        Application.Current.Shutdown(-1);
+      else
+        Redshift.Start("-v");
     }
 
   }

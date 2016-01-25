@@ -15,7 +15,6 @@ namespace redshift_tray
     public readonly static int[] MIN_REDSHIFT_VERSION = { 1, 10 };
 
     private Process RedshiftProcess;
-    private bool ReadOutputAsync;
 
     public static Redshift Instance { get; private set; }
 
@@ -29,8 +28,8 @@ namespace redshift_tray
         return RedshiftError.NotFound;
       }
 
-      Create(false, "-V");
-      string[] version = Instance.GetOutputSync().Split(' ');
+      Start("-V");
+      string[] version = Instance.GetOutput().Split(' ');
 
       if(version.Length < 2 || version[0] != "redshift")
       {
@@ -66,67 +65,39 @@ namespace redshift_tray
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
-    public static void Create(bool asyncOutput, params string[] Args)
+    public static Redshift Start(params string[] Args)
     {
       if(Instance != null && !Instance.RedshiftProcess.HasExited)
         throw new Exception("Only one running instance is allowed!");
 
-      Instance = new Redshift(asyncOutput, Args);
+      Instance = new Redshift(Args);
+      return Instance;
     }
 
-    private Redshift(bool asyncOutput, params string[] Args)
+    private Redshift(params string[] Args)
     {
       string arglist = string.Join(" ", Args);
 
-      App.WriteLogMessage(string.Format("Starting redshift {0} with args '{1}'", asyncOutput ? "asynchronous" : "synchronous", arglist), DebugConsole.LogType.Info);
+      App.WriteLogMessage(string.Format("Starting redshift with args '{0}'", arglist), DebugConsole.LogType.Info);
 
       RedshiftProcess = new Process();
       RedshiftProcess.StartInfo.FileName = REDSHIFTPATH;
       RedshiftProcess.StartInfo.Arguments = arglist;
       RedshiftProcess.StartInfo.UseShellExecute = false;
-      RedshiftProcess.StartInfo.CreateNoWindow = true;
+      RedshiftProcess.StartInfo.CreateNoWindow = false;
       RedshiftProcess.StartInfo.RedirectStandardOutput = true;
       RedshiftProcess.Start();
-
-      ReadOutputAsync = asyncOutput;
-      if(asyncOutput)
-      {
-        RedshiftProcess.BeginOutputReadLine();
-        AddOutputAsyncEventHandler(
-          (object sender, DataReceivedEventArgs e) => App.WriteLogMessage(e.Data, DebugConsole.LogType.Redshift)
-          );
-      }
     }
 
-    public string GetOutputSync()
+    public string GetOutput()
     {
-      if(ReadOutputAsync)
-      {
-        throw new Exception("Tried to read redshift output sync in async-mode");
-      }
-
       if(RedshiftProcess == null || RedshiftProcess.StandardOutput.EndOfStream)
         return string.Empty;
 
-      string line = RedshiftProcess.StandardOutput.ReadLine();
-      App.WriteLogMessage(line, DebugConsole.LogType.Redshift);
+      string output = RedshiftProcess.StandardOutput.ReadToEnd();
+      App.WriteLogMessage(output, DebugConsole.LogType.Redshift);
 
-      return line;
-    }
-
-    public void AddOutputAsyncEventHandler(DataReceivedEventHandler handler)
-    {
-      if(!ReadOutputAsync)
-      {
-        throw new Exception("Tried to add redshift output event handler in sync-mode");
-      }
-
-      RedshiftProcess.OutputDataReceived += handler;
-    }
-
-    public void RemoveOutputAsyncEventHandler(DataReceivedEventHandler handler)
-    {
-      RedshiftProcess.OutputDataReceived -= handler;
+      return output;
     }
 
     public enum RedshiftError

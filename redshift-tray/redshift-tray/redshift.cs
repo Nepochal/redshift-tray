@@ -16,7 +16,15 @@ namespace redshift_tray
 
     private Process RedshiftProcess;
 
-    public static Redshift Instance { get; private set; }
+    private static Redshift Instance;
+
+    public bool isRunning
+    {
+      get
+      {
+        return !RedshiftProcess.HasExited;
+      }
+    }
 
     public static RedshiftError Check()
     {
@@ -29,6 +37,7 @@ namespace redshift_tray
       }
 
       Start("-V");
+      Instance.RedshiftProcess.WaitForExit();
       string[] version = Instance.GetOutput().Split(' ');
 
       if(version.Length < 2 || version[0] != "redshift")
@@ -84,14 +93,20 @@ namespace redshift_tray
       RedshiftProcess.StartInfo.FileName = REDSHIFTPATH;
       RedshiftProcess.StartInfo.Arguments = arglist;
       RedshiftProcess.StartInfo.UseShellExecute = false;
-      RedshiftProcess.StartInfo.CreateNoWindow = false;
+      RedshiftProcess.StartInfo.CreateNoWindow = true;
       RedshiftProcess.StartInfo.RedirectStandardOutput = true;
       RedshiftProcess.Start();
     }
 
+    public void Stop()
+    {
+      if(isRunning)
+        RedshiftProcess.Kill();
+    }
+
     public string GetOutput()
     {
-      if(RedshiftProcess == null || RedshiftProcess.StandardOutput.EndOfStream)
+      if(RedshiftProcess == null || isRunning)
         return string.Empty;
 
       string output = RedshiftProcess.StandardOutput.ReadToEnd();

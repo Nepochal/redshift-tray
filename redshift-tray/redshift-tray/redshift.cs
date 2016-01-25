@@ -77,7 +77,9 @@ namespace redshift_tray
     public static Redshift Start(params string[] Args)
     {
       if(Instance != null && !Instance.RedshiftProcess.HasExited)
-        throw new Exception("Only one running instance is allowed!");
+      {
+        Instance.RedshiftProcess.Kill();
+      }
 
       Instance = new Redshift(Args);
       return Instance;

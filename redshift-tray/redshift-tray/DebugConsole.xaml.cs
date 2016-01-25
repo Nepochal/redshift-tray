@@ -19,18 +19,29 @@ namespace redshift_tray
   /// </summary>
   public partial class DebugConsole : Window
   {
-
-    public bool isOpen { get; private set; }
+    private bool isShown = false;
 
     public DebugConsole()
     {
       InitializeComponent();
-      isOpen = true;
     }
 
-    private void Window_Closed(object sender, EventArgs e)
+    public void ShowOrUnhide()
     {
-      isOpen = false;
+      if(isShown)
+      {
+        Visibility = System.Windows.Visibility.Visible;
+      }
+      else
+      {
+        Show();
+        isShown = true;
+      }
+    }
+
+    public new void Hide()
+    {
+      Visibility = System.Windows.Visibility.Hidden;
     }
 
     private void ButtonClipboard_Click(object sender, RoutedEventArgs e)
@@ -43,6 +54,12 @@ namespace redshift_tray
       Close();
     }
 
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      Hide();
+      e.Cancel = true;
+    }
+
     public void WriteLog(string message, LogType logType)
     {
       Output.Dispatcher.Invoke(() =>
@@ -52,7 +69,7 @@ namespace redshift_tray
       });
     }
 
-    public enum LogType 
+    public enum LogType
     {
       Info,
       Error,

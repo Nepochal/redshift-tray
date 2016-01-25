@@ -18,19 +18,16 @@ namespace redshift_tray
 
     public static void WriteLogMessage(string message, DebugConsole.LogType logType)
     {
-      if(debugConsole != null && debugConsole.isOpen)
-      {
-        debugConsole.WriteLog(message, logType);
-      }
+      debugConsole.WriteLog(message, logType);
     }
 
     void Main(object sender, StartupEventArgs e)
     {
+      debugConsole = new DebugConsole();
 
       if(e.Args.Contains("/debug"))
       {
-        debugConsole = new DebugConsole();
-        debugConsole.Show();
+        debugConsole.ShowOrUnhide();
       }
 
       bool error = false;

@@ -101,9 +101,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="LICENSE.txt">
+    <None Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="redshift-tray.ico" />

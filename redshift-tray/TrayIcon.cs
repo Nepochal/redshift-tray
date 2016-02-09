@@ -38,6 +38,16 @@ namespace redshift_tray
       }
     }
 
+    public event RoutedEventHandler OnMenuItemSettingsClicked;
+
+    private void MenuItemSettingsClicked(RoutedEventArgs e)
+    {
+      if(OnMenuItemSettingsClicked != null)
+      {
+        OnMenuItemSettingsClicked(this, e);
+      }
+    }
+
     public static TrayIcon Create()
     {
       TrayIconInstance = new TrayIcon();
@@ -68,12 +78,24 @@ namespace redshift_tray
     {
       ContextMenu contextMenu = new ContextMenu();
 
+      MenuItem menuItemSettings = new MenuItem();
+      menuItemSettings.Header = "Settings";
+      menuItemSettings.Click += menuItemSettings_Click;
+      contextMenu.Items.Add(menuItemSettings);
+
+      contextMenu.Items.Add(new Separator());
+
       MenuItem menuItemExit = new MenuItem();
       menuItemExit.Header = "Exit";
       menuItemExit.Click += menuItemExit_Click;
       contextMenu.Items.Add(menuItemExit);
 
       return contextMenu;
+    }
+
+    void menuItemSettings_Click(object sender, RoutedEventArgs e)
+    {
+      MenuItemSettingsClicked(e);
     }
 
     void menuItemExit_Click(object sender, RoutedEventArgs e)

@@ -68,6 +68,7 @@
     <Compile Include="DebugConsole.xaml.cs">
       <DependentUpon>DebugConsole.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Main.cs" />
     <Compile Include="Redshift.cs" />
     <Compile Include="TrayIcon.cs" />
   </ItemGroup>

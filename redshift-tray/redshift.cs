@@ -41,11 +41,11 @@ namespace redshift_tray
 
     public static RedshiftError Check()
     {
-      App.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
+      Main.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
 
       if(!File.Exists(REDSHIFTPATH))
       {
-        App.WriteLogMessage("Redshift executable not found", DebugConsole.LogType.Error);
+        Main.WriteLogMessage("Redshift executable not found", DebugConsole.LogType.Error);
         return RedshiftError.NotFound;
       }
 
@@ -55,15 +55,15 @@ namespace redshift_tray
 
       if(version.Length < 2 || version[0] != "redshift")
       {
-        App.WriteLogMessage("Redshift executable is not a valid redshift binary", DebugConsole.LogType.Error);
+        Main.WriteLogMessage("Redshift executable is not a valid redshift binary", DebugConsole.LogType.Error);
         return RedshiftError.WrongApplication;
       }
 
-      App.WriteLogMessage(string.Format("Checking redshift version >= {0}.{1}", MIN_REDSHIFT_VERSION[0], MIN_REDSHIFT_VERSION[1]), DebugConsole.LogType.Info);
+      Main.WriteLogMessage(string.Format("Checking redshift version >= {0}.{1}", MIN_REDSHIFT_VERSION[0], MIN_REDSHIFT_VERSION[1]), DebugConsole.LogType.Info);
 
       if(!CheckVersion(version[1]))
       {
-        App.WriteLogMessage("Redshift version is too low", DebugConsole.LogType.Error);
+        Main.WriteLogMessage("Redshift version is too low", DebugConsole.LogType.Error);
         return RedshiftError.WrongVersion;
       }
 
@@ -102,7 +102,7 @@ namespace redshift_tray
     {
       string arglist = string.Join(" ", Args);
 
-      App.WriteLogMessage(string.Format("Starting redshift with args '{0}'", arglist), DebugConsole.LogType.Info);
+      Main.WriteLogMessage(string.Format("Starting redshift with args '{0}'", arglist), DebugConsole.LogType.Info);
 
       RedshiftProcess = new Process();
       RedshiftProcess.StartInfo.FileName = REDSHIFTPATH;
@@ -125,7 +125,7 @@ namespace redshift_tray
         return string.Empty;
 
       string output = RedshiftProcess.StandardOutput.ReadToEnd();
-      App.WriteLogMessage(output, DebugConsole.LogType.Redshift);
+      Main.WriteLogMessage(output, DebugConsole.LogType.Redshift);
 
       return output;
     }

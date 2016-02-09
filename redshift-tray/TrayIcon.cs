@@ -17,6 +17,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hardcodet.Wpf.TaskbarNotification;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace redshift_tray
 {
@@ -26,16 +28,14 @@ namespace redshift_tray
     private static TrayIcon TrayIconInstance;
     private TaskbarIcon TaskbarIconInstance;
 
-    private TrayIcon()
-    {
-      if(TrayIconInstance != null)
-      {
-        TrayIconInstance.TaskbarIconInstance.Dispose();
-      }
+    public event RoutedEventHandler OnMenuItemExitClicked;
 
-      TaskbarIconInstance = new TaskbarIcon();
-      TaskbarIconInstance.Icon = Properties.Resources.TrayIcon;
-      TaskbarIconInstance.ToolTipText = "Redshift Tray";
+    private void MenuItemExitClicked(RoutedEventArgs e)
+    {
+      if(OnMenuItemExitClicked != null)
+      {
+        OnMenuItemExitClicked(this, e);
+      }
     }
 
     public static TrayIcon Create()
@@ -49,6 +49,36 @@ namespace redshift_tray
       if(TrayIconInstance == null)
         return Create();
       return TrayIconInstance;
+    }
+
+    private TrayIcon()
+    {
+      if(TrayIconInstance != null)
+      {
+        TrayIconInstance.TaskbarIconInstance.Dispose();
+      }
+
+      TaskbarIconInstance = new TaskbarIcon();
+      TaskbarIconInstance.Icon = Properties.Resources.TrayIcon;
+      TaskbarIconInstance.ToolTipText = "Redshift Tray";
+      TaskbarIconInstance.ContextMenu = getContextMenu();
+    }
+
+    private ContextMenu getContextMenu()
+    {
+      ContextMenu contextMenu = new ContextMenu();
+
+      MenuItem menuItemExit = new MenuItem();
+      menuItemExit.Header = "Exit";
+      menuItemExit.Click += menuItemExit_Click;
+      contextMenu.Items.Add(menuItemExit);
+
+      return contextMenu;
+    }
+
+    void menuItemExit_Click(object sender, RoutedEventArgs e)
+    {
+      MenuItemExitClicked(e);
     }
 
   }

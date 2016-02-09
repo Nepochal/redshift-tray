@@ -80,6 +80,17 @@ namespace redshift_tray
     private void StartTrayIcon()
     {
       TrayIconInstance = TrayIcon.Create();
+      TrayIconInstance.OnMenuItemExitClicked += TrayIconInstance_OnMenuItemExitClicked;
+    }
+
+    void TrayIconInstance_OnMenuItemExitClicked(object sender, RoutedEventArgs e)
+    {
+      if(RedshiftInstance.isRunning)
+      {
+        RedshiftInstance.Stop();
+      }
+
+      Application.Current.Shutdown(0);
     }
 
   }

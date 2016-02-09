@@ -69,6 +69,7 @@
       <DependentUpon>DebugConsole.xaml</DependentUpon>
     </Compile>
     <Compile Include="Redshift.cs" />
+    <Compile Include="TrayIcon.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

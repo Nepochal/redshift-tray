@@ -50,7 +50,7 @@ namespace redshift_tray
       if(error)
         Application.Current.Shutdown(-1);
       else
-        Redshift.Start("-v");
+        Redshift.Start(string.Empty);
     }
 
   }

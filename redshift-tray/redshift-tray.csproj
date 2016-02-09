@@ -37,6 +37,10 @@
     <ApplicationIcon>redshift-tray.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -107,6 +111,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="redshift-tray.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\Hardcodet.Wpf.TaskbarNotification.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

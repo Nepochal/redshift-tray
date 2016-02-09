@@ -36,5 +36,10 @@ namespace redshift_tray
     {
       InitializeComponent();
     }
+
+    private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+    {
+      System.Diagnostics.Process.Start("https://github.com/jonls/redshift/releases");
+    }
   }
 }

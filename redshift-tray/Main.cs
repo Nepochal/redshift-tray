@@ -81,6 +81,13 @@ namespace redshift_tray
     {
       TrayIconInstance = TrayIcon.Create();
       TrayIconInstance.OnMenuItemExitClicked += TrayIconInstance_OnMenuItemExitClicked;
+      TrayIconInstance.OnMenuItemSettingsClicked += TrayIconInstance_OnMenuItemSettingsClicked;
+    }
+
+    void TrayIconInstance_OnMenuItemSettingsClicked(object sender, RoutedEventArgs e)
+    {
+      Settings settingsWindow = new Settings();
+      settingsWindow.ShowDialog();
     }
 
     void TrayIconInstance_OnMenuItemExitClicked(object sender, RoutedEventArgs e)

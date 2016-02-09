@@ -63,7 +63,9 @@ namespace redshift_tray
       if(error)
         Application.Current.Shutdown(-1);
       else
-        TrayIcon.CreateOrGet();
+      {
+        TrayIcon.Create();
+      }
     }
 
   }

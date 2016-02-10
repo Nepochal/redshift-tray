@@ -30,16 +30,45 @@ namespace redshift_tray
   /// <summary>
   /// Interaktionslogik für Settings.xaml
   /// </summary>
-  public partial class Settings : Window
+  public partial class SettingsWindow : Window
   {
-    public Settings()
+
+    private Redshift.RedshiftError RedshiftInfoLabel
+    {
+      set
+      {
+        switch(value)
+        {
+          case Redshift.RedshiftError.NotFound:
+            redshiftInfo.Foreground = Brushes.Red;
+            redshiftInfo.Content = "Invalid path to Redshift executable.";
+            break;
+          case Redshift.RedshiftError.WrongApplication:
+            redshiftInfo.Foreground = Brushes.Red;
+            redshiftInfo.Content = "Executable seems not to be a valid Redshift binary.";
+            break;
+          case Redshift.RedshiftError.WrongVersion:
+            redshiftInfo.Foreground = Brushes.Red;
+            redshiftInfo.Content = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
+            break;
+          case Redshift.RedshiftError.Ok:
+            redshiftInfo.Foreground = Brushes.DarkGreen;
+            redshiftInfo.Content = "Redshift executable is suitable.";
+            break;
+        }
+      }
+    }
+
+    public SettingsWindow(Redshift.RedshiftError initialErrorNote)
     {
       InitializeComponent();
+      RedshiftInfoLabel = initialErrorNote;
     }
 
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
     {
       System.Diagnostics.Process.Start("https://github.com/jonls/redshift/releases");
     }
+
   }
 }

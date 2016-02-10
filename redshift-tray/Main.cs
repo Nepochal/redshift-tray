@@ -86,7 +86,7 @@ namespace redshift_tray
 
     void TrayIconInstance_OnMenuItemSettingsClicked(object sender, RoutedEventArgs e)
     {
-      Settings settingsWindow = new Settings();
+      SettingsWindow settingsWindow = new SettingsWindow(Redshift.RedshiftError.Ok);
       settingsWindow.ShowDialog();
     }
 

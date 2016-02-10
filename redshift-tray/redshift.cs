@@ -22,7 +22,7 @@ using System.Windows;
 
 namespace redshift_tray
 {
-  class Redshift
+  public class Redshift
   {
     private readonly static string REDSHIFTPATH = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "redshift.exe");
     public readonly static int[] MIN_REDSHIFT_VERSION = { 1, 10 };

@@ -49,9 +49,7 @@ namespace redshift_tray
         return RedshiftError.NotFound;
       }
 
-      Start("-V");
-      Instance.RedshiftProcess.WaitForExit();
-      string[] version = Instance.GetOutput().Split(' ');
+      string[] version = StartAndWaitForOutput("-V").Split(' ');
 
       if(version.Length < 2 || version[0] != "redshift")
       {
@@ -96,6 +94,14 @@ namespace redshift_tray
 
       Instance = new Redshift(Args);
       return Instance;
+    }
+
+    public static string StartAndWaitForOutput(params string[] Args)
+    {
+      Redshift redshift = new Redshift(Args);
+      redshift.RedshiftProcess.WaitForExit();
+
+      return redshift.GetOutput();
     }
 
     private Redshift(params string[] Args)

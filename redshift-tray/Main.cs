@@ -44,9 +44,6 @@ namespace redshift_tray
       {
         debugConsole.ShowOrUnhide();
       }
-
-#warning temporary
-      RedshiftPath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "redshift.exe");
     }
 
     public bool Initialize()
@@ -56,7 +53,7 @@ namespace redshift_tray
         return false;
 
       StartTrayIcon();
-      StartRedshift(RedshiftPath, string.Empty);
+      StartRedshiftContinuous();
 
       return true;
     }
@@ -83,9 +80,17 @@ namespace redshift_tray
       return true;
     }
 
-    private void StartRedshift(string path, params string[] Args)
+    private void StartRedshiftContinuous()
     {
-      RedshiftInstance = Redshift.StartContinuous(path, Args);
+      if(ConfigPath == string.Empty)
+      {
+        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, string.Empty);
+      }
+      else
+      {
+        string argConfig = string.Format("-c \"{0}\"", ConfigPath);
+        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, argConfig);
+      }
     }
 
     private void StartTrayIcon()

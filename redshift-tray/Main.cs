@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using redshift_tray.Properties;
 
 namespace redshift_tray
 {
@@ -29,6 +30,7 @@ namespace redshift_tray
     private Redshift RedshiftInstance;
     private TrayIcon TrayIconInstance;
     private string RedshiftPath;
+    private string ConfigPath;
 
     public static void WriteLogMessage(string message, DebugConsole.LogType logType)
     {
@@ -49,7 +51,8 @@ namespace redshift_tray
 
     public bool Initialize()
     {
-      if(!CheckRedshiftVersion())
+      LoadSettings();
+      if(!CheckSettings())
         return false;
 
       StartTrayIcon();
@@ -58,23 +61,26 @@ namespace redshift_tray
       return true;
     }
 
-    private bool CheckRedshiftVersion()
+    private void LoadSettings()
     {
-      switch(Redshift.Check(RedshiftPath))
+      RedshiftPath = Settings.Default.RedshiftAppPath;
+      ConfigPath = Settings.Default.RedshiftConfigPath;
+    }
+
+    private bool CheckSettings()
+    {
+      Redshift.RedshiftError error = Redshift.Check(RedshiftPath);
+      if(error != Redshift.RedshiftError.Ok)
       {
-        case Redshift.RedshiftError.NotFound:
-          MessageBox.Show("Can not find a redshift.exe in the application startup path.");
-          return false;
-        case Redshift.RedshiftError.WrongApplication:
-          MessageBox.Show("Your redshift.exe seems not to be a valid redshift binary.");
-          return false;
-        case Redshift.RedshiftError.WrongVersion:
-          MessageBox.Show(string.Format("Your redshift.exe seems to be too old. Please use at least version {0}.{1}", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]));
-          return false;
-        case Redshift.RedshiftError.Ok:
+        SettingsWindow settingsWindow = new SettingsWindow(error);
+        if((bool)settingsWindow.ShowDialog())
+        {
+          LoadSettings();
           return true;
+        }
+        return false;
       }
-      return false;
+      return true;
     }
 
     private void StartRedshift(string path, params string[] Args)

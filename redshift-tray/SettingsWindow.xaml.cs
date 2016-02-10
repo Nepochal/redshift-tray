@@ -144,6 +144,7 @@ namespace redshift_tray
     private void OkButton_Click(object sender, RoutedEventArgs e)
     {
       SaveConfig();
+      DialogResult = true;
       Close();
     }
 

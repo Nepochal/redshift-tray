@@ -57,6 +57,7 @@ namespace redshift_tray
             redshiftInfo.Content = "Redshift executable is suitable.";
             break;
         }
+        OkButton.IsEnabled = (value==Redshift.RedshiftError.Ok);
       }
     }
 
@@ -86,6 +87,7 @@ namespace redshift_tray
       if((bool)openFileDialog.ShowDialog())
       {
         redshiftPath.Text = openFileDialog.FileName;
+        redshiftPath_LostFocus(this, null);
       }
     }
 
@@ -105,6 +107,11 @@ namespace redshift_tray
       {
         configPath.Text = openFileDialog.FileName;
       }
+    }
+
+    private void redshiftPath_LostFocus(object sender, RoutedEventArgs e)
+    {
+      RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
     }
 
   }

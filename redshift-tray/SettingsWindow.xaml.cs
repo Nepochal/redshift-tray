@@ -89,5 +89,23 @@ namespace redshift_tray
       }
     }
 
+    private void ButtonConfig_Click(object sender, RoutedEventArgs e)
+    {
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      openFileDialog.Title = "Config path";
+      openFileDialog.Filter = "redshift.conf|redshift.conf|All files|*.*";
+      openFileDialog.CheckFileExists = true;
+
+      if(File.Exists(configPath.Text))
+      {
+        openFileDialog.InitialDirectory = Path.GetDirectoryName(configPath.Text);
+      }
+
+      if((bool)openFileDialog.ShowDialog())
+      {
+        configPath.Text = openFileDialog.FileName;
+      }
+    }
+
   }
 }

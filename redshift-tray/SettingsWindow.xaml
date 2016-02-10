@@ -21,7 +21,7 @@
     <Label Grid.Column="1" Grid.Row="1" Content="#redshiftInfo" Name="redshiftInfo"/>
     <Label Grid.Column="0" Grid.Row="2" Content="Config path:" />
     <TextBox Grid.Column="1" Grid.Row="2" Margin="0" Name="configPath" />
-    <Button Grid.Column="2" Grid.Row="2" Content="..." Height="26" Width="32" Margin="0"/>
+    <Button Grid.Column="2" Grid.Row="2" Content="..." Height="26" Width="32" Margin="0" Click="ButtonConfig_Click" />
     <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="WrapWithOverflow" Margin="3,6,3,3">The required Redshift executable can be downloaded <Hyperlink NavigateUri="https://github.com/jonls/redshift/releases" RequestNavigate="Hyperlink_RequestNavigate">here on Github</Hyperlink>.<LineBreak /><LineBreak />
       The config  path is optional. If it is not set, the default config will be loaded.
     </TextBlock>

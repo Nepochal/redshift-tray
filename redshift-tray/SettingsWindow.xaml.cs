@@ -1,4 +1,5 @@
-﻿/* This file is part of redshift-tray.
+﻿using Microsoft.Win32;
+/* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +14,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +25,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace redshift_tray
 {
@@ -68,6 +69,24 @@ namespace redshift_tray
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
     {
       System.Diagnostics.Process.Start("https://github.com/jonls/redshift/releases");
+    }
+
+    private void ButtonRedshift_Click(object sender, RoutedEventArgs e)
+    {
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      openFileDialog.Title = "Redshift path";
+      openFileDialog.Filter = "Redshift|redshift.exe|All executables|*.exe";
+      openFileDialog.CheckFileExists = true;
+
+      if(File.Exists(redshiftPath.Text))
+      {
+        openFileDialog.InitialDirectory = Path.GetDirectoryName(redshiftPath.Text);
+      }
+
+      if((bool)openFileDialog.ShowDialog())
+      {
+        redshiftPath.Text = openFileDialog.FileName;
+      }
     }
 
   }

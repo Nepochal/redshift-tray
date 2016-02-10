@@ -11,11 +11,6 @@
    along with redshift-tray.  If not, see <http://www.gnu.org/licenses/>.
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Controls;
 using System.Windows;

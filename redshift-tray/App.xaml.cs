@@ -11,12 +11,7 @@
    along with redshift-tray.  If not, see <http://www.gnu.org/licenses/>.
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace redshift_tray

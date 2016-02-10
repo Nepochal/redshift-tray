@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32;
-using redshift_tray.Properties;
-/* This file is part of redshift-tray.
+﻿/* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -13,19 +11,11 @@ using redshift_tray.Properties;
    along with redshift-tray.  If not, see <http://www.gnu.org/licenses/>.
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
-using System;
-using System.Collections.Generic;
+using Microsoft.Win32;
+using redshift_tray.Properties;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace redshift_tray
 {

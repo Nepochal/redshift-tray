@@ -35,30 +35,30 @@ namespace redshift_tray
   public partial class SettingsWindow : Window
   {
 
-    private Redshift.RedshiftError RedshiftInfoLabel
+    private Redshift.ExecutableError RedshiftInfoLabel
     {
       set
       {
         switch(value)
         {
-          case Redshift.RedshiftError.NotFound:
+          case Redshift.ExecutableError.NotFound:
             redshiftInfo.Foreground = Brushes.Red;
             redshiftInfo.Content = "Invalid path to Redshift executable.";
             break;
-          case Redshift.RedshiftError.WrongApplication:
+          case Redshift.ExecutableError.WrongApplication:
             redshiftInfo.Foreground = Brushes.Red;
             redshiftInfo.Content = "Executable seems not to be a valid Redshift binary.";
             break;
-          case Redshift.RedshiftError.WrongVersion:
+          case Redshift.ExecutableError.WrongVersion:
             redshiftInfo.Foreground = Brushes.Red;
             redshiftInfo.Content = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
             break;
-          case Redshift.RedshiftError.Ok:
+          case Redshift.ExecutableError.Ok:
             redshiftInfo.Foreground = Brushes.Green;
             redshiftInfo.Content = "Redshift executable is suitable.";
             break;
         }
-        OkButton.IsEnabled = (value==Redshift.RedshiftError.Ok);
+        OkButton.IsEnabled = (value==Redshift.ExecutableError.Ok);
       }
     }
 
@@ -69,7 +69,7 @@ namespace redshift_tray
       CheckConfig();
     }
 
-    public SettingsWindow(Redshift.RedshiftError initialErrorNote)
+    public SettingsWindow(Redshift.ExecutableError initialErrorNote)
     {
       InitializeComponent();
       LoadConfig();
@@ -91,7 +91,7 @@ namespace redshift_tray
 
     private void CheckConfig()
     {
-      RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
+      RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
     }
 
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -101,7 +101,7 @@ namespace redshift_tray
 
     private void redshiftPath_LostFocus(object sender, RoutedEventArgs e)
     {
-      RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
+      RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
     }
 
     private void ButtonRedshift_Click(object sender, RoutedEventArgs e)
@@ -119,7 +119,7 @@ namespace redshift_tray
       if((bool)openFileDialog.ShowDialog())
       {
         redshiftPath.Text = openFileDialog.FileName;
-        RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
+        RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
       }
     }
 

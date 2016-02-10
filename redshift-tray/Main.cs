@@ -66,8 +66,8 @@ namespace redshift_tray
 
     private bool CheckSettings()
     {
-      Redshift.RedshiftError error = Redshift.Check(RedshiftPath);
-      if(error != Redshift.RedshiftError.Ok)
+      Redshift.ExecutableError error = Redshift.CheckExecutable(RedshiftPath);
+      if(error != Redshift.ExecutableError.Ok)
       {
         SettingsWindow settingsWindow = new SettingsWindow(error);
         if((bool)settingsWindow.ShowDialog())

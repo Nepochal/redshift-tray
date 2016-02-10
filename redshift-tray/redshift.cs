@@ -38,14 +38,33 @@ namespace redshift_tray
       }
     }
 
-    public static RedshiftError Check(string path)
+    public static ConfigError CheckConfig(string path)
+    {
+      Main.WriteLogMessage("Checking redshift config.", DebugConsole.LogType.Info);
+
+      if(path == string.Empty)
+      {
+        Main.WriteLogMessage("Skipped. No config set. Using defaults.", DebugConsole.LogType.Info);
+        return ConfigError.NotSet;
+      }
+
+      if(!File.Exists(path))
+      {
+        Main.WriteLogMessage("Config not found. Using defaults.", DebugConsole.LogType.Error);
+        return ConfigError.NotFound;
+      }
+
+      return ConfigError.Ok;
+    }
+
+    public static ExecutableError CheckExecutable(string path)
     {
       Main.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
 
       if(!File.Exists(path))
       {
         Main.WriteLogMessage("Redshift executable not found", DebugConsole.LogType.Error);
-        return RedshiftError.NotFound;
+        return ExecutableError.NotFound;
       }
 
       string[] version = StartAndWaitForOutput(path, "-V").Split(' ');
@@ -53,21 +72,21 @@ namespace redshift_tray
       if(version.Length < 2 || version[0] != "redshift")
       {
         Main.WriteLogMessage("Redshift executable is not a valid redshift binary", DebugConsole.LogType.Error);
-        return RedshiftError.WrongApplication;
+        return ExecutableError.WrongApplication;
       }
 
       Main.WriteLogMessage(string.Format("Checking redshift version >= {0}.{1}", MIN_REDSHIFT_VERSION[0], MIN_REDSHIFT_VERSION[1]), DebugConsole.LogType.Info);
 
-      if(!CheckVersion(version[1]))
+      if(!CheckExecutableVersion(version[1]))
       {
         Main.WriteLogMessage("Redshift version is too low", DebugConsole.LogType.Error);
-        return RedshiftError.WrongVersion;
+        return ExecutableError.WrongVersion;
       }
 
-      return RedshiftError.Ok;
+      return ExecutableError.Ok;
     }
 
-    private static bool CheckVersion(string version)
+    private static bool CheckExecutableVersion(string version)
     {
       string[] versionnr = version.Split('.');
       if(versionnr.Length < 2)
@@ -86,7 +105,7 @@ namespace redshift_tray
 
     public static Redshift StartContinuous(string path, params string[] Args)
     {
-      if(Check(path) != RedshiftError.Ok)
+      if(CheckExecutable(path) != ExecutableError.Ok)
         throw new Exception("Invalid redshift start.");
 
       if(Instance != null && !Instance.RedshiftProcess.HasExited)
@@ -141,12 +160,19 @@ namespace redshift_tray
       return output;
     }
 
-    public enum RedshiftError
+    public enum ExecutableError
     {
       Ok,
       NotFound,
       WrongVersion,
       WrongApplication
+    }
+
+    public enum ConfigError
+    {
+      Ok,
+      NotSet,
+      NotFound
     }
 
   }

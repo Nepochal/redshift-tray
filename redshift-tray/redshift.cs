@@ -22,9 +22,8 @@ using System.Windows;
 
 namespace redshift_tray
 {
-  class Redshift
+  public class Redshift
   {
-    private readonly static string REDSHIFTPATH = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "redshift.exe");
     public readonly static int[] MIN_REDSHIFT_VERSION = { 1, 10 };
 
     private Process RedshiftProcess;
@@ -39,19 +38,17 @@ namespace redshift_tray
       }
     }
 
-    public static RedshiftError Check()
+    public static RedshiftError Check(string path)
     {
       Main.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
 
-      if(!File.Exists(REDSHIFTPATH))
+      if(!File.Exists(path))
       {
         Main.WriteLogMessage("Redshift executable not found", DebugConsole.LogType.Error);
         return RedshiftError.NotFound;
       }
 
-      Start("-V");
-      Instance.RedshiftProcess.WaitForExit();
-      string[] version = Instance.GetOutput().Split(' ');
+      string[] version = StartAndWaitForOutput(path, "-V").Split(' ');
 
       if(version.Length < 2 || version[0] != "redshift")
       {
@@ -87,25 +84,36 @@ namespace redshift_tray
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
-    public static Redshift Start(params string[] Args)
+    public static Redshift StartContinuous(string path, params string[] Args)
     {
+      if(Check(path) != RedshiftError.Ok)
+        throw new Exception("Invalid redshift start.");
+
       if(Instance != null && !Instance.RedshiftProcess.HasExited)
       {
         Instance.RedshiftProcess.Kill();
       }
 
-      Instance = new Redshift(Args);
+      Instance = new Redshift(path, Args);
       return Instance;
     }
 
-    private Redshift(params string[] Args)
+    public static string StartAndWaitForOutput(string path, params string[] Args)
+    {
+      Redshift redshift = new Redshift(path, Args);
+      redshift.RedshiftProcess.WaitForExit();
+
+      return redshift.GetOutput();
+    }
+
+    private Redshift(string path, params string[] Args)
     {
       string arglist = string.Join(" ", Args);
 
       Main.WriteLogMessage(string.Format("Starting redshift with args '{0}'", arglist), DebugConsole.LogType.Info);
 
       RedshiftProcess = new Process();
-      RedshiftProcess.StartInfo.FileName = REDSHIFTPATH;
+      RedshiftProcess.StartInfo.FileName = path;
       RedshiftProcess.StartInfo.Arguments = arglist;
       RedshiftProcess.StartInfo.UseShellExecute = false;
       RedshiftProcess.StartInfo.CreateNoWindow = true;
@@ -116,7 +124,10 @@ namespace redshift_tray
     public void Stop()
     {
       if(isRunning)
+      {
+        Main.WriteLogMessage("Stopped redshift instance.", DebugConsole.LogType.Info);
         RedshiftProcess.Kill();
+      }
     }
 
     public string GetOutput()

@@ -13,10 +13,12 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using redshift_tray.Properties;
 
 namespace redshift_tray
 {
@@ -27,6 +29,8 @@ namespace redshift_tray
 
     private Redshift RedshiftInstance;
     private TrayIcon TrayIconInstance;
+    private string RedshiftPath;
+    private string ConfigPath;
 
     public static void WriteLogMessage(string message, DebugConsole.LogType logType)
     {
@@ -44,43 +48,67 @@ namespace redshift_tray
 
     public bool Initialize()
     {
-      if(!CheckRedshiftVersion())
+      LoadSettings();
+      if(!CheckSettings())
         return false;
 
       StartTrayIcon();
-      StartRedshift(string.Empty);
+      StartRedshiftContinuous();
 
       return true;
     }
 
-    private bool CheckRedshiftVersion()
+    private void LoadSettings()
     {
-      switch(Redshift.Check())
-      {
-        case Redshift.RedshiftError.NotFound:
-          MessageBox.Show("Can not find a redshift.exe in the application startup path.");
-          return false;
-        case Redshift.RedshiftError.WrongApplication:
-          MessageBox.Show("Your redshift.exe seems not to be a valid redshift binary.");
-          return false;
-        case Redshift.RedshiftError.WrongVersion:
-          MessageBox.Show(string.Format("Your redshift.exe seems to be too old. Please use at least version {0}.{1}", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]));
-          return false;
-        case Redshift.RedshiftError.Ok:
-          return true;
-      }
-      return false;
+      RedshiftPath = Settings.Default.RedshiftAppPath;
+      ConfigPath = Settings.Default.RedshiftConfigPath;
     }
 
-    private void StartRedshift(params string[] Args)
+    private bool CheckSettings()
     {
-      RedshiftInstance = Redshift.Start(Args);
+      Redshift.RedshiftError error = Redshift.Check(RedshiftPath);
+      if(error != Redshift.RedshiftError.Ok)
+      {
+        SettingsWindow settingsWindow = new SettingsWindow(error);
+        if((bool)settingsWindow.ShowDialog())
+        {
+          LoadSettings();
+          return true;
+        }
+        return false;
+      }
+      return true;
+    }
+
+    private void StartRedshiftContinuous()
+    {
+      if(ConfigPath == string.Empty)
+      {
+        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, string.Empty);
+      }
+      else
+      {
+        string argConfig = string.Format("-c \"{0}\"", ConfigPath);
+        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, argConfig);
+      }
     }
 
     private void StartTrayIcon()
     {
       TrayIconInstance = TrayIcon.Create();
       TrayIconInstance.OnMenuItemExitClicked += TrayIconInstance_OnMenuItemExitClicked;
+      TrayIconInstance.OnMenuItemSettingsClicked += TrayIconInstance_OnMenuItemSettingsClicked;
+    }
+
+    void TrayIconInstance_OnMenuItemSettingsClicked(object sender, RoutedEventArgs e)
+    {
+      SettingsWindow settingsWindow = new SettingsWindow();
+      if((bool)settingsWindow.ShowDialog())
+      {
+        RedshiftInstance.Stop();
+        LoadSettings();
+        StartRedshiftContinuous();
+      }
     }
 
     void TrayIconInstance_OnMenuItemExitClicked(object sender, RoutedEventArgs e)

@@ -103,7 +103,12 @@ namespace redshift_tray
     void TrayIconInstance_OnMenuItemSettingsClicked(object sender, RoutedEventArgs e)
     {
       SettingsWindow settingsWindow = new SettingsWindow();
-      settingsWindow.ShowDialog();
+      if((bool)settingsWindow.ShowDialog())
+      {
+        RedshiftInstance.Stop();
+        LoadSettings();
+        StartRedshiftContinuous();
+      }
     }
 
     void TrayIconInstance_OnMenuItemExitClicked(object sender, RoutedEventArgs e)

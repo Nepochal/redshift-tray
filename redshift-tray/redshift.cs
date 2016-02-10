@@ -124,7 +124,10 @@ namespace redshift_tray
     public void Stop()
     {
       if(isRunning)
+      {
+        Main.WriteLogMessage("Stopped redshift instance.", DebugConsole.LogType.Info);
         RedshiftProcess.Kill();
+      }
     }
 
     public string GetOutput()

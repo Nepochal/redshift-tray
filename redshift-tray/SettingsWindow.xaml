@@ -26,7 +26,7 @@
       The config  path is optional. If it is not set, the default config will be loaded.
     </TextBlock>
     <StackPanel Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button Width="75" Height="21" Content="OK" Margin="3" Name="OkButton" />
+      <Button Width="75" Height="21" Content="OK" Margin="3" Name="OkButton" Click="OkButton_Click" />
       <Button Width="75" Height="21" Content="Cancel" Margin="3" IsCancel="True"/>
     </StackPanel>
   </Grid>

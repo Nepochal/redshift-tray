@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using redshift_tray.Properties;
 /* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -67,9 +68,21 @@ namespace redshift_tray
       RedshiftInfoLabel = initialErrorNote;
     }
 
+    private void SaveConfig()
+    {
+      Settings.Default.RedshiftAppPath = redshiftPath.Text;
+      Settings.Default.RedshiftConfigPath = configPath.Text;
+      Settings.Default.Save();
+    }
+
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
     {
       System.Diagnostics.Process.Start("https://github.com/jonls/redshift/releases");
+    }
+
+    private void redshiftPath_LostFocus(object sender, RoutedEventArgs e)
+    {
+      RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
     }
 
     private void ButtonRedshift_Click(object sender, RoutedEventArgs e)
@@ -109,9 +122,10 @@ namespace redshift_tray
       }
     }
 
-    private void redshiftPath_LostFocus(object sender, RoutedEventArgs e)
+    private void OkButton_Click(object sender, RoutedEventArgs e)
     {
-      RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
+      SaveConfig();
+      Close();
     }
 
   }

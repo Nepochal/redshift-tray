@@ -13,6 +13,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace redshift_tray
 
     private Redshift RedshiftInstance;
     private TrayIcon TrayIconInstance;
+    private string RedshiftPath;
 
     public static void WriteLogMessage(string message, DebugConsole.LogType logType)
     {
@@ -40,6 +42,9 @@ namespace redshift_tray
       {
         debugConsole.ShowOrUnhide();
       }
+
+#warning temporary
+      RedshiftPath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "redshift.exe");
     }
 
     public bool Initialize()
@@ -48,14 +53,14 @@ namespace redshift_tray
         return false;
 
       StartTrayIcon();
-      StartRedshift(string.Empty);
+      StartRedshift(RedshiftPath, string.Empty);
 
       return true;
     }
 
     private bool CheckRedshiftVersion()
     {
-      switch(Redshift.Check())
+      switch(Redshift.Check(RedshiftPath))
       {
         case Redshift.RedshiftError.NotFound:
           MessageBox.Show("Can not find a redshift.exe in the application startup path.");
@@ -72,9 +77,9 @@ namespace redshift_tray
       return false;
     }
 
-    private void StartRedshift(params string[] Args)
+    private void StartRedshift(string path, params string[] Args)
     {
-      RedshiftInstance = Redshift.Start(Args);
+      RedshiftInstance = Redshift.StartContinuous(path, Args);
     }
 
     private void StartTrayIcon()

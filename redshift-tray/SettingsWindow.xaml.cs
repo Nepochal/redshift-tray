@@ -52,7 +52,7 @@ namespace redshift_tray
             redshiftInfo.Content = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
             break;
           case Redshift.RedshiftError.Ok:
-            redshiftInfo.Foreground = Brushes.DarkGreen;
+            redshiftInfo.Foreground = Brushes.Green;
             redshiftInfo.Content = "Redshift executable is suitable.";
             break;
         }

@@ -62,6 +62,28 @@ namespace redshift_tray
       }
     }
 
+    private Redshift.ConfigError ConfigInfoLabel
+    {
+      set
+      {
+        switch(value)
+        {
+          case Redshift.ConfigError.NotFound:
+            configInfo.Foreground = Brushes.Red;
+            configInfo.Content = "Invalid path. Using default config.";
+            break;
+          case Redshift.ConfigError.NotSet:
+            configInfo.Foreground = Brushes.Green;
+            configInfo.Content = "Using default config.";
+            break;
+          case Redshift.ConfigError.Ok:
+            configInfo.Foreground = Brushes.Green;
+            configInfo.Content = "Redshift config is suitable.";
+            break;
+        }
+      }
+    }
+
     public SettingsWindow()
     {
       InitializeComponent();
@@ -69,11 +91,12 @@ namespace redshift_tray
       CheckConfig();
     }
 
-    public SettingsWindow(Redshift.ExecutableError initialErrorNote)
+    public SettingsWindow(Redshift.ExecutableError initialRedshiftErrorNote, Redshift.ConfigError initialConfigErrorNote)
     {
       InitializeComponent();
       LoadConfig();
-      RedshiftInfoLabel = initialErrorNote;
+      RedshiftInfoLabel = initialRedshiftErrorNote;
+      ConfigInfoLabel = initialConfigErrorNote;
     }
 
     private void SaveConfig()
@@ -92,6 +115,7 @@ namespace redshift_tray
     private void CheckConfig()
     {
       RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
+      ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
     }
 
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -138,7 +162,13 @@ namespace redshift_tray
       if((bool)openFileDialog.ShowDialog())
       {
         configPath.Text = openFileDialog.FileName;
+        ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
       }
+    }
+
+    private void configPath_LostFocus(object sender, RoutedEventArgs e)
+    {
+      ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
     }
 
     private void OkButton_Click(object sender, RoutedEventArgs e)

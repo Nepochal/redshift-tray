@@ -66,10 +66,12 @@ namespace redshift_tray
 
     private bool CheckSettings()
     {
-      Redshift.ExecutableError error = Redshift.CheckExecutable(RedshiftPath);
-      if(error != Redshift.ExecutableError.Ok)
+      Redshift.ExecutableError exeError = Redshift.CheckExecutable(RedshiftPath);
+      Redshift.ConfigError confError = Redshift.CheckConfig(ConfigPath);
+
+      if(exeError != Redshift.ExecutableError.Ok)
       {
-        SettingsWindow settingsWindow = new SettingsWindow(error);
+        SettingsWindow settingsWindow = new SettingsWindow(exeError, confError);
         if((bool)settingsWindow.ShowDialog())
         {
           LoadSettings();

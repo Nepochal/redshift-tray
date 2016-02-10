@@ -62,11 +62,18 @@ namespace redshift_tray
       }
     }
 
+    public SettingsWindow()
+    {
+      InitializeComponent();
+      LoadConfig();
+      CheckConfig();
+    }
+
     public SettingsWindow(Redshift.RedshiftError initialErrorNote)
     {
       InitializeComponent();
-      RedshiftInfoLabel = initialErrorNote;
       LoadConfig();
+      RedshiftInfoLabel = initialErrorNote;
     }
 
     private void SaveConfig()
@@ -80,6 +87,11 @@ namespace redshift_tray
     {
       redshiftPath.Text = Settings.Default.RedshiftAppPath;
       configPath.Text = Settings.Default.RedshiftConfigPath;
+    }
+
+    private void CheckConfig()
+    {
+      RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
     }
 
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -107,7 +119,7 @@ namespace redshift_tray
       if((bool)openFileDialog.ShowDialog())
       {
         redshiftPath.Text = openFileDialog.FileName;
-        redshiftPath_LostFocus(this, null);
+        RedshiftInfoLabel = Redshift.Check(redshiftPath.Text);
       }
     }
 

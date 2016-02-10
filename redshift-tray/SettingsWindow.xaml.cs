@@ -66,6 +66,7 @@ namespace redshift_tray
     {
       InitializeComponent();
       RedshiftInfoLabel = initialErrorNote;
+      LoadConfig();
     }
 
     private void SaveConfig()
@@ -73,6 +74,12 @@ namespace redshift_tray
       Settings.Default.RedshiftAppPath = redshiftPath.Text;
       Settings.Default.RedshiftConfigPath = configPath.Text;
       Settings.Default.Save();
+    }
+
+    private void LoadConfig()
+    {
+      redshiftPath.Text = Settings.Default.RedshiftAppPath;
+      configPath.Text = Settings.Default.RedshiftConfigPath;
     }
 
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)

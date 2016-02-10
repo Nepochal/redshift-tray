@@ -82,14 +82,16 @@ namespace redshift_tray
 
     private void StartRedshiftContinuous()
     {
-      if(ConfigPath == string.Empty)
-      {
-        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, string.Empty);
-      }
-      else
+      Redshift.ConfigError configError = Redshift.CheckConfig(ConfigPath);
+
+      if(configError == Redshift.ConfigError.Ok)
       {
         string argConfig = string.Format("-c \"{0}\"", ConfigPath);
         RedshiftInstance = Redshift.StartContinuous(RedshiftPath, argConfig);
+      }
+      else
+      {
+        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, string.Empty);
       }
     }
 

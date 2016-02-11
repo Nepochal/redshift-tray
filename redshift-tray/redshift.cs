@@ -14,6 +14,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace redshift_tray
 {
@@ -24,6 +25,22 @@ namespace redshift_tray
     private Process RedshiftProcess;
 
     private static Redshift Instance;
+
+    public delegate void RedshiftQuitHandler(object sender, RedshiftQuitArgs e);
+    public event RedshiftQuitHandler OnRedshiftQuit;
+    private void RedshiftQuit(bool manualKill)
+    {
+      if(OnRedshiftQuit != null)
+      {
+        RedshiftQuitArgs e = new RedshiftQuitArgs();
+        e.ManualKill = manualKill;
+        e.ExitCode = RedshiftProcess.ExitCode;
+        e.StandardOutput = GetStandardOutput();
+        e.ErrorOutput = GetErrorOutput();
+
+        OnRedshiftQuit(this, e);
+      }
+    }
 
     public bool isRunning
     {
@@ -111,7 +128,24 @@ namespace redshift_tray
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
+    public static Redshift StartContinuous(RedshiftQuitHandler onRedshiftQuit, string path, params string[] Args)
+    {
+      InitializeContinuousStart(path, Args);
+      Instance.Start();
+      Instance.OnRedshiftQuit += onRedshiftQuit;
+      Instance.StartContinuousCheckerThread();
+      return Instance;
+    }
+
     public static Redshift StartContinuous(string path, params string[] Args)
+    {
+      InitializeContinuousStart(path, Args);
+      Instance.Start();
+      Instance.StartContinuousCheckerThread();
+      return Instance;
+    }
+
+    private static Redshift InitializeContinuousStart(string path, params string[] Args)
     {
       if(CheckExecutable(path) != ExecutableError.Ok)
         throw new Exception("Invalid redshift start.");
@@ -119,18 +153,36 @@ namespace redshift_tray
       if(Instance != null && !Instance.RedshiftProcess.HasExited)
       {
         Instance.RedshiftProcess.Kill();
+        Instance.RedshiftQuit(true);
       }
 
       Instance = new Redshift(path, Args);
+
       return Instance;
+    }
+
+    //Start a thread that checks after 5 seconds, if the redshift instance has quit/aborted
+    private void StartContinuousCheckerThread()
+    {
+      Thread checkerThread = new Thread(() =>
+      {
+        Thread.Sleep(5000);
+        if(!Instance.isRunning)
+        {
+          Instance.RedshiftQuit(false);
+        }
+      });
+      checkerThread.IsBackground = true;
+      checkerThread.Start();
     }
 
     public static string StartAndWaitForOutput(string path, params string[] Args)
     {
       Redshift redshift = new Redshift(path, Args);
+      redshift.Start();
       redshift.RedshiftProcess.WaitForExit();
 
-      return redshift.GetOutput();
+      return redshift.GetStandardOutput();
     }
 
     private Redshift(string path, params string[] Args)
@@ -145,6 +197,11 @@ namespace redshift_tray
       RedshiftProcess.StartInfo.UseShellExecute = false;
       RedshiftProcess.StartInfo.CreateNoWindow = true;
       RedshiftProcess.StartInfo.RedirectStandardOutput = true;
+      RedshiftProcess.StartInfo.RedirectStandardError = true;
+    }
+
+    private void Start()
+    {
       RedshiftProcess.Start();
     }
 
@@ -154,15 +211,27 @@ namespace redshift_tray
       {
         Main.WriteLogMessage("Stopped redshift instance.", DebugConsole.LogType.Info);
         RedshiftProcess.Kill();
+        RedshiftQuit(true);
       }
     }
 
-    public string GetOutput()
+    public string GetStandardOutput()
     {
       if(RedshiftProcess == null || isRunning)
         return string.Empty;
 
       string output = RedshiftProcess.StandardOutput.ReadToEnd();
+      Main.WriteLogMessage(output, DebugConsole.LogType.Redshift);
+
+      return output;
+    }
+
+    public string GetErrorOutput()
+    {
+      if(RedshiftProcess == null || isRunning)
+        return string.Empty;
+
+      string output = RedshiftProcess.StandardError.ReadToEnd();
       Main.WriteLogMessage(output, DebugConsole.LogType.Redshift);
 
       return output;
@@ -183,5 +252,13 @@ namespace redshift_tray
       MissingMandatoryField
     }
 
+  }
+
+  public class RedshiftQuitArgs : EventArgs
+  {
+    public bool ManualKill { get; set; }
+    public int ExitCode { get; set; }
+    public string StandardOutput { get; set; }
+    public string ErrorOutput { get; set; }
   }
 }

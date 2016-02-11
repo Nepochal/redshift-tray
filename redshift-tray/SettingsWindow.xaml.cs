@@ -66,11 +66,11 @@ namespace redshift_tray
         {
           case Redshift.ConfigError.NotFound:
             configInfo.Foreground = Brushes.Red;
-            configInfo.Content = "Invalid path. Using default config.";
+            configInfo.Content = "Invalid path to config.";
             break;
-          case Redshift.ConfigError.NotSet:
-            configInfo.Foreground = Brushes.Green;
-            configInfo.Content = "Using default config.";
+          case Redshift.ConfigError.MissingMandatoryField:
+            configInfo.Foreground = Brushes.Red;
+            configInfo.Content = "Missing information about your location.";
             break;
           case Redshift.ConfigError.Ok:
             configInfo.Foreground = Brushes.Green;

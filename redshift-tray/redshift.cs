@@ -37,16 +37,29 @@ namespace redshift_tray
     {
       Main.WriteLogMessage("Checking redshift config.", DebugConsole.LogType.Info);
 
-      if(path == string.Empty)
-      {
-        Main.WriteLogMessage("Skipped. No config set. Using defaults.", DebugConsole.LogType.Info);
-        return ConfigError.NotSet;
-      }
-
       if(!File.Exists(path))
       {
-        Main.WriteLogMessage("Config not found. Using defaults.", DebugConsole.LogType.Error);
+        Main.WriteLogMessage("Config not found.", DebugConsole.LogType.Error);
         return ConfigError.NotFound;
+      }
+
+      bool hasMode = false;
+      bool hasLat = false;
+      bool hasLon = false;
+      //superficial check if all mandatory information are given
+      foreach(string line in File.ReadAllLines(path))
+      {
+        if(line.Length >= 8 && line.Substring(0, 8) == "[manual]")
+          hasMode = true;
+        if(line.Length >= 4 && line.Substring(0, 4) == "lat=")
+          hasLat = true;
+        if(line.Length >= 4 && line.Substring(0, 4) == "lon=")
+          hasLon = true;
+      }
+      if(!hasMode || !hasLat || !hasLon)
+      {
+        Main.WriteLogMessage("Missing mandatory information in config.", DebugConsole.LogType.Error);
+        return ConfigError.MissingMandatoryField;
       }
 
       return ConfigError.Ok;
@@ -166,8 +179,8 @@ namespace redshift_tray
     public enum ConfigError
     {
       Ok,
-      NotSet,
-      NotFound
+      NotFound,
+      MissingMandatoryField
     }
 
   }

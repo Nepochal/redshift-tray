@@ -63,7 +63,7 @@ namespace redshift_tray
       Redshift.ExecutableError exeError = Redshift.CheckExecutable(RedshiftPath);
       Redshift.ConfigError confError = Redshift.CheckConfig(ConfigPath);
 
-      if(exeError != Redshift.ExecutableError.Ok)
+      if(exeError != Redshift.ExecutableError.Ok || confError != Redshift.ConfigError.Ok)
       {
         SettingsWindow settingsWindow = new SettingsWindow(exeError, confError);
         if((bool)settingsWindow.ShowDialog())

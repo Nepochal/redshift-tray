@@ -13,6 +13,7 @@
 */
 using System.Windows;
 using redshift_tray.Properties;
+using System;
 
 namespace redshift_tray
 {
@@ -80,15 +81,8 @@ namespace redshift_tray
     {
       Redshift.ConfigError configError = Redshift.CheckConfig(ConfigPath);
 
-      if(configError == Redshift.ConfigError.Ok)
-      {
-        string argConfig = string.Format("-c \"{0}\"", ConfigPath);
-        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, argConfig);
-      }
-      else
-      {
-        RedshiftInstance = Redshift.StartContinuous(RedshiftPath, string.Empty);
-      }
+      string argConfig = string.Format("-c \"{0}\"", ConfigPath);
+      RedshiftInstance = Redshift.StartContinuous(RedshiftInstance_OnRedshiftQuit, RedshiftPath, argConfig);
     }
 
     private void StartTrayIcon()
@@ -115,6 +109,28 @@ namespace redshift_tray
             StartRedshiftContinuous();
           }
         };
+    }
+
+    void RedshiftInstance_OnRedshiftQuit(object sender, RedshiftQuitArgs e)
+    {
+      if(!e.ManualKill)
+      {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          MessageBox.Show(string.Format("Redshift crashed with the following output:{0}{0}{1}", Environment.NewLine, e.ErrorOutput), "Redshift Tray", MessageBoxButton.OK, MessageBoxImage.Error);
+
+          SettingsWindow settingsWindow = new SettingsWindow();
+          if((bool)settingsWindow.ShowDialog())
+          {
+            LoadSettings();
+            StartRedshiftContinuous();
+          }
+          else
+          {
+            Application.Current.Shutdown(-1);
+          }
+        });
+      }
     }
   }
 }

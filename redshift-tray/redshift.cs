@@ -34,7 +34,6 @@ namespace redshift_tray
       {
         RedshiftQuitArgs e = new RedshiftQuitArgs();
         e.ManualKill = manualKill;
-        e.ExitCode = RedshiftProcess.ExitCode;
         e.StandardOutput = GetStandardOutput();
         e.ErrorOutput = GetErrorOutput();
 
@@ -131,9 +130,8 @@ namespace redshift_tray
     public static Redshift StartContinuous(RedshiftQuitHandler onRedshiftQuit, string path, params string[] Args)
     {
       InitializeContinuousStart(path, Args);
-      Instance.Start();
       Instance.OnRedshiftQuit += onRedshiftQuit;
-      Instance.StartContinuousCheckerThread();
+      Instance.Start();
       return Instance;
     }
 
@@ -141,7 +139,6 @@ namespace redshift_tray
     {
       InitializeContinuousStart(path, Args);
       Instance.Start();
-      Instance.StartContinuousCheckerThread();
       return Instance;
     }
 
@@ -152,6 +149,7 @@ namespace redshift_tray
 
       if(Instance != null && !Instance.RedshiftProcess.HasExited)
       {
+        Instance.RedshiftProcess.Exited -= Instance.RedshiftProcess_Crashed;
         Instance.RedshiftProcess.Kill();
         Instance.RedshiftQuit(true);
       }
@@ -161,20 +159,20 @@ namespace redshift_tray
       return Instance;
     }
 
-    //Start a thread that checks after 5 seconds, if the redshift instance has quit/aborted
-    private void StartContinuousCheckerThread()
-    {
-      Thread checkerThread = new Thread(() =>
-      {
-        Thread.Sleep(5000);
-        if(!Instance.isRunning)
-        {
-          Instance.RedshiftQuit(false);
-        }
-      });
-      checkerThread.IsBackground = true;
-      checkerThread.Start();
-    }
+    ////Start a thread that checks after 5 seconds, if the redshift instance has quit/aborted
+    //private void StartContinuousCheckerThread()
+    //{
+    //  Thread checkerThread = new Thread(() =>
+    //  {
+    //    Thread.Sleep(5000);
+    //    if(!Instance.isRunning)
+    //    {
+    //      Instance.RedshiftQuit(false);
+    //    }
+    //  });
+    //  checkerThread.IsBackground = true;
+    //  checkerThread.Start();
+    //}
 
     public static string StartAndWaitForOutput(string path, params string[] Args)
     {
@@ -198,6 +196,8 @@ namespace redshift_tray
       RedshiftProcess.StartInfo.CreateNoWindow = true;
       RedshiftProcess.StartInfo.RedirectStandardOutput = true;
       RedshiftProcess.StartInfo.RedirectStandardError = true;
+      RedshiftProcess.EnableRaisingEvents = true;
+      RedshiftProcess.Exited += RedshiftProcess_Crashed;
     }
 
     private void Start()
@@ -210,6 +210,7 @@ namespace redshift_tray
       if(isRunning)
       {
         Main.WriteLogMessage("Stopped redshift instance.", DebugConsole.LogType.Info);
+        RedshiftProcess.Exited -= RedshiftProcess_Crashed;
         RedshiftProcess.Kill();
         RedshiftQuit(true);
       }
@@ -237,6 +238,11 @@ namespace redshift_tray
       return output;
     }
 
+    void RedshiftProcess_Crashed(object sender, EventArgs e)
+    {
+      RedshiftQuit(false);
+    }
+
     public enum ExecutableError
     {
       Ok,
@@ -257,7 +263,6 @@ namespace redshift_tray
   public class RedshiftQuitArgs : EventArgs
   {
     public bool ManualKill { get; set; }
-    public int ExitCode { get; set; }
     public string StandardOutput { get; set; }
     public string ErrorOutput { get; set; }
   }

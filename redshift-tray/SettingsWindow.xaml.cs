@@ -25,10 +25,14 @@ namespace redshift_tray
   public partial class SettingsWindow : Window
   {
 
+    private Redshift.ExecutableError ExecutableErrorState;
+    private Redshift.ConfigError ConfigErrorState;
+
     private Redshift.ExecutableError RedshiftInfoLabel
     {
       set
       {
+        ExecutableErrorState = value;
         switch(value)
         {
           case Redshift.ExecutableError.NotFound:
@@ -48,14 +52,16 @@ namespace redshift_tray
             redshiftInfo.Content = "Redshift executable is suitable.";
             break;
         }
-        OkButton.IsEnabled = (value==Redshift.ExecutableError.Ok);
+        SetOkButtonEnabled();
       }
+      get { return ExecutableErrorState; }
     }
 
     private Redshift.ConfigError ConfigInfoLabel
     {
       set
       {
+        ConfigErrorState = value;
         switch(value)
         {
           case Redshift.ConfigError.NotFound:
@@ -71,14 +77,18 @@ namespace redshift_tray
             configInfo.Content = "Redshift config is suitable.";
             break;
         }
+        SetOkButtonEnabled();
       }
+      get { return ConfigErrorState; }
     }
 
     public SettingsWindow()
     {
       InitializeComponent();
       LoadConfig();
-      CheckConfig();
+      RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
+      ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
+      SetOkButtonEnabled();
     }
 
     public SettingsWindow(Redshift.ExecutableError initialRedshiftErrorNote, Redshift.ConfigError initialConfigErrorNote)
@@ -102,10 +112,14 @@ namespace redshift_tray
       configPath.Text = Settings.Default.RedshiftConfigPath;
     }
 
-    private void CheckConfig()
+    private bool CheckConfig()
     {
-      RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
-      ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
+      return (ExecutableErrorState == Redshift.ExecutableError.Ok && ConfigErrorState == Redshift.ConfigError.Ok);
+    }
+
+    private void SetOkButtonEnabled()
+    {
+      OkButton.IsEnabled = CheckConfig();
     }
 
     private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)

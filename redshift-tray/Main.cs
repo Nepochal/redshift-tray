@@ -94,30 +94,27 @@ namespace redshift_tray
     private void StartTrayIcon()
     {
       TrayIconInstance = TrayIcon.Create();
-      TrayIconInstance.OnMenuItemExitClicked += TrayIconInstance_OnMenuItemExitClicked;
-      TrayIconInstance.OnMenuItemSettingsClicked += TrayIconInstance_OnMenuItemSettingsClicked;
+
+      TrayIconInstance.OnMenuItemExitClicked += (sender, e) =>
+        {
+          if(RedshiftInstance.isRunning)
+          {
+            RedshiftInstance.Stop();
+          }
+
+          Application.Current.Shutdown(0);
+        };
+
+      TrayIconInstance.OnMenuItemSettingsClicked += (sender, e) =>
+        {
+          SettingsWindow settingsWindow = new SettingsWindow();
+          if((bool)settingsWindow.ShowDialog())
+          {
+            RedshiftInstance.Stop();
+            LoadSettings();
+            StartRedshiftContinuous();
+          }
+        };
     }
-
-    void TrayIconInstance_OnMenuItemSettingsClicked(object sender, RoutedEventArgs e)
-    {
-      SettingsWindow settingsWindow = new SettingsWindow();
-      if((bool)settingsWindow.ShowDialog())
-      {
-        RedshiftInstance.Stop();
-        LoadSettings();
-        StartRedshiftContinuous();
-      }
-    }
-
-    void TrayIconInstance_OnMenuItemExitClicked(object sender, RoutedEventArgs e)
-    {
-      if(RedshiftInstance.isRunning)
-      {
-        RedshiftInstance.Stop();
-      }
-
-      Application.Current.Shutdown(0);
-    }
-
   }
 }

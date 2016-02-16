@@ -33,9 +33,16 @@ namespace redshift_tray
   /// </summary>
   public partial class About : Window
   {
+
+    private string VersionText
+    {
+      set { Version.Text = string.Format("Version: {0}", value); }
+    }
+
     public About()
     {
       InitializeComponent();
+      VersionText = Main.VERSION;
     }
 
     private void RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)

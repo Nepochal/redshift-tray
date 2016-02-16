@@ -83,6 +83,11 @@ namespace redshift_tray
       RedshiftInstance = Redshift.StartContinuous(RedshiftInstance_OnRedshiftQuit, RedshiftPath, argConfig);
     }
 
+    private void ResetScreen()
+    {
+      Redshift.StartAndWaitForOutput(RedshiftPath, "-x");
+    }
+
     private void StartTrayIcon()
     {
       TrayIconInstance = TrayIcon.Create();
@@ -91,6 +96,7 @@ namespace redshift_tray
         {
           if(RedshiftInstance.isRunning)
           {
+            ResetScreen();
             RedshiftInstance.Stop();
           }
 

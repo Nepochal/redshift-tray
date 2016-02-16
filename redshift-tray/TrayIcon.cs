@@ -14,6 +14,7 @@
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Controls;
 using System.Windows;
+using System;
 
 namespace redshift_tray
 {
@@ -78,6 +79,11 @@ namespace redshift_tray
       menuItemSettings.Click += menuItemSettings_Click;
       contextMenu.Items.Add(menuItemSettings);
 
+      MenuItem menuItemLog = new MenuItem();
+      menuItemLog.Header = "Show log";
+      menuItemLog.Click += menuItemLog_Click;
+      contextMenu.Items.Add(menuItemLog);
+
       contextMenu.Items.Add(new Separator());
 
       MenuItem menuItemExit = new MenuItem();
@@ -91,6 +97,11 @@ namespace redshift_tray
     void menuItemSettings_Click(object sender, RoutedEventArgs e)
     {
       MenuItemSettingsClicked(e);
+    }
+
+    void menuItemLog_Click(object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
     }
 
     void menuItemExit_Click(object sender, RoutedEventArgs e)

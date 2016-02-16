@@ -99,6 +99,11 @@ namespace redshift_tray
           Application.Current.Shutdown(0);
         };
 
+      TrayIconInstance.OnMenuItemLogClicked += (sender, e) =>
+      {
+        debugConsole.ShowOrUnhide();
+      };
+
       TrayIconInstance.OnMenuItemSettingsClicked += (sender, e) =>
         {
           SettingsWindow settingsWindow = new SettingsWindow();

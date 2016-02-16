@@ -121,8 +121,6 @@ namespace redshift_tray
       About aboutDialog = new About();
       aboutDialog.ShowDialog();
     }
-      aboutDialog.ShowDialog();
-    }
 
     void menuItemExit_Click(object sender, RoutedEventArgs e)
     {

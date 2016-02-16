@@ -4,7 +4,7 @@
         Title="About Redshift Tray" Height="294" Width="377" ResizeMode="NoResize" Icon="redshift-tray.ico" WindowStartupLocation="CenterScreen">
   <Grid>
     <DockPanel>
-      <Button Name="ButtonClose" Content="Close" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Height="21" Width="71" Margin="10"/>
+      <Button Name="ButtonClose" Content="Close" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Height="21" Width="71" Margin="10" IsCancel="True"/>
       <TabControl DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,0">
         <TabItem Header="About">
           <StackPanel Orientation="Horizontal" Margin="3">
@@ -13,9 +13,9 @@
               <Run FontSize="15" FontWeight="Bold">Redshift Tray</Run><LineBreak />
               <Run Name="Version" Text="Version #.#.#" /><LineBreak />
               © 2016 by Michael Scholz<LineBreak />
-              <Hyperlink NavigateUri="https://mischolz.de">https://mischolz.de</Hyperlink>
+              <Hyperlink NavigateUri="https://mischolz.de" RequestNavigate="RequestNavigate">https://mischolz.de</Hyperlink>
               <LineBreak /><LineBreak />
-              Redshift tray is licensed under the <Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</Hyperlink>.<LineBreak />
+              Redshift tray is licensed under the <Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0.txt" RequestNavigate="RequestNavigate">GPLv3</Hyperlink>.<LineBreak />
               The source code can be found #on github#.<LineBreak /><LineBreak />
               Please use the issues system on GitHub to report bugs.
             </TextBlock>
@@ -27,17 +27,17 @@
               <Bold>Icons</Bold><LineBreak />
               Most icons are part of the redshift project.<LineBreak />
               © 2009-2016 by Jon Lund Steffensen<LineBreak />
-              Redshift is licensed under the <Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</Hyperlink>.<LineBreak />
-              <Hyperlink NavigateUri="http://jonls.dk/redshift/">Website</Hyperlink> | <Hyperlink NavigateUri="https://github.com/jonls/redshift">Sources</Hyperlink>
+              Redshift is licensed under the <Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0.txt" RequestNavigate="RequestNavigate">GPLv3</Hyperlink>.<LineBreak />
+              <Hyperlink NavigateUri="http://jonls.dk/redshift/" RequestNavigate="RequestNavigate">Website</Hyperlink> | <Hyperlink NavigateUri="https://github.com/jonls/redshift" RequestNavigate="RequestNavigate">Sources</Hyperlink>
               <LineBreak /><LineBreak />
               <Bold>Redshift</Bold><LineBreak />
               © 2009-2016 by Jon Lund Steffensen<LineBreak />
-              Redshift is licensed under the <Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</Hyperlink>.<LineBreak />
-              <Hyperlink NavigateUri="http://jonls.dk/redshift/">Website</Hyperlink> | <Hyperlink NavigateUri="https://github.com/jonls/redshift">Sources</Hyperlink>
+              Redshift is licensed under the <Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0.txt" RequestNavigate="RequestNavigate">GPLv3</Hyperlink>.<LineBreak />
+              <Hyperlink NavigateUri="http://jonls.dk/redshift/" RequestNavigate="RequestNavigate">Website</Hyperlink> | <Hyperlink NavigateUri="https://github.com/jonls/redshift" RequestNavigate="RequestNavigate">Sources</Hyperlink>
               <LineBreak /><LineBreak />
               <Bold>WPF NotifyIcon</Bold><LineBreak />
               © 2009-2016 by Philipp Sumi<LineBreak />
-              <Hyperlink NavigateUri="http://www.hardcodet.net/wpf-notifyicon">Website</Hyperlink> | <Hyperlink NavigateUri="https://github.com/TheLevelUp/wpf-notify-icon">Sources</Hyperlink>
+              <Hyperlink NavigateUri="http://www.hardcodet.net/wpf-notifyicon" RequestNavigate="RequestNavigate">Website</Hyperlink> | <Hyperlink NavigateUri="https://github.com/TheLevelUp/wpf-notify-icon" RequestNavigate="RequestNavigate">Sources</Hyperlink>
             </TextBlock>
           </ScrollViewer>
         </TabItem>

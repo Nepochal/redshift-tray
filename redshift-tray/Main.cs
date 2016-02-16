@@ -32,15 +32,11 @@ namespace redshift_tray
       debugConsole.WriteLog(message, logType);
     }
 
-    public Main(bool showDebugLog)
+    public Main()
     {
       debugConsole = new DebugConsole();
-      if(showDebugLog)
-      {
-        debugConsole.ShowOrUnhide();
-      }
     }
-
+    
     public bool Initialize()
     {
       LoadSettings();

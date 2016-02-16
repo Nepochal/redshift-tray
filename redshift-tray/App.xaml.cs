@@ -24,7 +24,7 @@ namespace redshift_tray
 
     void Main(object sender, StartupEventArgs e)
     {
-      Main main = new Main(e.Args.Contains("/debug"));
+      Main main = new Main();
 
       if(!main.Initialize())
       {

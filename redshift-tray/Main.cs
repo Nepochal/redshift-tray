@@ -20,6 +20,8 @@ namespace redshift_tray
   class Main
   {
 
+    public const string VERSION = "0.2.1a";
+
     private static DebugConsole debugConsole;
 
     private Redshift RedshiftInstance;

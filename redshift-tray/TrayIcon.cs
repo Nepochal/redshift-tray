@@ -25,7 +25,6 @@ namespace redshift_tray
     private TaskbarIcon TaskbarIconInstance;
 
     public event RoutedEventHandler OnMenuItemExitClicked;
-
     private void MenuItemExitClicked(RoutedEventArgs e)
     {
       if(OnMenuItemExitClicked != null)
@@ -34,8 +33,16 @@ namespace redshift_tray
       }
     }
 
-    public event RoutedEventHandler OnMenuItemSettingsClicked;
+    public event RoutedEventHandler OnMenuItemLogClicked;
+    private void MenuItemLogClicked(RoutedEventArgs e)
+    {
+      if(OnMenuItemLogClicked != null)
+      {
+        OnMenuItemLogClicked(this, e);
+      }
+    }
 
+    public event RoutedEventHandler OnMenuItemSettingsClicked;
     private void MenuItemSettingsClicked(RoutedEventArgs e)
     {
       if(OnMenuItemSettingsClicked != null)
@@ -101,7 +108,7 @@ namespace redshift_tray
 
     void menuItemLog_Click(object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      MenuItemLogClicked(e);
     }
 
     void menuItemExit_Click(object sender, RoutedEventArgs e)

@@ -78,6 +78,11 @@ namespace redshift_tray
       menuItemSettings.Click += menuItemSettings_Click;
       contextMenu.Items.Add(menuItemSettings);
 
+      MenuItem menuItemAbout = new MenuItem();
+      menuItemAbout.Header = "About";
+      menuItemAbout.Click += menuItemAbout_Click;
+      contextMenu.Items.Add(menuItemAbout);
+
       contextMenu.Items.Add(new Separator());
 
       MenuItem menuItemExit = new MenuItem();
@@ -91,6 +96,12 @@ namespace redshift_tray
     void menuItemSettings_Click(object sender, RoutedEventArgs e)
     {
       MenuItemSettingsClicked(e);
+    }
+
+    private void menuItemAbout_Click(object sender, RoutedEventArgs e)
+    {
+      About aboutDialog = new About();
+      aboutDialog.ShowDialog();
     }
 
     void menuItemExit_Click(object sender, RoutedEventArgs e)

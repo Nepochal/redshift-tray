@@ -131,8 +131,8 @@
     <Resource Include="redshift-tray.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutIcon.png" />
-    <None Include="Resources\TrayIcon.ico" />
+    <Resource Include="Resources\AboutIcon.png" />
+    <Resource Include="Resources\TrayIcon.ico" />
     <Content Include="lib\Hardcodet.Wpf.TaskbarNotification.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

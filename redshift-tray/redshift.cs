@@ -67,9 +67,9 @@ namespace redshift_tray
       {
         if(line.Length >= 8 && line.Substring(0, 8) == "[manual]")
           hasMode = true;
-        if(line.Length >= 4 && line.Substring(0, 4) == "lat=")
+        if(line.Length >= 5 && line.Substring(0, 4) == "lat=")
           hasLat = true;
-        if(line.Length >= 4 && line.Substring(0, 4) == "lon=")
+        if(line.Length >= 5 && line.Substring(0, 4) == "lon=")
           hasLon = true;
       }
       if(!hasMode || !hasLat || !hasLon)

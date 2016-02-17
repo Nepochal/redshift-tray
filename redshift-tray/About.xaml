@@ -16,7 +16,7 @@
               <Hyperlink NavigateUri="https://mischolz.de" RequestNavigate="RequestNavigate">https://mischolz.de</Hyperlink>
               <LineBreak /><LineBreak />
               Redshift tray is licensed under the <Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0.txt" RequestNavigate="RequestNavigate">GPLv3</Hyperlink>.<LineBreak />
-              The source code can be found #on github#.<LineBreak /><LineBreak />
+              The source code can be found <Hyperlink NavigateUri="https://github.com/Nepochal/redshift-tray/releases" RequestNavigate="RequestNavigate">on GitHub</Hyperlink>.<LineBreak /><LineBreak />
               Please use the issues system on GitHub to report bugs.
             </TextBlock>
           </StackPanel>

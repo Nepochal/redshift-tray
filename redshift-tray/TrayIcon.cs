@@ -15,6 +15,7 @@ using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Controls;
 using System.Windows;
 using System;
+using System.Windows.Input;
 
 namespace redshift_tray
 {
@@ -24,6 +25,15 @@ namespace redshift_tray
     private static TrayIcon TrayIconInstance;
     private TaskbarIcon TaskbarIconInstance;
     private TrayIconStatus _Status;
+
+    public event MouseButtonEventHandler OnTrayIconLeftClick;
+    private void TrayIconLeftClick(MouseButtonEventArgs e)
+    {
+      if(OnTrayIconLeftClick != null)
+      {
+        OnTrayIconLeftClick(this, e);
+      }
+    }
 
     public event RoutedEventHandler OnMenuItemExitClicked;
     private void MenuItemExitClicked(RoutedEventArgs e)
@@ -82,6 +92,8 @@ namespace redshift_tray
       TaskbarIconInstance = new TaskbarIcon();
       Status = initialStatus;
       TaskbarIconInstance.ContextMenu = getContextMenu();
+
+      TaskbarIconInstance.MouseLeftButtonUp += TaskbarIconInstance_MouseLeftButtonUp;
     }
 
     public static TrayIcon Create(TrayIconStatus initialStatus)
@@ -124,6 +136,11 @@ namespace redshift_tray
       contextMenu.Items.Add(menuItemExit);
 
       return contextMenu;
+    }
+
+    private void TaskbarIconInstance_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+      TrayIconLeftClick(e);
     }
 
     private void menuItemSettings_Click(object sender, RoutedEventArgs e)

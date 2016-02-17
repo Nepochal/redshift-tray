@@ -77,10 +77,21 @@ namespace redshift_tray
 
     private void StartRedshiftContinuous()
     {
-      Redshift.ConfigError configError = Redshift.CheckConfig(ConfigPath);
+      Redshift.CheckConfig(ConfigPath);
 
       string argConfig = string.Format("-c \"{0}\"", ConfigPath);
       RedshiftInstance = Redshift.StartContinuous(RedshiftInstance_OnRedshiftQuit, RedshiftPath, argConfig);
+    }
+
+    private bool StopRedshiftContinuous()
+    {
+      if(RedshiftInstance.isRunning)
+      {
+        RedshiftInstance.Stop();
+        ResetScreen();
+        return true;
+      }
+      return false;
     }
 
     private void ResetScreen()
@@ -92,14 +103,24 @@ namespace redshift_tray
     {
       TrayIconInstance = TrayIcon.Create(TrayIcon.TrayIconStatus.Automatic);
 
+      TrayIconInstance.OnTrayIconLeftClick += (sender, e) =>
+      {
+        switch(TrayIconInstance.Status)
+        {
+          case TrayIcon.TrayIconStatus.Automatic:
+            StopRedshiftContinuous();
+            TrayIconInstance.Status = TrayIcon.TrayIconStatus.Off;
+            break;
+          case TrayIcon.TrayIconStatus.Off:
+            StartRedshiftContinuous();
+            TrayIconInstance.Status = TrayIcon.TrayIconStatus.Automatic;
+            break;
+        }
+      };
+
       TrayIconInstance.OnMenuItemExitClicked += (sender, e) =>
         {
-          if(RedshiftInstance.isRunning)
-          {
-            ResetScreen();
-            RedshiftInstance.Stop();
-          }
-
+          StopRedshiftContinuous();
           Application.Current.Shutdown(0);
         };
 
@@ -113,7 +134,7 @@ namespace redshift_tray
           SettingsWindow settingsWindow = new SettingsWindow();
           if((bool)settingsWindow.ShowDialog())
           {
-            RedshiftInstance.Stop();
+            StopRedshiftContinuous();
             LoadSettings();
             StartRedshiftContinuous();
           }

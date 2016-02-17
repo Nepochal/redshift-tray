@@ -24,7 +24,7 @@ namespace redshift_tray
 
     private static TrayIcon TrayIconInstance;
     private TaskbarIcon TaskbarIconInstance;
-    private TrayIconStatus _Status;
+    //private Status _TrayStatus;
 
     public event RoutedEventHandler OnTrayIconLeftClick;
     private void TrayIconLeftClick(RoutedEventArgs e)
@@ -62,27 +62,27 @@ namespace redshift_tray
       }
     }
 
-    public TrayIconStatus Status
+    public Status TrayStatus
     {
-      get { return _Status; }
+      //get { return _TrayStatus; }
       set
       {
         switch(value)
         {
-          case TrayIconStatus.Automatic:
+          case Status.Automatic:
             TaskbarIconInstance.Icon = Properties.Resources.TrayIconAuto;
             TaskbarIconInstance.ToolTipText = "Redshift Tray";
             break;
-          case TrayIconStatus.Off:
+          case Status.Off:
             TaskbarIconInstance.Icon = Properties.Resources.TrayIconOff;
             TaskbarIconInstance.ToolTipText = "Redshift Tray (disabled)";
             break;
         }
-        _Status = value;
+        //_TrayStatus = value;
       }
     }
 
-    private TrayIcon(TrayIconStatus initialStatus)
+    private TrayIcon(Status initialStatus)
     {
       if(TrayIconInstance != null)
       {
@@ -90,19 +90,19 @@ namespace redshift_tray
       }
 
       TaskbarIconInstance = new TaskbarIcon();
-      Status = initialStatus;
+      TrayStatus = initialStatus;
       TaskbarIconInstance.ContextMenu = getContextMenu();
 
       TaskbarIconInstance.TrayLeftMouseUp += TaskbarIconInstance_TrayLeftMouseUp;
     }
 
-    public static TrayIcon Create(TrayIconStatus initialStatus)
+    public static TrayIcon Create(Status initialStatus)
     {
       TrayIconInstance = new TrayIcon(initialStatus);
       return TrayIconInstance;
     }
 
-    public static TrayIcon CreateOrGet(TrayIconStatus initialStatus)
+    public static TrayIcon CreateOrGet(Status initialStatus)
     {
       if(TrayIconInstance == null)
         return Create(initialStatus);
@@ -162,12 +162,6 @@ namespace redshift_tray
     private void menuItemExit_Click(object sender, RoutedEventArgs e)
     {
       MenuItemExitClicked(e);
-    }
-
-    public enum TrayIconStatus
-    {
-      Automatic,
-      Off
     }
 
   }

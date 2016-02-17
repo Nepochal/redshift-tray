@@ -24,10 +24,33 @@ namespace redshift_tray
 
     private static DebugConsole debugConsole;
 
+    private Status _ProgramStatus;
     private Redshift RedshiftInstance;
     private TrayIcon TrayIconInstance;
     private string RedshiftPath;
     private string ConfigPath;
+
+    private Status ProgramStatus
+    {
+      get { return _ProgramStatus; }
+      set
+      {
+        switch(value)
+        {
+          case Status.Automatic:
+            StartRedshiftAutomatic();
+            break;
+          case Status.Off:
+            StopRedshift();
+            break;
+        }
+        if(TrayIconInstance != null)
+        {
+          TrayIconInstance.TrayStatus = value;
+        }
+        _ProgramStatus = value;
+      }
+    }
 
     public static void WriteLogMessage(string message, DebugConsole.LogType logType)
     {
@@ -38,15 +61,15 @@ namespace redshift_tray
     {
       debugConsole = new DebugConsole();
     }
-    
+
     public bool Initialize()
     {
       LoadSettings();
       if(!CheckSettings())
         return false;
 
+      ProgramStatus = Status.Automatic;
       StartTrayIcon();
-      StartRedshiftContinuous();
 
       return true;
     }
@@ -75,7 +98,7 @@ namespace redshift_tray
       return true;
     }
 
-    private void StartRedshiftContinuous()
+    private void StartRedshiftAutomatic()
     {
       Redshift.CheckConfig(ConfigPath);
 
@@ -83,7 +106,7 @@ namespace redshift_tray
       RedshiftInstance = Redshift.StartContinuous(RedshiftInstance_OnRedshiftQuit, RedshiftPath, argConfig);
     }
 
-    private bool StopRedshiftContinuous()
+    private bool StopRedshift()
     {
       if(RedshiftInstance.isRunning)
       {
@@ -101,26 +124,24 @@ namespace redshift_tray
 
     private void StartTrayIcon()
     {
-      TrayIconInstance = TrayIcon.Create(TrayIcon.TrayIconStatus.Automatic);
+      TrayIconInstance = TrayIcon.Create(ProgramStatus);
 
       TrayIconInstance.OnTrayIconLeftClick += (sender, e) =>
       {
-        switch(TrayIconInstance.Status)
+        switch(ProgramStatus)
         {
-          case TrayIcon.TrayIconStatus.Automatic:
-            StopRedshiftContinuous();
-            TrayIconInstance.Status = TrayIcon.TrayIconStatus.Off;
+          case Status.Automatic:
+            ProgramStatus = Status.Off;
             break;
-          case TrayIcon.TrayIconStatus.Off:
-            StartRedshiftContinuous();
-            TrayIconInstance.Status = TrayIcon.TrayIconStatus.Automatic;
+          case Status.Off:
+            ProgramStatus = Status.Automatic;
             break;
         }
       };
 
       TrayIconInstance.OnMenuItemExitClicked += (sender, e) =>
         {
-          StopRedshiftContinuous();
+          StopRedshift();
           Application.Current.Shutdown(0);
         };
 
@@ -134,9 +155,11 @@ namespace redshift_tray
           SettingsWindow settingsWindow = new SettingsWindow();
           if((bool)settingsWindow.ShowDialog())
           {
-            StopRedshiftContinuous();
             LoadSettings();
-            StartRedshiftContinuous();
+            if(ProgramStatus == Status.Automatic)
+            {
+              StartRedshiftAutomatic();
+            }
           }
         };
     }
@@ -153,7 +176,7 @@ namespace redshift_tray
           if((bool)settingsWindow.ShowDialog())
           {
             LoadSettings();
-            StartRedshiftContinuous();
+            StartRedshiftAutomatic();
           }
           else
           {

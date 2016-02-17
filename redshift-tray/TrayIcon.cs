@@ -26,8 +26,8 @@ namespace redshift_tray
     private TaskbarIcon TaskbarIconInstance;
     private TrayIconStatus _Status;
 
-    public event MouseButtonEventHandler OnTrayIconLeftClick;
-    private void TrayIconLeftClick(MouseButtonEventArgs e)
+    public event RoutedEventHandler OnTrayIconLeftClick;
+    private void TrayIconLeftClick(RoutedEventArgs e)
     {
       if(OnTrayIconLeftClick != null)
       {
@@ -93,7 +93,7 @@ namespace redshift_tray
       Status = initialStatus;
       TaskbarIconInstance.ContextMenu = getContextMenu();
 
-      TaskbarIconInstance.MouseLeftButtonUp += TaskbarIconInstance_MouseLeftButtonUp;
+      TaskbarIconInstance.TrayLeftMouseUp += TaskbarIconInstance_TrayLeftMouseUp;
     }
 
     public static TrayIcon Create(TrayIconStatus initialStatus)
@@ -138,7 +138,7 @@ namespace redshift_tray
       return contextMenu;
     }
 
-    private void TaskbarIconInstance_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void TaskbarIconInstance_TrayLeftMouseUp(object sender, RoutedEventArgs e)
     {
       TrayIconLeftClick(e);
     }

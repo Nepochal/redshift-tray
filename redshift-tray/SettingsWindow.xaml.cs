@@ -19,20 +19,18 @@ using System.Windows.Media;
 
 namespace redshift_tray
 {
-  /// <summary>
-  /// Interaktionslogik für Settings.xaml
-  /// </summary>
   public partial class SettingsWindow : Window
   {
 
-    private Redshift.ExecutableError ExecutableErrorState;
-    private Redshift.ConfigError ConfigErrorState;
+    private Redshift.ExecutableError _ExecutableErrorState;
+    private Redshift.ConfigError _ConfigErrorState;
 
-    private Redshift.ExecutableError RedshiftInfoLabel
+    private Redshift.ExecutableError ExecutableErrorState
     {
+      get { return _ExecutableErrorState; }
       set
       {
-        ExecutableErrorState = value;
+        _ExecutableErrorState = value;
         switch(value)
         {
           case Redshift.ExecutableError.NotFound:
@@ -54,14 +52,14 @@ namespace redshift_tray
         }
         SetOkButtonEnabled();
       }
-      get { return ExecutableErrorState; }
     }
 
-    private Redshift.ConfigError ConfigInfoLabel
+    private Redshift.ConfigError ConfigErrorState
     {
+      get { return _ConfigErrorState; }
       set
       {
-        ConfigErrorState = value;
+        _ConfigErrorState = value;
         switch(value)
         {
           case Redshift.ConfigError.NotFound:
@@ -79,15 +77,14 @@ namespace redshift_tray
         }
         SetOkButtonEnabled();
       }
-      get { return ConfigErrorState; }
     }
 
     public SettingsWindow()
     {
       InitializeComponent();
       LoadConfig();
-      RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
-      ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
+      ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
+      ConfigErrorState = Redshift.CheckConfig(configPath.Text);
       SetOkButtonEnabled();
     }
 
@@ -95,8 +92,8 @@ namespace redshift_tray
     {
       InitializeComponent();
       LoadConfig();
-      RedshiftInfoLabel = initialRedshiftErrorNote;
-      ConfigInfoLabel = initialConfigErrorNote;
+      ExecutableErrorState = initialRedshiftErrorNote;
+      ConfigErrorState = initialConfigErrorNote;
     }
 
     private void SaveConfig()
@@ -114,7 +111,7 @@ namespace redshift_tray
 
     private bool CheckConfig()
     {
-      return (ExecutableErrorState == Redshift.ExecutableError.Ok && ConfigErrorState == Redshift.ConfigError.Ok);
+      return (_ExecutableErrorState == Redshift.ExecutableError.Ok && _ConfigErrorState == Redshift.ConfigError.Ok);
     }
 
     private void SetOkButtonEnabled()
@@ -129,7 +126,7 @@ namespace redshift_tray
 
     private void redshiftPath_LostFocus(object sender, RoutedEventArgs e)
     {
-      RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
+      ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
     }
 
     private void ButtonRedshift_Click(object sender, RoutedEventArgs e)
@@ -147,7 +144,7 @@ namespace redshift_tray
       if((bool)openFileDialog.ShowDialog())
       {
         redshiftPath.Text = openFileDialog.FileName;
-        RedshiftInfoLabel = Redshift.CheckExecutable(redshiftPath.Text);
+        ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
       }
     }
 
@@ -166,13 +163,13 @@ namespace redshift_tray
       if((bool)openFileDialog.ShowDialog())
       {
         configPath.Text = openFileDialog.FileName;
-        ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
+        ConfigErrorState = Redshift.CheckConfig(configPath.Text);
       }
     }
 
     private void configPath_LostFocus(object sender, RoutedEventArgs e)
     {
-      ConfigInfoLabel = Redshift.CheckConfig(configPath.Text);
+      ConfigErrorState = Redshift.CheckConfig(configPath.Text);
     }
 
     private void OkButton_Click(object sender, RoutedEventArgs e)

@@ -28,9 +28,6 @@ using System.Windows.Shapes;
 
 namespace redshift_tray
 {
-  /// <summary>
-  /// Interaktionslogik für About.xaml
-  /// </summary>
   public partial class About : Window
   {
 

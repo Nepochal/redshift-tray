@@ -66,7 +66,9 @@ namespace redshift_tray
     {
       LoadSettings();
       if(!CheckSettings())
+      {
         return false;
+      }
 
       ProgramStatus = Status.Automatic;
       StartTrayIcon();
@@ -164,7 +166,7 @@ namespace redshift_tray
         };
     }
 
-    void RedshiftInstance_OnRedshiftQuit(object sender, RedshiftQuitArgs e)
+    private void RedshiftInstance_OnRedshiftQuit(object sender, RedshiftQuitArgs e)
     {
       if(!e.ManualKill)
       {

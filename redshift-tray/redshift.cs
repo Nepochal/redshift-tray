@@ -22,9 +22,9 @@ namespace redshift_tray
   {
     public readonly static int[] MIN_REDSHIFT_VERSION = { 1, 10 };
 
-    private Process RedshiftProcess;
-
     private static Redshift Instance;
+
+    private Process RedshiftProcess;
 
     public delegate void RedshiftQuitHandler(object sender, RedshiftQuitArgs e);
     public event RedshiftQuitHandler OnRedshiftQuit;
@@ -43,10 +43,7 @@ namespace redshift_tray
 
     public bool isRunning
     {
-      get
-      {
-        return !RedshiftProcess.HasExited;
-      }
+      get { return !RedshiftProcess.HasExited; }
     }
 
     public static ConfigError CheckConfig(string path)
@@ -114,7 +111,9 @@ namespace redshift_tray
     {
       string[] versionnr = version.Split('.');
       if(versionnr.Length < 2)
+      {
         return false;
+      }
 
       int majorversion = 0;
       int minorVersion = 0;
@@ -122,7 +121,9 @@ namespace redshift_tray
       int.TryParse(versionnr[1], out minorVersion);
 
       if(majorversion > MIN_REDSHIFT_VERSION[0])
+      {
         return true;
+      }
 
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
@@ -158,21 +159,6 @@ namespace redshift_tray
 
       return Instance;
     }
-
-    ////Start a thread that checks after 5 seconds, if the redshift instance has quit/aborted
-    //private void StartContinuousCheckerThread()
-    //{
-    //  Thread checkerThread = new Thread(() =>
-    //  {
-    //    Thread.Sleep(5000);
-    //    if(!Instance.isRunning)
-    //    {
-    //      Instance.RedshiftQuit(false);
-    //    }
-    //  });
-    //  checkerThread.IsBackground = true;
-    //  checkerThread.Start();
-    //}
 
     public static string StartAndWaitForOutput(string path, params string[] Args)
     {
@@ -219,7 +205,9 @@ namespace redshift_tray
     public string GetStandardOutput()
     {
       if(RedshiftProcess == null || isRunning)
+      {
         return string.Empty;
+      }
 
       string output = RedshiftProcess.StandardOutput.ReadToEnd();
       Main.WriteLogMessage(output, DebugConsole.LogType.Redshift);
@@ -230,7 +218,9 @@ namespace redshift_tray
     public string GetErrorOutput()
     {
       if(RedshiftProcess == null || isRunning)
+      {
         return string.Empty;
+      }
 
       string output = RedshiftProcess.StandardError.ReadToEnd();
       Main.WriteLogMessage(output, DebugConsole.LogType.Redshift);

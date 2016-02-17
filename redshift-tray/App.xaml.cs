@@ -16,9 +16,6 @@ using System.Windows;
 
 namespace redshift_tray
 {
-  /// <summary>
-  /// Interaktionslogik für "App.xaml"
-  /// </summary>
   public partial class App : Application
   {
 

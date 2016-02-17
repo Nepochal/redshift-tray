@@ -23,8 +23,8 @@ namespace redshift_tray
   {
 
     private static TrayIcon TrayIconInstance;
+
     private TaskbarIcon TaskbarIconInstance;
-    //private Status _TrayStatus;
 
     public event RoutedEventHandler OnTrayIconLeftClick;
     private void TrayIconLeftClick(RoutedEventArgs e)
@@ -64,7 +64,6 @@ namespace redshift_tray
 
     public Status TrayStatus
     {
-      //get { return _TrayStatus; }
       set
       {
         switch(value)
@@ -78,7 +77,6 @@ namespace redshift_tray
             TaskbarIconInstance.ToolTipText = "Redshift Tray (disabled)";
             break;
         }
-        //_TrayStatus = value;
       }
     }
 
@@ -105,7 +103,9 @@ namespace redshift_tray
     public static TrayIcon CreateOrGet(Status initialStatus)
     {
       if(TrayIconInstance == null)
+      {
         return Create(initialStatus);
+      }
       return TrayIconInstance;
     }
 

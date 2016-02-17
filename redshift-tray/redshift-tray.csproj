@@ -136,7 +136,7 @@
   <ItemGroup>
     <None Include="Resources\TrayIconOff.ico" />
     <Resource Include="Resources\AboutIcon.png" />
-    <Resource Include="Resources\TrayIconOn.ico" />
+    <Resource Include="Resources\TrayIconAuto.ico" />
     <Content Include="lib\Hardcodet.Wpf.TaskbarNotification.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

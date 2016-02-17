@@ -90,7 +90,7 @@ namespace redshift_tray
 
     private void StartTrayIcon()
     {
-      TrayIconInstance = TrayIcon.Create();
+      TrayIconInstance = TrayIcon.Create(TrayIcon.TrayIconStatus.Automatic);
 
       TrayIconInstance.OnMenuItemExitClicked += (sender, e) =>
         {

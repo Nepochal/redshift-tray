@@ -73,9 +73,9 @@ namespace redshift_tray.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
-        internal static System.Drawing.Icon TrayIconOff {
+        internal static System.Drawing.Icon TrayIconAuto {
             get {
-                object obj = ResourceManager.GetObject("TrayIconOff", resourceCulture);
+                object obj = ResourceManager.GetObject("TrayIconAuto", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace redshift_tray.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
-        internal static System.Drawing.Icon TrayIconOn {
+        internal static System.Drawing.Icon TrayIconOff {
             get {
-                object obj = ResourceManager.GetObject("TrayIconOn", resourceCulture);
+                object obj = ResourceManager.GetObject("TrayIconOff", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

@@ -23,6 +23,7 @@ namespace redshift_tray
 
     private static TrayIcon TrayIconInstance;
     private TaskbarIcon TaskbarIconInstance;
+    private TrayIconStatus _Status;
 
     public event RoutedEventHandler OnMenuItemExitClicked;
     private void MenuItemExitClicked(RoutedEventArgs e)
@@ -51,20 +52,27 @@ namespace redshift_tray
       }
     }
 
-    public static TrayIcon Create()
+    public TrayIconStatus Status
     {
-      TrayIconInstance = new TrayIcon();
-      return TrayIconInstance;
+      get { return _Status; }
+      set
+      {
+        switch(value)
+        {
+          case TrayIconStatus.Automatic:
+            TaskbarIconInstance.Icon = Properties.Resources.TrayIconAuto;
+            TaskbarIconInstance.ToolTipText = "Redshift Tray";
+            break;
+          case TrayIconStatus.Off:
+            TaskbarIconInstance.Icon = Properties.Resources.TrayIconOff;
+            TaskbarIconInstance.ToolTipText = "Redshift Tray (disabled)";
+            break;
+        }
+        _Status = value;
+      }
     }
 
-    public static TrayIcon CreateOrGet()
-    {
-      if(TrayIconInstance == null)
-        return Create();
-      return TrayIconInstance;
-    }
-
-    private TrayIcon()
+    private TrayIcon(TrayIconStatus initialStatus)
     {
       if(TrayIconInstance != null)
       {
@@ -72,9 +80,21 @@ namespace redshift_tray
       }
 
       TaskbarIconInstance = new TaskbarIcon();
-      TaskbarIconInstance.Icon = Properties.Resources.TrayIconOn;
-      TaskbarIconInstance.ToolTipText = "Redshift Tray";
+      Status = initialStatus;
       TaskbarIconInstance.ContextMenu = getContextMenu();
+    }
+
+    public static TrayIcon Create(TrayIconStatus initialStatus)
+    {
+      TrayIconInstance = new TrayIcon(initialStatus);
+      return TrayIconInstance;
+    }
+
+    public static TrayIcon CreateOrGet(TrayIconStatus initialStatus)
+    {
+      if(TrayIconInstance == null)
+        return Create(initialStatus);
+      return TrayIconInstance;
     }
 
     private ContextMenu getContextMenu()
@@ -106,25 +126,31 @@ namespace redshift_tray
       return contextMenu;
     }
 
-    void menuItemSettings_Click(object sender, RoutedEventArgs e)
+    private void menuItemSettings_Click(object sender, RoutedEventArgs e)
     {
       MenuItemSettingsClicked(e);
     }
-    
-    void menuItemLog_Click(object sender, RoutedEventArgs e)
+
+    private void menuItemLog_Click(object sender, RoutedEventArgs e)
     {
       MenuItemLogClicked(e);
     }
-    
+
     private void menuItemAbout_Click(object sender, RoutedEventArgs e)
     {
       About aboutDialog = new About();
       aboutDialog.ShowDialog();
     }
 
-    void menuItemExit_Click(object sender, RoutedEventArgs e)
+    private void menuItemExit_Click(object sender, RoutedEventArgs e)
     {
       MenuItemExitClicked(e);
+    }
+
+    public enum TrayIconStatus
+    {
+      Automatic,
+      Off
     }
 
   }

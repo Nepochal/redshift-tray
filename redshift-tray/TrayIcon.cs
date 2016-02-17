@@ -72,7 +72,7 @@ namespace redshift_tray
       }
 
       TaskbarIconInstance = new TaskbarIcon();
-      TaskbarIconInstance.Icon = Properties.Resources.TrayIcon;
+      TaskbarIconInstance.Icon = Properties.Resources.TrayIconOn;
       TaskbarIconInstance.ToolTipText = "Redshift Tray";
       TaskbarIconInstance.ContextMenu = getContextMenu();
     }

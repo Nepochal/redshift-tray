@@ -156,11 +156,7 @@ namespace redshift_tray
     private void menuItemAbout_Click(object sender, RoutedEventArgs e)
     {
       About aboutDialog;
-      if(Common.WindowExists<About>(out aboutDialog))
-      {
-        aboutDialog.Focus();
-      }
-      else
+      if(!Common.WindowExistsFocus(out aboutDialog))
       {
         aboutDialog = new About();
         aboutDialog.ShowDialog();

@@ -89,13 +89,17 @@ namespace redshift_tray
 
       if(exeError != Redshift.ExecutableError.Ok || confError != Redshift.ConfigError.Ok)
       {
-        SettingsWindow settingsWindow = new SettingsWindow(exeError, confError);
-        if((bool)settingsWindow.ShowDialog())
+        SettingsWindow settingsWindow;
+        if(!Common.WindowExistsFocus(out settingsWindow))
         {
-          LoadSettings();
-          return true;
+          settingsWindow = new SettingsWindow();
+          if((bool)settingsWindow.ShowDialog())
+          {
+            LoadSettings();
+            return true;
+          }
+          return false;
         }
-        return false;
       }
       return true;
     }
@@ -154,13 +158,17 @@ namespace redshift_tray
 
       TrayIconInstance.OnMenuItemSettingsClicked += (sender, e) =>
         {
-          SettingsWindow settingsWindow = new SettingsWindow();
-          if((bool)settingsWindow.ShowDialog())
+          SettingsWindow settingsWindow;
+          if(!Common.WindowExistsFocus(out settingsWindow))
           {
-            LoadSettings();
-            if(ProgramStatus == Status.Automatic)
+            settingsWindow = new SettingsWindow();
+            if((bool)settingsWindow.ShowDialog())
             {
-              StartRedshiftAutomatic();
+              LoadSettings();
+              if(ProgramStatus == Status.Automatic)
+              {
+                StartRedshiftAutomatic();
+              }
             }
           }
         };
@@ -174,15 +182,19 @@ namespace redshift_tray
         {
           MessageBox.Show(string.Format("Redshift crashed with the following output:{0}{0}{1}", Environment.NewLine, e.ErrorOutput), "Redshift Tray", MessageBoxButton.OK, MessageBoxImage.Error);
 
-          SettingsWindow settingsWindow = new SettingsWindow();
-          if((bool)settingsWindow.ShowDialog())
+          SettingsWindow settingsWindow;
+          if(!Common.WindowExistsFocus(out settingsWindow))
           {
-            LoadSettings();
-            StartRedshiftAutomatic();
-          }
-          else
-          {
-            Application.Current.Shutdown(-1);
+            settingsWindow = new SettingsWindow();
+            if((bool)settingsWindow.ShowDialog())
+            {
+              LoadSettings();
+              StartRedshiftAutomatic();
+            }
+            else
+            {
+              Application.Current.Shutdown(-1);
+            }
           }
         });
       }

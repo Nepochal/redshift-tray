@@ -16,9 +16,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace redshift_tray
 {
+
+  static class Common
+  {
+    public static bool WindowExists<T>(out T windowInstance)
+    {
+      windowInstance = Application.Current.Windows.OfType<T>().FirstOrDefault();
+      return (windowInstance != null);
+    }
+  }
 
   public enum Status
   {

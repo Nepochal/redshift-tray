@@ -128,17 +128,13 @@ namespace redshift_tray
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
-    public static Redshift StartContinuous(RedshiftQuitHandler onRedshiftQuit, string path, params string[] Args)
+    public static Redshift StartContinuous(string path, RedshiftQuitHandler onRedshiftQuit = null, params string[] Args)
     {
       InitializeContinuousStart(path, Args);
-      Instance.OnRedshiftQuit += onRedshiftQuit;
-      Instance.Start();
-      return Instance;
-    }
-
-    public static Redshift StartContinuous(string path, params string[] Args)
-    {
-      InitializeContinuousStart(path, Args);
+      if(onRedshiftQuit != null)
+      {
+        Instance.OnRedshiftQuit += onRedshiftQuit;
+      }
       Instance.Start();
       return Instance;
     }

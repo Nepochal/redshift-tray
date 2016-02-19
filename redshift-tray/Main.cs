@@ -38,9 +38,11 @@ namespace redshift_tray
         switch(value)
         {
           case Status.Automatic:
+            WriteLogMessage("Switching to automatic mode.", DebugConsole.LogType.Info);
             StartRedshiftAutomatic();
             break;
           case Status.Off:
+            WriteLogMessage("Switching to off mode.", DebugConsole.LogType.Info);
             StopRedshift();
             break;
         }

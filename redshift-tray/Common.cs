@@ -23,7 +23,17 @@ namespace redshift_tray
 
   static class Common
   {
-    public static bool WindowExists<T>(out T windowInstance)
+    public static bool WindowExistsFocus<T>(out T windowInstance) where T : Window
+    {
+      bool returnValue;
+      if(returnValue = WindowExists<T>(out windowInstance))
+      {
+        windowInstance.Focus();
+      }
+      return returnValue;
+    }
+
+    public static bool WindowExists<T>(out T windowInstance) where T : Window
     {
       windowInstance = Application.Current.Windows.OfType<T>().FirstOrDefault();
       return (windowInstance != null);

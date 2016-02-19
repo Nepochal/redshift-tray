@@ -111,7 +111,7 @@ namespace redshift_tray
       Redshift.CheckConfig(ConfigPath);
 
       string argConfig = string.Format("-c \"{0}\"", ConfigPath);
-      RedshiftInstance = Redshift.StartContinuous(RedshiftInstance_OnRedshiftQuit, RedshiftPath, argConfig);
+      RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, argConfig);
     }
 
     private bool StopRedshift()

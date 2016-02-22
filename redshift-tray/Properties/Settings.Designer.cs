@@ -106,5 +106,53 @@ namespace redshift_tray.Properties {
                 this["DebugConsoleWindowState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double AboutLeft {
+            get {
+                return ((double)(this["AboutLeft"]));
+            }
+            set {
+                this["AboutLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double AboutTop {
+            get {
+                return ((double)(this["AboutTop"]));
+            }
+            set {
+                this["AboutTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double SettingsWindowLeft {
+            get {
+                return ((double)(this["SettingsWindowLeft"]));
+            }
+            set {
+                this["SettingsWindowLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double SettingsWindowTop {
+            get {
+                return ((double)(this["SettingsWindowTop"]));
+            }
+            set {
+                this["SettingsWindowTop"] = value;
+            }
+        }
     }
 }

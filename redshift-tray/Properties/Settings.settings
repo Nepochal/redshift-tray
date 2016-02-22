@@ -23,5 +23,17 @@
     <Setting Name="DebugConsoleWindowState" Type="System.Windows.WindowState" Scope="User">
       <Value Profile="(Default)">Normal</Value>
     </Setting>
+    <Setting Name="AboutLeft" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
+    <Setting Name="AboutTop" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
+    <Setting Name="SettingsWindowLeft" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
+    <Setting Name="SettingsWindowTop" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

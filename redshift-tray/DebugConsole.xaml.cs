@@ -11,6 +11,7 @@
    along with redshift-tray.  If not, see <http://www.gnu.org/licenses/>.
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
+using redshift_tray.Properties;
 using System;
 using System.Windows;
 
@@ -23,6 +24,48 @@ namespace redshift_tray
     public DebugConsole()
     {
       InitializeComponent();
+      LoadPosition();
+    }
+
+    private void SavePosition()
+    {
+      Settings settings = Settings.Default;
+
+      if(this.WindowState == WindowState.Maximized)
+      {
+        settings.DebugConsoleWindowState = this.WindowState;
+      }
+      else
+      {
+        settings.DebugConsoleLeft = this.Left;
+        settings.DebugConsoleTop = this.Top;
+        settings.DebugConsoleWidth = this.Width;
+        settings.DebugConsoleHeight = this.Height;
+      }
+      settings.Save();
+    }
+
+    private void LoadPosition()
+    {
+      Settings settings = Settings.Default;
+
+      if(Common.isOutOfBounds(settings.DebugConsoleLeft, settings.DebugConsoleTop))
+      {
+        return;
+      }
+
+      this.WindowStartupLocation = WindowStartupLocation.Manual;
+
+      if(settings.DebugConsoleWindowState == WindowState.Maximized)
+      {
+        this.WindowState = settings.DebugConsoleWindowState;
+        return;
+      }
+
+      this.Left = settings.DebugConsoleLeft;
+      this.Top = settings.DebugConsoleTop;
+      this.Width = settings.DebugConsoleWidth;
+      this.Height = settings.DebugConsoleHeight;
     }
 
     public void ShowOrUnhide()
@@ -56,6 +99,7 @@ namespace redshift_tray
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
       Hide();
+      SavePosition();
       e.Cancel = true;
     }
 

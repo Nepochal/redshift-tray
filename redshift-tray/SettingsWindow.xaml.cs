@@ -82,6 +82,7 @@ namespace redshift_tray
     public SettingsWindow()
     {
       InitializeComponent();
+      LoadPosition();
       LoadConfig();
       ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
       ConfigErrorState = Redshift.CheckConfig(configPath.Text);
@@ -91,9 +92,34 @@ namespace redshift_tray
     public SettingsWindow(Redshift.ExecutableError initialRedshiftErrorNote, Redshift.ConfigError initialConfigErrorNote)
     {
       InitializeComponent();
+      LoadPosition();
       LoadConfig();
       ExecutableErrorState = initialRedshiftErrorNote;
       ConfigErrorState = initialConfigErrorNote;
+    }
+
+    private void SavePosition()
+    {
+      Settings settings = Settings.Default;
+
+      settings.SettingsWindowLeft = this.Left;
+      settings.SettingsWindowTop = this.Top;
+
+      settings.Save();
+    }
+
+    private void LoadPosition()
+    {
+      Settings settings = Settings.Default;
+
+      if(Common.isOutOfBounds(settings.SettingsWindowLeft, settings.SettingsWindowTop))
+      {
+        return;
+      }
+
+      this.WindowStartupLocation = WindowStartupLocation.Manual;
+      this.Left = settings.SettingsWindowLeft;
+      this.Top = settings.SettingsWindowTop;
     }
 
     private void SaveConfig()
@@ -177,6 +203,11 @@ namespace redshift_tray
       SaveConfig();
       DialogResult = true;
       Close();
+    }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      SavePosition();
     }
 
   }

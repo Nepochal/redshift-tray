@@ -1,7 +1,7 @@
 ﻿<Window x:Class="redshift_tray.About"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="About Redshift Tray" Height="294" Width="377" ResizeMode="NoResize" Icon="redshift-tray.ico" WindowStartupLocation="CenterScreen">
+        Title="About Redshift Tray" Height="294" Width="377" ResizeMode="NoResize" Icon="redshift-tray.ico" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
   <Grid>
     <DockPanel>
       <Button Name="ButtonClose" Content="Close" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Height="21" Width="71" Margin="10" IsCancel="True"/>

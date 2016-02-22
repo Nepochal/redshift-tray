@@ -8,5 +8,20 @@
     <Setting Name="RedshiftConfigPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DebugConsoleLeft" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
+    <Setting Name="DebugConsoleTop" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
+    <Setting Name="DebugConsoleWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
+    <Setting Name="DebugConsoleHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-10000</Value>
+    </Setting>
+    <Setting Name="DebugConsoleWindowState" Type="System.Windows.WindowState" Scope="User">
+      <Value Profile="(Default)">Normal</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

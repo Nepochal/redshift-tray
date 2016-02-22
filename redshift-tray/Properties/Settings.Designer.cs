@@ -46,5 +46,65 @@ namespace redshift_tray.Properties {
                 this["RedshiftConfigPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double DebugConsoleLeft {
+            get {
+                return ((double)(this["DebugConsoleLeft"]));
+            }
+            set {
+                this["DebugConsoleLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double DebugConsoleTop {
+            get {
+                return ((double)(this["DebugConsoleTop"]));
+            }
+            set {
+                this["DebugConsoleTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double DebugConsoleWidth {
+            get {
+                return ((double)(this["DebugConsoleWidth"]));
+            }
+            set {
+                this["DebugConsoleWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-10000")]
+        public double DebugConsoleHeight {
+            get {
+                return ((double)(this["DebugConsoleHeight"]));
+            }
+            set {
+                this["DebugConsoleHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
+        public global::System.Windows.WindowState DebugConsoleWindowState {
+            get {
+                return ((global::System.Windows.WindowState)(this["DebugConsoleWindowState"]));
+            }
+            set {
+                this["DebugConsoleWindowState"] = value;
+            }
+        }
     }
 }

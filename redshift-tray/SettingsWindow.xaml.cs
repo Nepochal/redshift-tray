@@ -16,6 +16,7 @@ using redshift_tray.Properties;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using Xceed.Wpf.Toolkit;
 
 namespace redshift_tray
 {

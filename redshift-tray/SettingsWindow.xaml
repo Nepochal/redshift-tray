@@ -47,7 +47,7 @@
     <Label Grid.Column="0" Grid.Row="8" Content="Night:" HorizontalAlignment="Right" />
     <ext:IntegerUpDown Grid.Column="1" Grid.Row="8" Increment="100" Value="3500" Width="120" HorizontalAlignment="Left" Margin=" 0,1" />
 
-    <CheckBox Grid.Column="1" Grid.Row="9" VerticalAlignment="Center" Content="Smooth transitions" Margin="0,3" />
+    <CheckBox Grid.Column="1" Grid.Row="9" VerticalAlignment="Center" Content="Smooth transitions" Margin="0,3" IsChecked="True" />
 
     <StackPanel Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button Width="75" Height="21" Content="OK" Margin="3" Name="OkButton" Click="OkButton_Click" />

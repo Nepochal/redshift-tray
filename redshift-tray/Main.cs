@@ -28,6 +28,7 @@ namespace redshift_tray
     private Redshift RedshiftInstance;
     private TrayIcon TrayIconInstance;
     private string RedshiftPath;
+    private Settings Settings;
 
     private Status ProgramStatus
     {
@@ -80,6 +81,7 @@ namespace redshift_tray
     private void LoadSettings()
     {
       RedshiftPath = Settings.Default.RedshiftAppPath;
+      Settings = Settings.Default;
     }
 
     private bool CheckSettings()

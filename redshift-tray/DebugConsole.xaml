@@ -1,7 +1,7 @@
 ﻿<Window x:Class="redshift_tray.DebugConsole"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Log" Height="400" Width="600" Closing="Window_Closing" Icon="redshift-tray.ico">
+        Title="Log" Height="400" Width="600" Closing="Window_Closing" Icon="redshift-tray.ico" WindowStartupLocation="CenterScreen">
   <Grid>
     <DockPanel>
       <DockPanel DockPanel.Dock="Bottom" Margin="10,0,10,10">

@@ -28,7 +28,6 @@ namespace redshift_tray
     private Redshift RedshiftInstance;
     private TrayIcon TrayIconInstance;
     private string RedshiftPath;
-    private string ConfigPath;
 
     private Status ProgramStatus
     {
@@ -81,7 +80,6 @@ namespace redshift_tray
     private void LoadSettings()
     {
       RedshiftPath = Settings.Default.RedshiftAppPath;
-      ConfigPath = Settings.Default.RedshiftConfigPath;
     }
 
     private bool CheckSettings()
@@ -107,7 +105,7 @@ namespace redshift_tray
 
     private void StartRedshiftAutomatic()
     {
-      string argConfig = string.Format("-c \"{0}\"", ConfigPath);
+      string argConfig = string.Format(string.Empty);
       RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, argConfig);
     }
 

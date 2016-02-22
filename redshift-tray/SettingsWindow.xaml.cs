@@ -34,20 +34,20 @@ namespace redshift_tray
         switch(value)
         {
           case Redshift.ExecutableError.NotFound:
-            redshiftInfo.Foreground = Brushes.Red;
-            redshiftInfo.Content = "Invalid path to Redshift executable.";
+            RedshiftInfo.Foreground = Brushes.Red;
+            RedshiftInfo.Content = "Invalid path to Redshift executable.";
             break;
           case Redshift.ExecutableError.WrongApplication:
-            redshiftInfo.Foreground = Brushes.Red;
-            redshiftInfo.Content = "Executable seems not to be a valid Redshift binary.";
+            RedshiftInfo.Foreground = Brushes.Red;
+            RedshiftInfo.Content = "Executable seems not to be a valid Redshift binary.";
             break;
           case Redshift.ExecutableError.WrongVersion:
-            redshiftInfo.Foreground = Brushes.Red;
-            redshiftInfo.Content = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
+            RedshiftInfo.Foreground = Brushes.Red;
+            RedshiftInfo.Content = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
             break;
           case Redshift.ExecutableError.Ok:
-            redshiftInfo.Foreground = Brushes.Green;
-            redshiftInfo.Content = "Redshift executable is suitable.";
+            RedshiftInfo.Foreground = Brushes.Green;
+            RedshiftInfo.Content = "Redshift executable is suitable.";
             break;
         }
         SetOkButtonEnabled();
@@ -58,7 +58,7 @@ namespace redshift_tray
     {
       InitializeComponent();
       LoadConfig();
-      ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
+      ExecutableErrorState = Redshift.CheckExecutable(RedshiftPath.Text);
       SetOkButtonEnabled();
     }
 
@@ -71,13 +71,13 @@ namespace redshift_tray
 
     private void SaveConfig()
     {
-      Settings.Default.RedshiftAppPath = redshiftPath.Text;
+      Settings.Default.RedshiftAppPath = RedshiftPath.Text;
       Settings.Default.Save();
     }
 
     private void LoadConfig()
     {
-      redshiftPath.Text = Settings.Default.RedshiftAppPath;
+      RedshiftPath.Text = Settings.Default.RedshiftAppPath;
     }
 
     private bool CheckConfig()
@@ -97,7 +97,7 @@ namespace redshift_tray
 
     private void redshiftPath_LostFocus(object sender, RoutedEventArgs e)
     {
-      ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
+      ExecutableErrorState = Redshift.CheckExecutable(RedshiftPath.Text);
     }
 
     private void ButtonRedshift_Click(object sender, RoutedEventArgs e)
@@ -107,15 +107,15 @@ namespace redshift_tray
       openFileDialog.Filter = "Redshift|redshift.exe|All executables|*.exe";
       openFileDialog.CheckFileExists = true;
 
-      if(File.Exists(redshiftPath.Text))
+      if(File.Exists(RedshiftPath.Text))
       {
-        openFileDialog.InitialDirectory = Path.GetDirectoryName(redshiftPath.Text);
+        openFileDialog.InitialDirectory = Path.GetDirectoryName(RedshiftPath.Text);
       }
 
       if((bool)openFileDialog.ShowDialog())
       {
-        redshiftPath.Text = openFileDialog.FileName;
-        ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
+        RedshiftPath.Text = openFileDialog.FileName;
+        ExecutableErrorState = Redshift.CheckExecutable(RedshiftPath.Text);
       }
     }
 

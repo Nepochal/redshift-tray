@@ -84,6 +84,11 @@ namespace redshift_tray
     private void LoadConfig()
     {
       RedshiftPath.Text = Settings.Default.RedshiftAppPath;
+      Latitude.Value = Settings.Default.RedshiftLatitude;
+      Longitude.Value = Settings.Default.RedshiftLongitude;
+      TemperatureDay.Value = Settings.Default.RedshiftTemperatureDay;
+      TemperatureNight.Value = Settings.Default.RedshiftTemperatureNight;
+      Transition.IsChecked = Settings.Default.RedshiftTransition;
     }
 
     private bool CheckConfig()

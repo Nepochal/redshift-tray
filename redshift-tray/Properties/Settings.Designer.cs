@@ -12,7 +12,7 @@ namespace redshift_tray.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -44,6 +44,66 @@ namespace redshift_tray.Properties {
             }
             set {
                 this["RedshiftConfigPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public decimal RedshiftLatitude {
+            get {
+                return ((decimal)(this["RedshiftLatitude"]));
+            }
+            set {
+                this["RedshiftLatitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public decimal RedshiftLongitude {
+            get {
+                return ((decimal)(this["RedshiftLongitude"]));
+            }
+            set {
+                this["RedshiftLongitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5700")]
+        public int RedshiftTemperatureDay {
+            get {
+                return ((int)(this["RedshiftTemperatureDay"]));
+            }
+            set {
+                this["RedshiftTemperatureDay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3500")]
+        public int RedshiftTemperatureNight {
+            get {
+                return ((int)(this["RedshiftTemperatureNight"]));
+            }
+            set {
+                this["RedshiftTemperatureNight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RedshiftTransition {
+            get {
+                return ((bool)(this["RedshiftTransition"]));
+            }
+            set {
+                this["RedshiftTransition"] = value;
             }
         }
     }

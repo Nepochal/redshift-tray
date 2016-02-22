@@ -23,6 +23,16 @@ namespace redshift_tray
 
   static class Common
   {
+
+    public static bool isOutOfBounds(double x, double y)
+    {
+      if (x <= SystemParameters.VirtualScreenLeft) return true;
+      if (y <= SystemParameters.VirtualScreenTop) return true;
+      if(x >= SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth) return true;
+      if (y >= SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight) return true;
+      return false;
+    }
+
     public static bool WindowExistsFocus<T>(out T windowInstance) where T : Window
     {
       bool returnValue;

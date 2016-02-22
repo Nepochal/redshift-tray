@@ -87,9 +87,8 @@ namespace redshift_tray
     private bool CheckSettings()
     {
       Redshift.ExecutableError exeError = Redshift.CheckExecutable(RedshiftPath);
-      Redshift.ConfigError confError = Redshift.CheckConfig(ConfigPath);
 
-      if(exeError != Redshift.ExecutableError.Ok || confError != Redshift.ConfigError.Ok)
+      if(exeError != Redshift.ExecutableError.Ok)
       {
         SettingsWindow settingsWindow;
         if(!Common.WindowExistsFocus(out settingsWindow))
@@ -108,8 +107,6 @@ namespace redshift_tray
 
     private void StartRedshiftAutomatic()
     {
-      Redshift.CheckConfig(ConfigPath);
-
       string argConfig = string.Format("-c \"{0}\"", ConfigPath);
       RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, argConfig);
     }

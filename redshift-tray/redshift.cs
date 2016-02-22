@@ -46,38 +46,6 @@ namespace redshift_tray
       get { return !RedshiftProcess.HasExited; }
     }
 
-    public static ConfigError CheckConfig(string path)
-    {
-      Main.WriteLogMessage("Checking redshift config.", DebugConsole.LogType.Info);
-
-      if(!File.Exists(path))
-      {
-        Main.WriteLogMessage("Config not found.", DebugConsole.LogType.Error);
-        return ConfigError.NotFound;
-      }
-
-      bool hasMode = false;
-      bool hasLat = false;
-      bool hasLon = false;
-      //superficial check if all mandatory information are given
-      foreach(string line in File.ReadAllLines(path))
-      {
-        if(line.Length >= 8 && line.Substring(0, 8) == "[manual]")
-          hasMode = true;
-        if(line.Length >= 5 && line.Substring(0, 4) == "lat=")
-          hasLat = true;
-        if(line.Length >= 5 && line.Substring(0, 4) == "lon=")
-          hasLon = true;
-      }
-      if(!hasMode || !hasLat || !hasLon)
-      {
-        Main.WriteLogMessage("Missing mandatory information in config.", DebugConsole.LogType.Error);
-        return ConfigError.MissingMandatoryField;
-      }
-
-      return ConfigError.Ok;
-    }
-
     public static ExecutableError CheckExecutable(string path)
     {
       Main.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
@@ -235,13 +203,6 @@ namespace redshift_tray
       NotFound,
       WrongVersion,
       WrongApplication
-    }
-
-    public enum ConfigError
-    {
-      Ok,
-      NotFound,
-      MissingMandatoryField
     }
 
   }

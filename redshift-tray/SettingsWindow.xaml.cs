@@ -23,7 +23,6 @@ namespace redshift_tray
   {
 
     private Redshift.ExecutableError _ExecutableErrorState;
-    private Redshift.ConfigError _ConfigErrorState;
 
     private Redshift.ExecutableError ExecutableErrorState
     {
@@ -54,64 +53,35 @@ namespace redshift_tray
       }
     }
 
-    private Redshift.ConfigError ConfigErrorState
-    {
-      get { return _ConfigErrorState; }
-      set
-      {
-        _ConfigErrorState = value;
-        switch(value)
-        {
-          case Redshift.ConfigError.NotFound:
-            configInfo.Foreground = Brushes.Red;
-            configInfo.Content = "Invalid path to config.";
-            break;
-          case Redshift.ConfigError.MissingMandatoryField:
-            configInfo.Foreground = Brushes.Red;
-            configInfo.Content = "Missing information about your location.";
-            break;
-          case Redshift.ConfigError.Ok:
-            configInfo.Foreground = Brushes.Green;
-            configInfo.Content = "Redshift config is suitable.";
-            break;
-        }
-        SetOkButtonEnabled();
-      }
-    }
-
     public SettingsWindow()
     {
       InitializeComponent();
       LoadConfig();
       ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
-      ConfigErrorState = Redshift.CheckConfig(configPath.Text);
       SetOkButtonEnabled();
     }
 
-    public SettingsWindow(Redshift.ExecutableError initialRedshiftErrorNote, Redshift.ConfigError initialConfigErrorNote)
+    public SettingsWindow(Redshift.ExecutableError initialRedshiftErrorNote)
     {
       InitializeComponent();
       LoadConfig();
       ExecutableErrorState = initialRedshiftErrorNote;
-      ConfigErrorState = initialConfigErrorNote;
     }
 
     private void SaveConfig()
     {
       Settings.Default.RedshiftAppPath = redshiftPath.Text;
-      Settings.Default.RedshiftConfigPath = configPath.Text;
       Settings.Default.Save();
     }
 
     private void LoadConfig()
     {
       redshiftPath.Text = Settings.Default.RedshiftAppPath;
-      configPath.Text = Settings.Default.RedshiftConfigPath;
     }
 
     private bool CheckConfig()
     {
-      return (_ExecutableErrorState == Redshift.ExecutableError.Ok && _ConfigErrorState == Redshift.ConfigError.Ok);
+      return (_ExecutableErrorState == Redshift.ExecutableError.Ok);
     }
 
     private void SetOkButtonEnabled()
@@ -146,30 +116,6 @@ namespace redshift_tray
         redshiftPath.Text = openFileDialog.FileName;
         ExecutableErrorState = Redshift.CheckExecutable(redshiftPath.Text);
       }
-    }
-
-    private void ButtonConfig_Click(object sender, RoutedEventArgs e)
-    {
-      OpenFileDialog openFileDialog = new OpenFileDialog();
-      openFileDialog.Title = "Config path";
-      openFileDialog.Filter = "redshift.conf|redshift.conf|All files|*.*";
-      openFileDialog.CheckFileExists = true;
-
-      if(File.Exists(configPath.Text))
-      {
-        openFileDialog.InitialDirectory = Path.GetDirectoryName(configPath.Text);
-      }
-
-      if((bool)openFileDialog.ShowDialog())
-      {
-        configPath.Text = openFileDialog.FileName;
-        ConfigErrorState = Redshift.CheckConfig(configPath.Text);
-      }
-    }
-
-    private void configPath_LostFocus(object sender, RoutedEventArgs e)
-    {
-      ConfigErrorState = Redshift.CheckConfig(configPath.Text);
     }
 
     private void OkButton_Click(object sender, RoutedEventArgs e)

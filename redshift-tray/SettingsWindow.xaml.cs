@@ -90,7 +90,7 @@ namespace redshift_tray
         return;
       }
 
-      this.WindowStartupLocation = WindowStartupLocation.Manual;
+      this.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
       this.Left = settings.SettingsWindowLeft;
       this.Top = settings.SettingsWindowTop;
     }

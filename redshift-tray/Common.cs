@@ -48,6 +48,11 @@ namespace redshift_tray
       windowInstance = Application.Current.Windows.OfType<T>().FirstOrDefault();
       return (windowInstance != null);
     }
+
+    public static bool WindowExists<T>() where T : Window
+    {
+      return Application.Current.Windows.OfType<T>().Any();
+    }
   }
 
   public enum Status

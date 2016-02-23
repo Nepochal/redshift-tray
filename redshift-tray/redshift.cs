@@ -1,4 +1,5 @@
-﻿/* This file is part of redshift-tray.
+﻿using redshift_tray.Properties;
+/* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -12,6 +13,7 @@
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -44,6 +46,26 @@ namespace redshift_tray
     public bool isRunning
     {
       get { return !RedshiftProcess.HasExited; }
+    }
+
+    public static string[] GetArgsBySettings()
+    {
+      Settings settings = Settings.Default;
+      List<string> returnValue = new List<string>();
+
+      //Location
+      returnValue.Add(string.Format("-l {0}:{1}", settings.RedshiftLatitude.ToString().Replace(',', '.'), settings.RedshiftLongitude.ToString().Replace(',', '.')));
+
+      //Temperature
+      returnValue.Add(string.Format("-t {0}:{1}", settings.RedshiftTemperatureDay, settings.RedshiftTemperatureNight));
+
+      //Transition
+      if(!settings.RedshiftTransition)
+      {
+        returnValue.Add("-r");
+      }
+
+      return returnValue.ToArray();
     }
 
     public static ExecutableError CheckExecutable(string path)

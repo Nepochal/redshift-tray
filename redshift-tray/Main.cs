@@ -107,8 +107,8 @@ namespace redshift_tray
 
     private void StartRedshiftAutomatic()
     {
-      string argConfig = string.Format(string.Empty);
-      RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, argConfig);
+      string[] args = Redshift.GetArgsBySettings();
+      RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, args);
     }
 
     private bool StopRedshift()

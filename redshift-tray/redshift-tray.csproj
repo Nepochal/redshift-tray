@@ -55,6 +55,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -135,6 +139,7 @@
     <Resource Include="redshift-tray.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\Xceed.Wpf.Toolkit.dll" />
     <None Include="Resources\TrayIconOff.ico" />
     <Resource Include="Resources\AboutIcon.png" />
     <Resource Include="Resources\TrayIconAuto.ico" />

@@ -28,7 +28,7 @@ namespace redshift_tray
     private Redshift RedshiftInstance;
     private TrayIcon TrayIconInstance;
     private string RedshiftPath;
-    private string ConfigPath;
+    private Settings Settings;
 
     private Status ProgramStatus
     {
@@ -81,15 +81,14 @@ namespace redshift_tray
     private void LoadSettings()
     {
       RedshiftPath = Settings.Default.RedshiftAppPath;
-      ConfigPath = Settings.Default.RedshiftConfigPath;
+      Settings = Settings.Default;
     }
 
     private bool CheckSettings()
     {
       Redshift.ExecutableError exeError = Redshift.CheckExecutable(RedshiftPath);
-      Redshift.ConfigError confError = Redshift.CheckConfig(ConfigPath);
 
-      if(exeError != Redshift.ExecutableError.Ok || confError != Redshift.ConfigError.Ok)
+      if(exeError != Redshift.ExecutableError.Ok)
       {
         SettingsWindow settingsWindow;
         if(!Common.WindowExistsFocus(out settingsWindow))
@@ -108,10 +107,8 @@ namespace redshift_tray
 
     private void StartRedshiftAutomatic()
     {
-      Redshift.CheckConfig(ConfigPath);
-
-      string argConfig = string.Format("-c \"{0}\"", ConfigPath);
-      RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, argConfig);
+      string[] args = Redshift.GetArgsBySettings();
+      RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, args);
     }
 
     private bool StopRedshift()

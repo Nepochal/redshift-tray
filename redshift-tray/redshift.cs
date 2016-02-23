@@ -1,4 +1,5 @@
-﻿/* This file is part of redshift-tray.
+﻿using redshift_tray.Properties;
+/* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -12,6 +13,7 @@
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -46,36 +48,24 @@ namespace redshift_tray
       get { return !RedshiftProcess.HasExited; }
     }
 
-    public static ConfigError CheckConfig(string path)
+    public static string[] GetArgsBySettings()
     {
-      Main.WriteLogMessage("Checking redshift config.", DebugConsole.LogType.Info);
+      Settings settings = Settings.Default;
+      List<string> returnValue = new List<string>();
 
-      if(!File.Exists(path))
+      //Location
+      returnValue.Add(string.Format("-l {0}:{1}", settings.RedshiftLatitude.ToString().Replace(',', '.'), settings.RedshiftLongitude.ToString().Replace(',', '.')));
+
+      //Temperature
+      returnValue.Add(string.Format("-t {0}:{1}", settings.RedshiftTemperatureDay, settings.RedshiftTemperatureNight));
+
+      //Transition
+      if(!settings.RedshiftTransition)
       {
-        Main.WriteLogMessage("Config not found.", DebugConsole.LogType.Error);
-        return ConfigError.NotFound;
+        returnValue.Add("-r");
       }
 
-      bool hasMode = false;
-      bool hasLat = false;
-      bool hasLon = false;
-      //superficial check if all mandatory information are given
-      foreach(string line in File.ReadAllLines(path))
-      {
-        if(line.Length >= 8 && line.Substring(0, 8) == "[manual]")
-          hasMode = true;
-        if(line.Length >= 5 && line.Substring(0, 4) == "lat=")
-          hasLat = true;
-        if(line.Length >= 5 && line.Substring(0, 4) == "lon=")
-          hasLon = true;
-      }
-      if(!hasMode || !hasLat || !hasLon)
-      {
-        Main.WriteLogMessage("Missing mandatory information in config.", DebugConsole.LogType.Error);
-        return ConfigError.MissingMandatoryField;
-      }
-
-      return ConfigError.Ok;
+      return returnValue.ToArray();
     }
 
     public static ExecutableError CheckExecutable(string path)
@@ -235,13 +225,6 @@ namespace redshift_tray
       NotFound,
       WrongVersion,
       WrongApplication
-    }
-
-    public enum ConfigError
-    {
-      Ok,
-      NotFound,
-      MissingMandatoryField
     }
 
   }

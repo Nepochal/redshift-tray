@@ -38,6 +38,11 @@
               <Bold>WPF NotifyIcon</Bold><LineBreak />
               © 2009-2016 by Philipp Sumi<LineBreak />
               <Hyperlink NavigateUri="http://www.hardcodet.net/wpf-notifyicon" RequestNavigate="RequestNavigate">Website</Hyperlink> | <Hyperlink NavigateUri="https://github.com/TheLevelUp/wpf-notify-icon" RequestNavigate="RequestNavigate">Sources</Hyperlink>
+              <LineBreak /><LineBreak />
+              <Bold>Extended WPF Toolkit</Bold><LineBreak />
+              © 2007-2016 Xceed Software Inc.<LineBreak />
+              Extended WPF Toolkit is licensed under the <Hyperlink NavigateUri="https://wpftoolkit.codeplex.com/license" RequestNavigate="RequestNavigate">Ms-PL</Hyperlink>.<LineBreak />
+              <Hyperlink NavigateUri="https://wpftoolkit.codeplex.com/" RequestNavigate="RequestNavigate">Website</Hyperlink> | <Hyperlink NavigateUri="https://wpftoolkit.codeplex.com/SourceControl/latest" RequestNavigate="RequestNavigate">Sources</Hyperlink>
             </TextBlock>
           </ScrollViewer>
         </TabItem>

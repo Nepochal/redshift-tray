@@ -37,18 +37,6 @@ namespace redshift_tray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RedshiftConfigPath {
-            get {
-                return ((string)(this["RedshiftConfigPath"]));
-            }
-            set {
-                this["RedshiftConfigPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public decimal RedshiftLatitude {
             get {

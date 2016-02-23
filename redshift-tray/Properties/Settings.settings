@@ -5,9 +5,6 @@
     <Setting Name="RedshiftAppPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="RedshiftConfigPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="RedshiftLatitude" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>

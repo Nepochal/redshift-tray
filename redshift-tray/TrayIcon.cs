@@ -140,6 +140,10 @@ namespace redshift_tray
 
     private void TaskbarIconInstance_TrayLeftMouseUp(object sender, RoutedEventArgs e)
     {
+      if(Common.WindowExists<SettingsWindow>())
+      {
+        return;
+      }
       TrayIconLeftClick(e);
     }
 

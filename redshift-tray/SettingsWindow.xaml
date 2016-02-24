@@ -2,56 +2,83 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ext="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Settings" Height="346" Width="564" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
-  <Grid Margin="3">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-    <Label Grid.Column="0" Grid.Row="0" Content="Redshift path:" Height="26" />
-    <TextBox Grid.Column="1" Grid.Row="0" Margin="0" Name="RedshiftPath" LostFocus="redshiftPath_LostFocus"/>
-    <Button Grid.Column="2" Grid.Row="0" Content="..." Height="26" Width="32" Margin="0" Click="ButtonRedshift_Click" />
-    
-    <Label Grid.Column="1" Grid.Row="1" Content="#redshiftInfo" Name="RedshiftInfo"/>
-    
-    <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="WrapWithOverflow" Margin="6,3,3,3">The required Redshift executable can be downloaded <Hyperlink NavigateUri="https://github.com/jonls/redshift/releases" RequestNavigate="Hyperlink_RequestNavigate">here on Github</Hyperlink>.
-    </TextBlock>
-    
-    <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Bold" Content="Location (IMPORTANT)" Margin="0,10,0,0"/>
-    
-    <Label Grid.Column="0" Grid.Row="4" Content="Latitude:" HorizontalAlignment="Right" />
-    <ext:DecimalUpDown Grid.Column="1" Grid.Row="4" FormatString="F7" Increment="1" Value="0" Minimum="-90" Maximum="90" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="Latitude" />
-    
-    <Label Grid.Column="0" Grid.Row="5" Content="Longitude:" HorizontalAlignment="Right" />
-    <ext:DecimalUpDown Grid.Column="1" Grid.Row="5" FormatString="F7" Increment="1" Value="0" Minimum="-180" Maximum="180" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="Longitude" />
-
-    <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" FontWeight="Bold" Content="Temperature" Margin="0,10,0,0"/>
-
-    <Label Grid.Column="0" Grid.Row="7" Content="Day:" HorizontalAlignment="Right" />
-    <ext:IntegerUpDown Grid.Column="1" Grid.Row="7" Increment="100" Value="5500" Minimum="1000" Maximum="25000" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="TemperatureDay"/>
-
-    <Label Grid.Column="0" Grid.Row="8" Content="Night:" HorizontalAlignment="Right" />
-    <ext:IntegerUpDown Grid.Column="1" Grid.Row="8" Increment="100" Value="3500"  Minimum="1000" Maximum="25000" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="TemperatureNight" />
-
-    <CheckBox Grid.Column="1" Grid.Row="9" VerticalAlignment="Center" Content="Smooth transitions" Margin="0,3" IsChecked="True" Name="Transition" />
-
-    <StackPanel Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button Width="75" Height="21" Content="OK" Margin="3" Name="OkButton" Click="OkButton_Click" />
-      <Button Width="75" Height="21" Content="Cancel" Margin="3" IsCancel="True"/>
-    </StackPanel>
-  </Grid>
+        Title="Settings" Height="390" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Window.Resources>
+        <!--Global Styles-->
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="75"></Setter>
+            <Setter Property="Height" Value="23"></Setter>
+        </Style>
+        <!--Specific Styles-->
+        <Style x:Key="PropertyValueStyle" TargetType="Control">
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+            <Setter Property="Width" Value="90"></Setter>
+        </Style>
+        <Style x:Key="ButtonStyleBrowser" TargetType="Button">
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="Width" Value="32"/>
+        </Style>
+        <Style x:Key="DockPanelStyleSetting" TargetType="DockPanel">
+            <Setter Property="Margin" Value="9,7,9,0"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,11,11">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="7,0,0,0"></Setter>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="OK" Name="OkButton" Click="OkButton_Click" />
+            <Button Content="Cancel" IsCancel="True"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="11,0">
+            <GroupBox Header="General">
+                <StackPanel Orientation="Vertical">
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <Label Style="{StaticResource LabelStyle}" Content="Redshift path:"/>
+                        <Button Style="{StaticResource ButtonStyleBrowser}" Content="..." Click="ButtonRedshift_Click"/>
+                        <TextBox Name="RedshiftPath" LostFocus="redshiftPath_LostFocus"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <Label Content="#redshiftInfo" Name="RedshiftInfo"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <TextBlock Padding="5" TextWrapping="WrapWithOverflow">The required Redshift executable can be downloaded <Hyperlink NavigateUri="https://github.com/jonls/redshift/releases" RequestNavigate="Hyperlink_RequestNavigate">here on Github</Hyperlink>.</TextBlock>
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Location (IMPORTANT)">
+                <StackPanel Orientation="Vertical">
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <Label Style="{StaticResource LabelStyle}" Content="Latitude:"/>
+                        <ext:DecimalUpDown Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Minimum="-90" Maximum="90" Increment="1" Value="0"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <Label Style="{StaticResource LabelStyle}" Content="Longitude:"/>
+                        <ext:DecimalUpDown Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Minimum="-180" Maximum="180" Increment="1" Value="0"/>
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Temperature">
+                <StackPanel Orientation="Vertical">
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
+                        <ext:IntegerUpDown Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="5700"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <Label Style="{StaticResource LabelStyle}" Content="Night:"/>
+                        <ext:IntegerUpDown Name="TemperatureNight" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="3500"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+                        <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Smooth transitions" IsChecked="True" Name="Transition" />
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </DockPanel>
 </Window>

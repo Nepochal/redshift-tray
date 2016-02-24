@@ -42,7 +42,7 @@
     <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" FontWeight="Bold" Content="Temperature" Margin="0,10,0,0"/>
 
     <Label Grid.Column="0" Grid.Row="7" Content="Day:" HorizontalAlignment="Right" />
-    <ext:IntegerUpDown Grid.Column="1" Grid.Row="7" Increment="100" Value="5700" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="TemperatureDay"/>
+    <ext:IntegerUpDown Grid.Column="1" Grid.Row="7" Increment="100" Value="5500" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="TemperatureDay"/>
 
     <Label Grid.Column="0" Grid.Row="8" Content="Night:" HorizontalAlignment="Right" />
     <ext:IntegerUpDown Grid.Column="1" Grid.Row="8" Increment="100" Value="3500" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="TemperatureNight" />

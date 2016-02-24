@@ -128,11 +128,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="redshift-tray.ico" />
   </ItemGroup>
   <ItemGroup>

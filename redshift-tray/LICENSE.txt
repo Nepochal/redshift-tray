@@ -630,3 +630,17 @@ ADDITIONAL TERMS APPLICABLE TO REDSHIFT-TRAY.
   
   Redshift-tray makes use of Redshift which is licensed under the GPLv3.
   The source code and legal information can be found on https://github.com/jonls/redshift
+
+
+  WPF NotifyIcon
+  Copyright (c) 2009-2016  Philipp Sumi
+
+  Redshift-tray makes use of WPF NotifyIcon.
+  The source code and legal information can be found on http://www.hardcodet.net/wpf-notifyicon
+
+  
+  Extended WPF Toolkit
+  Copyright (c) 2007-2016  Xceed Software Inc.
+
+  Redshift-tray makes use of Extended WPF Toolkit which is licensed under the Ms-PL.
+  The source code and legal information can be found on https://wpftoolkit.codeplex.com

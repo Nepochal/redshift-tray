@@ -1,4 +1,5 @@
-﻿/* This file is part of redshift-tray.
+﻿using System.Diagnostics;
+/* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -21,12 +22,20 @@ namespace redshift_tray
 
     void Main(object sender, StartupEventArgs e)
     {
-      Main main = new Main();
-
-      if(!main.Initialize())
+      if(Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Count() > 1)
       {
-        Application.Current.Shutdown(-1);
+        Application.Current.Shutdown(0);
+      }
+      else
+      {
+        Main main = new Main();
+
+        if(!main.Initialize())
+        {
+          Application.Current.Shutdown(-1);
+        }
       }
     }
+
   }
 }

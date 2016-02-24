@@ -61,7 +61,7 @@ namespace redshift_tray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5700")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5500")]
         public int RedshiftTemperatureDay {
             get {
                 return ((int)(this["RedshiftTemperatureDay"]));

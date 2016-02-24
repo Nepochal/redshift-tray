@@ -56,11 +56,11 @@
                 <StackPanel Orientation="Vertical">
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Latitude:"/>
-                        <ext:DecimalUpDown Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Increment="1" Value="0"/>
+                        <ext:DecimalUpDown Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Minimum="-90" Maximum="90" Increment="1" Value="0"/>
                     </DockPanel>
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Longitude:"/>
-                        <ext:DecimalUpDown Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Increment="1" Value="0"/>
+                        <ext:DecimalUpDown Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Minimum="-180" Maximum="180" Increment="1" Value="0"/>
                     </DockPanel>
                 </StackPanel>
             </GroupBox>
@@ -68,11 +68,11 @@
                 <StackPanel Orientation="Vertical">
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
-                        <ext:IntegerUpDown Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Increment="100" Value="5700"/>
+                        <ext:IntegerUpDown Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="5700"/>
                     </DockPanel>
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Night:"/>
-                        <ext:IntegerUpDown Name="TemperatureNight" Style="{StaticResource PropertyValueStyle}" Width="70" Increment="100" Value="3500"/>
+                        <ext:IntegerUpDown Name="TemperatureNight" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="3500"/>
                     </DockPanel>
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Smooth transitions" IsChecked="True" Name="Transition" />

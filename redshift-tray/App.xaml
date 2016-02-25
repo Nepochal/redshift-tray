@@ -3,6 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Startup="Main">
     <Application.Resources>
-         
-    </Application.Resources>
+    <!--Global Styles-->
+    <Style TargetType="Button">
+      <Setter Property="Width" Value="75"></Setter>
+      <Setter Property="Height" Value="23"></Setter>
+    </Style>
+  </Application.Resources>
 </Application>

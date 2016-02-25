@@ -3,13 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ext="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Settings" Height="397" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
-    <Window.Resources>
-        <!--Global Styles-->
-        <Style TargetType="Button">
-            <Setter Property="Width" Value="75"></Setter>
-            <Setter Property="Height" Value="23"></Setter>
-        </Style>
-        <!--Specific Styles-->
+  <Window.Resources>
+    <!--Specific Styles-->
         <Style x:Key="PropertyValueStyle" TargetType="Control">
             <Setter Property="DockPanel.Dock" Value="Left"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>

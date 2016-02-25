@@ -2,78 +2,109 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ext="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Settings" Height="397" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        Title="Settings" Height="643.331" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
   <Window.Resources>
     <!--Specific Styles-->
-        <Style x:Key="PropertyValueStyle" TargetType="Control">
-            <Setter Property="DockPanel.Dock" Value="Left"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Style x:Key="PropertyValueStyle" TargetType="Control">
+      <Setter Property="DockPanel.Dock" Value="Left"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+    <Style x:Key="LabelStyle" TargetType="Label">
+      <Setter Property="DockPanel.Dock" Value="Left"/>
+      <Setter Property="Width" Value="90"></Setter>
+    </Style>
+    <Style x:Key="ButtonStyleBrowser" TargetType="Button">
+      <Setter Property="DockPanel.Dock" Value="Right"/>
+      <Setter Property="Width" Value="32"/>
+    </Style>
+    <Style x:Key="DockPanelStyleSetting" TargetType="DockPanel">
+      <Setter Property="Margin" Value="9,7,9,0"/>
+    </Style>
+  </Window.Resources>
+  <DockPanel Margin="0,0,0,8">
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,11,11">
+      <StackPanel.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+          <Setter Property="Margin" Value="7,0,0,0"></Setter>
         </Style>
-        <Style x:Key="LabelStyle" TargetType="Label">
-            <Setter Property="DockPanel.Dock" Value="Left"/>
-            <Setter Property="Width" Value="90"></Setter>
-        </Style>
-        <Style x:Key="ButtonStyleBrowser" TargetType="Button">
-            <Setter Property="DockPanel.Dock" Value="Right"/>
-            <Setter Property="Width" Value="32"/>
-        </Style>
-        <Style x:Key="DockPanelStyleSetting" TargetType="DockPanel">
-            <Setter Property="Margin" Value="9,7,9,0"/>
-        </Style>
-    </Window.Resources>
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,11,11">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Margin" Value="7,0,0,0"></Setter>
-                </Style>
-            </StackPanel.Resources>
-            <Button Content="OK" Name="OkButton" Click="OkButton_Click" />
-            <Button Content="Cancel" IsCancel="True"/>
+      </StackPanel.Resources>
+      <Button Content="OK" Name="OkButton" Click="OkButton_Click" />
+      <Button Content="Cancel" IsCancel="True"/>
+    </StackPanel>
+    <StackPanel Orientation="Vertical" Margin="11,0">
+      <GroupBox Header="General">
+        <StackPanel Orientation="Vertical">
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Redshift path:"/>
+            <Button Style="{StaticResource ButtonStyleBrowser}" Content="..." Click="ButtonRedshift_Click"/>
+            <TextBox Name="RedshiftPath" LostFocus="redshiftPath_LostFocus"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Content="#redshiftInfo" Name="RedshiftInfo"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <TextBlock Padding="5" TextWrapping="WrapWithOverflow">The required Redshift executable can be downloaded <Hyperlink NavigateUri="https://github.com/jonls/redshift/releases" RequestNavigate="Hyperlink_RequestNavigate">here on Github</Hyperlink>.</TextBlock>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Enabled on startup" IsChecked="True" Name="EnabledOnStart" />
+          </DockPanel>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Margin="11,0">
-            <GroupBox Header="General">
-                <StackPanel Orientation="Vertical">
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <Label Style="{StaticResource LabelStyle}" Content="Redshift path:"/>
-                        <Button Style="{StaticResource ButtonStyleBrowser}" Content="..." Click="ButtonRedshift_Click"/>
-                        <TextBox Name="RedshiftPath" LostFocus="redshiftPath_LostFocus"/>
-                    </DockPanel>
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <Label Content="#redshiftInfo" Name="RedshiftInfo"/>
-                    </DockPanel>
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <TextBlock Padding="5" TextWrapping="WrapWithOverflow">The required Redshift executable can be downloaded <Hyperlink NavigateUri="https://github.com/jonls/redshift/releases" RequestNavigate="Hyperlink_RequestNavigate">here on Github</Hyperlink>.</TextBlock>
-                    </DockPanel>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="Location (IMPORTANT)">
-                <StackPanel Orientation="Vertical">
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <Label Style="{StaticResource LabelStyle}" Content="Latitude:"/>
-                        <ext:DecimalUpDown Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-90" Maximum="90" Increment="1" Value="0" InputValidationError="Location_InputValidationError"/>
-                    </DockPanel>
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <Label Style="{StaticResource LabelStyle}" Content="Longitude:"/>
-                        <ext:DecimalUpDown Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-180" Maximum="180" Increment="1" Value="0" InputValidationError="Location_InputValidationError"/>
-                    </DockPanel>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="Temperature">
-                <StackPanel Orientation="Vertical">
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
-                        <ext:IntegerUpDown Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="5500"/>
-                    </DockPanel>
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <Label Style="{StaticResource LabelStyle}" Content="Night:"/>
-                        <ext:IntegerUpDown Name="TemperatureNight" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="3500"/>
-                    </DockPanel>
-                    <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-                        <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Smooth transitions" IsChecked="True" Name="Transition" />
-                    </DockPanel>
-                </StackPanel>
-            </GroupBox>
+      </GroupBox>
+      <GroupBox Header="Location (IMPORTANT)">
+        <StackPanel Orientation="Vertical">
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Latitude:"/>
+            <ext:DecimalUpDown Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-90" Maximum="90" Increment="1" Value="0" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Longitude:"/>
+            <ext:DecimalUpDown Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-180" Maximum="180" Increment="1" Value="0" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
         </StackPanel>
-    </DockPanel>
+      </GroupBox>
+      <GroupBox Header="Temperature">
+        <StackPanel Orientation="Vertical">
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
+            <ext:IntegerUpDown Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="5500"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Night:"/>
+            <ext:IntegerUpDown Name="TemperatureNight" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="3500"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Smooth transitions" IsChecked="True" Name="Transition" />
+          </DockPanel>
+        </StackPanel>
+      </GroupBox>
+      <GroupBox Header="Brightness">
+        <StackPanel Orientation="Vertical">
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
+            <ext:DecimalUpDown Name="BrightnessDay" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="1" Increment="0.1" Value="1" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Night:"/>
+            <ext:DecimalUpDown Name="BrightnessNight" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="1" Increment="0.1" Value="1" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
+        </StackPanel>
+      </GroupBox>
+      <GroupBox Header="Gamma">
+        <StackPanel Orientation="Vertical">
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Red:"/>
+            <ext:DecimalUpDown Name="GammaRed" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="10" Increment="0.1" Value="1" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Green:"/>
+            <ext:DecimalUpDown Name="GammaGreen" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="10" Increment="0.1" Value="1" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <Label Style="{StaticResource LabelStyle}" Content="Blue:"/>
+            <ext:DecimalUpDown Name="GammaBlue" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="10" Increment="0.1" Value="1" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
+        </StackPanel>
+      </GroupBox>
+    </StackPanel>
+  </DockPanel>
 </Window>

@@ -170,7 +170,7 @@ namespace redshift_tray
       SavePosition();
     }
 
-    private void Location_InputValidationError(object sender, InputValidationErrorEventArgs e)
+    private void Decimal_InputValidationError(object sender, InputValidationErrorEventArgs e)
     {
       string value = ((DecimalUpDown)sender).Text;
       value = value.Replace(',', '.');

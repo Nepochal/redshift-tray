@@ -34,10 +34,10 @@
     <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Bold" Content="Location (IMPORTANT)" Margin="0,10,0,0"/>
     
     <Label Grid.Column="0" Grid.Row="4" Content="Latitude:" HorizontalAlignment="Right" />
-    <ext:DecimalUpDown Grid.Column="1" Grid.Row="4" FormatString="F7" Increment="1" Value="0" Minimum="-90" Maximum="90" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="Latitude" CultureInfo="en-US" />
+    <ext:DecimalUpDown Grid.Column="1" Grid.Row="4" FormatString="F7" Increment="1" Value="0" Minimum="-90" Maximum="90" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="Latitude" CultureInfo="en-US" InputValidationError="Location_InputValidationError" />
     
     <Label Grid.Column="0" Grid.Row="5" Content="Longitude:" HorizontalAlignment="Right" />
-    <ext:DecimalUpDown Grid.Column="1" Grid.Row="5" FormatString="F7" Increment="1" Value="0" Minimum="-180" Maximum="180" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="Longitude" CultureInfo="en-US" />
+    <ext:DecimalUpDown Grid.Column="1" Grid.Row="5" FormatString="F7" Increment="1" Value="0" Minimum="-180" Maximum="180" Width="120" HorizontalAlignment="Left" Margin=" 0,1" Name="Longitude" CultureInfo="en-US" InputValidationError="Location_InputValidationError" />
 
     <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" FontWeight="Bold" Content="Temperature" Margin="0,10,0,0"/>
 

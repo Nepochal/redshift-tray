@@ -109,7 +109,7 @@ namespace redshift_tray
 
     private void StartRedshiftAutomatic()
     {
-      string[] args = Redshift.GetArgsBySettings();
+      string[] args = Redshift.GetArgsBySettings(DummyMethod);
       RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, args);
     }
 
@@ -126,7 +126,7 @@ namespace redshift_tray
 
     private void ResetScreen()
     {
-      string[] args = { "-m wingdi", "-x" };
+      string[] args = { string.Format("-m {0}", DummyMethod ? Redshift.METHOD_DUMMY : Redshift.METHOD_WINGDI), "-x" };
       Redshift.StartAndWaitForOutput(RedshiftPath, args);
     }
 

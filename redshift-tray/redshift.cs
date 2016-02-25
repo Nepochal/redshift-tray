@@ -24,6 +24,9 @@ namespace redshift_tray
   {
     public readonly static int[] MIN_REDSHIFT_VERSION = { 1, 10 };
 
+    public const string METHOD_WINGDI = "wingdi";
+    public const string METHOD_DUMMY = "dummy";
+
     private static Redshift Instance;
 
     private Process RedshiftProcess;
@@ -48,13 +51,13 @@ namespace redshift_tray
       get { return !RedshiftProcess.HasExited; }
     }
 
-    public static string[] GetArgsBySettings()
+    public static string[] GetArgsBySettings(bool useDummyMethod)
     {
       Settings settings = Settings.Default;
       List<string> returnValue = new List<string>();
 
       //Method
-      returnValue.Add("-m wingdi");
+      returnValue.Add(string.Format("-m {0}", useDummyMethod ? METHOD_DUMMY : METHOD_WINGDI));
 
       //Location
       returnValue.Add(string.Format("-l {0}:{1}", settings.RedshiftLatitude.ToString().Replace(',', '.'), settings.RedshiftLongitude.ToString().Replace(',', '.')));

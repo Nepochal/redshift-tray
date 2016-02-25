@@ -20,7 +20,7 @@ namespace redshift_tray
   class Main
   {
 
-    public const string VERSION = "0.4.1a";
+    public const string VERSION = "0.4.2a";
 
     private static DebugConsole debugConsole;
 

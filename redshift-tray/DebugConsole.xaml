@@ -4,11 +4,11 @@
         Title="Log" Height="400" Width="600" Closing="Window_Closing" Icon="redshift-tray.ico" WindowStartupLocation="CenterScreen">
   <Grid>
     <DockPanel>
-      <DockPanel DockPanel.Dock="Bottom" Margin="10,0,10,10">
-        <Button Name="ButtonClose" Content="Close" DockPanel.Dock="Right" Height="21" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="ButtonClose_Click" />
-        <Button Name="ButtonClipboard" Content="Copy to Clipboard" DockPanel.Dock="Right" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="0,0,10,0" Click="ButtonClipboard_Click"/>
+      <DockPanel DockPanel.Dock="Bottom" Margin="11,0,11,11">
+        <Button Name="ButtonClose" Content="Close" DockPanel.Dock="Right" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ButtonClose_Click" />
+        <Button Name="ButtonClipboard" Content="Copy to Clipboard" DockPanel.Dock="Right" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="0,0,10,0" Click="ButtonClipboard_Click"/>
       </DockPanel>
-      <TextBox x:Name="Output" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="10,10,10,10" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
+      <TextBox x:Name="Output" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="11" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
     </DockPanel>
   </Grid>
 </Window>

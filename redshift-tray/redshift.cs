@@ -53,6 +53,9 @@ namespace redshift_tray
       Settings settings = Settings.Default;
       List<string> returnValue = new List<string>();
 
+      //Method
+      returnValue.Add("-m wingdi");
+
       //Location
       returnValue.Add(string.Format("-l {0}:{1}", settings.RedshiftLatitude.ToString().Replace(',', '.'), settings.RedshiftLongitude.ToString().Replace(',', '.')));
 

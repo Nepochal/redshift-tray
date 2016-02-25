@@ -124,7 +124,8 @@ namespace redshift_tray
 
     private void ResetScreen()
     {
-      Redshift.StartAndWaitForOutput(RedshiftPath, "-x");
+      string[] args = { "-m wingdi", "-x" };
+      Redshift.StartAndWaitForOutput(RedshiftPath, args);
     }
 
     private void StartTrayIcon()

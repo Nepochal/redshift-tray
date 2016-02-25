@@ -105,6 +105,11 @@ namespace redshift_tray
 
     public void WriteLog(string message, LogType logType)
     {
+      if(message.Length == 0)
+      {
+        return;
+      }
+
       Output.Dispatcher.Invoke(() =>
       {
         string log = string.Format("{0} {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), logType.ToString(), message);

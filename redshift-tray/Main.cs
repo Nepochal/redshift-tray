@@ -29,6 +29,7 @@ namespace redshift_tray
     private TrayIcon TrayIconInstance;
     private string RedshiftPath;
     private Settings Settings;
+    private bool DummyMethod;
 
     private Status ProgramStatus
     {
@@ -59,9 +60,10 @@ namespace redshift_tray
       debugConsole.WriteLog(message, logType);
     }
 
-    public Main()
+    public Main(bool dummyMethod)
     {
       debugConsole = new DebugConsole();
+      DummyMethod = dummyMethod;
     }
 
     public bool Initialize()

@@ -68,7 +68,7 @@
                 <StackPanel Orientation="Vertical">
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
-                        <ext:IntegerUpDown Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="5700"/>
+                        <ext:IntegerUpDown Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="5500"/>
                     </DockPanel>
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Night:"/>

@@ -13,10 +13,12 @@
 */
 using Microsoft.Win32;
 using redshift_tray.Properties;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
+using Xceed.Wpf.Toolkit.Core.Input;
 
 namespace redshift_tray
 {
@@ -166,6 +168,18 @@ namespace redshift_tray
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
       SavePosition();
+    }
+
+    private void Location_InputValidationError(object sender, InputValidationErrorEventArgs e)
+    {
+      string value = ((DecimalUpDown)sender).Text;
+      value = value.Replace(',', '.');
+
+      decimal parseValue;
+      if(decimal.TryParse(value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out parseValue))
+      {
+        ((DecimalUpDown)sender).Value = parseValue;
+      }
     }
 
   }

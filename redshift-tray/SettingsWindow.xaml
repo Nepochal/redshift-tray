@@ -51,11 +51,11 @@
                 <StackPanel Orientation="Vertical">
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Latitude:"/>
-                        <ext:DecimalUpDown Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Minimum="-90" Maximum="90" Increment="1" Value="0"/>
+                        <ext:DecimalUpDown Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-90" Maximum="90" Increment="1" Value="0" InputValidationError="Location_InputValidationError"/>
                     </DockPanel>
                     <DockPanel Style="{StaticResource DockPanelStyleSetting}">
                         <Label Style="{StaticResource LabelStyle}" Content="Longitude:"/>
-                        <ext:DecimalUpDown Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" Minimum="-180" Maximum="180" Increment="1" Value="0"/>
+                        <ext:DecimalUpDown Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-180" Maximum="180" Increment="1" Value="0" InputValidationError="Location_InputValidationError"/>
                     </DockPanel>
                 </StackPanel>
             </GroupBox>

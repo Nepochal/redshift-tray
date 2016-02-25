@@ -20,7 +20,7 @@ namespace redshift_tray
   class Main
   {
 
-    public const string VERSION = "0.4.1a";
+    public const string VERSION = "0.4.2a";
 
     private static DebugConsole debugConsole;
 
@@ -29,6 +29,7 @@ namespace redshift_tray
     private TrayIcon TrayIconInstance;
     private string RedshiftPath;
     private Settings Settings;
+    private bool DummyMethod;
 
     private Status ProgramStatus
     {
@@ -59,9 +60,10 @@ namespace redshift_tray
       debugConsole.WriteLog(message, logType);
     }
 
-    public Main()
+    public Main(bool dummyMethod)
     {
       debugConsole = new DebugConsole();
+      DummyMethod = dummyMethod;
     }
 
     public bool Initialize()
@@ -107,7 +109,7 @@ namespace redshift_tray
 
     private void StartRedshiftAutomatic()
     {
-      string[] args = Redshift.GetArgsBySettings();
+      string[] args = Redshift.GetArgsBySettings(DummyMethod);
       RedshiftInstance = Redshift.StartContinuous(RedshiftPath, RedshiftInstance_OnRedshiftQuit, args);
     }
 
@@ -124,7 +126,8 @@ namespace redshift_tray
 
     private void ResetScreen()
     {
-      Redshift.StartAndWaitForOutput(RedshiftPath, "-x");
+      string[] args = { string.Format("-m {0}", DummyMethod ? Redshift.METHOD_DUMMY : Redshift.METHOD_WINGDI), "-x" };
+      Redshift.StartAndWaitForOutput(RedshiftPath, args);
     }
 
     private void StartTrayIcon()

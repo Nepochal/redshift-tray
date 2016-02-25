@@ -8,7 +8,7 @@
         <Button Name="ButtonClose" Content="Close" DockPanel.Dock="Right" VerticalAlignment="Top" HorizontalAlignment="Right" Click="ButtonClose_Click" />
         <Button Name="ButtonClipboard" Content="Copy to Clipboard" DockPanel.Dock="Right" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="0,0,10,0" Click="ButtonClipboard_Click"/>
       </DockPanel>
-      <TextBox x:Name="Output" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="11" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
+      <TextBox x:Name="Output" DockPanel.Dock="Top" HorizontalAlignment="Stretch" Margin="11" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Visible" TextChanged="Output_TextChanged"/>
     </DockPanel>
   </Grid>
 </Window>

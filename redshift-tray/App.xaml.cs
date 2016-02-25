@@ -28,7 +28,8 @@ namespace redshift_tray
       }
       else
       {
-        Main main = new Main();
+        bool dummyMethod = e.Args.Any(arg => (arg.ToLower() == "/dummy"));
+        Main main = new Main(dummyMethod);
 
         if(!main.Initialize())
         {

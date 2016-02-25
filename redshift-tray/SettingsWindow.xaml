@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ext="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Settings" Height="390" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        Title="Settings" Height="397" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Window.Resources>
         <!--Global Styles-->
         <Style TargetType="Button">

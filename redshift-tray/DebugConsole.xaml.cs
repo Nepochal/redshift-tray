@@ -112,6 +112,11 @@ namespace redshift_tray
       });
     }
 
+    private void Output_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+      Output.ScrollToEnd();
+    }
+
     public enum LogType
     {
       Info,

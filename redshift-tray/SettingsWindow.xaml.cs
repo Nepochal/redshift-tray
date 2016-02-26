@@ -206,13 +206,26 @@ namespace redshift_tray
 
     private void Decimal_InputValidationError(object sender, InputValidationErrorEventArgs e)
     {
-      string value = ((DecimalUpDown)sender).Text;
+      DecimalUpDown dSender = (DecimalUpDown)sender;
+
+      string value = dSender.Text;
       value = value.Replace(',', '.');
 
       decimal parseValue;
       if(decimal.TryParse(value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out parseValue))
       {
-        ((DecimalUpDown)sender).Value = parseValue;
+        if(parseValue > dSender.Maximum)
+        {
+          dSender.Value = dSender.Maximum;
+        }
+        else if(parseValue < dSender.Minimum)
+        {
+          dSender.Value = dSender.Minimum;
+        }
+        else
+        {
+          dSender.Value = parseValue;
+        }
       }
     }
 

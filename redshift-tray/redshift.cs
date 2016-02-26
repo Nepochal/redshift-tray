@@ -136,6 +136,26 @@ namespace redshift_tray
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
+    public static void KillAllRunningInstances()
+    {
+      Main.WriteLogMessage("Looking for running redshift instances.", DebugConsole.LogType.Info);
+      foreach(Process redshift in Process.GetProcessesByName("redshift"))
+      {
+        if(!redshift.HasExited)
+        {
+          try
+          {
+            redshift.Kill();
+            Main.WriteLogMessage("Killed previous redshift process.", DebugConsole.LogType.Info);
+          }
+          catch
+          {
+            Main.WriteLogMessage("Was not able to kill redshift process.", DebugConsole.LogType.Error);
+          }
+        }
+      }
+    }
+
     public static Redshift StartContinuous(string path, RedshiftQuitHandler onRedshiftQuit = null, params string[] Args)
     {
       InitializeContinuousStart(path, Args);

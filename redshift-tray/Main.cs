@@ -75,6 +75,7 @@ namespace redshift_tray
         return false;
       }
 
+      Redshift.KillAllRunningInstances();
       ProgramStatus = Settings.RedshiftEnabledOnStart ? Status.Automatic : Status.Off;
       StartTrayIcon();
 

@@ -71,6 +71,12 @@ namespace redshift_tray
         returnValue.Add("-r");
       }
 
+      //Brightness
+      returnValue.Add(string.Format("-b {0}:{1}", settings.RedshiftBrightnessDay.ToString().Replace(',', '.'), settings.RedshiftBrightnessNight.ToString().Replace(',', '.')));
+
+      //Gamma Correction
+      returnValue.Add(string.Format("-g {0}:{1}:{2}", settings.RedshiftGammaRed.ToString().Replace(',', '.'), settings.RedshiftGammaGreen.ToString().Replace(',', '.'), settings.RedshiftGammaBlue.ToString().Replace(',', '.')));
+
       return returnValue.ToArray();
     }
 

@@ -75,7 +75,7 @@ namespace redshift_tray
         return false;
       }
 
-      ProgramStatus = Status.Automatic;
+      ProgramStatus = Settings.RedshiftEnabledOnStart ? Status.Automatic : Status.Off;
       StartTrayIcon();
 
       return true;
@@ -116,7 +116,7 @@ namespace redshift_tray
 
     private bool StopRedshift()
     {
-      if(RedshiftInstance.isRunning)
+      if(RedshiftInstance != null && RedshiftInstance.isRunning)
       {
         RedshiftInstance.Stop();
         ResetScreen();

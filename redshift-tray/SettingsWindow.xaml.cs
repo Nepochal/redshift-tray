@@ -117,12 +117,20 @@ namespace redshift_tray
 
     private void SaveConfig()
     {
-      Settings.Default.RedshiftAppPath = RedshiftPath.Text;
-      Settings.Default.RedshiftLatitude = (decimal)Latitude.Value;
-      Settings.Default.RedshiftLongitude = (decimal)Longitude.Value;
-      Settings.Default.RedshiftTemperatureDay = (int)TemperatureDay.Value;
-      Settings.Default.RedshiftTemperatureNight = (int)TemperatureNight.Value;
-      Settings.Default.RedshiftTransition = (bool)Transition.IsChecked;
+      Settings settings = Settings.Default;
+
+      settings.RedshiftAppPath = RedshiftPath.Text;
+      settings.RedshiftEnabledOnStart = (bool)EnabledOnStart.IsChecked;
+      settings.RedshiftLatitude = (decimal)Latitude.Value;
+      settings.RedshiftLongitude = (decimal)Longitude.Value;
+      settings.RedshiftTemperatureDay = (int)TemperatureDay.Value;
+      settings.RedshiftTemperatureNight = (int)TemperatureNight.Value;
+      settings.RedshiftTransition = (bool)Transition.IsChecked;
+      settings.RedshiftBrightnessDay = (decimal)BrightnessDay.Value;
+      settings.RedshiftBrightnessNight = (decimal)BrightnessNight.Value;
+      settings.RedshiftGammaRed = (decimal)GammaRed.Value;
+      settings.RedshiftGammaGreen = (decimal)GammaGreen.Value;
+      settings.RedshiftGammaBlue = (decimal)GammaBlue.Value;
 
       Settings.Default.Save();
     }

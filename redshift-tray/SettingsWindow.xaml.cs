@@ -16,6 +16,7 @@ using redshift_tray.Properties;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Core.Input;
@@ -35,21 +36,38 @@ namespace redshift_tray
         _ExecutableErrorState = value;
         switch(value)
         {
+          case Redshift.ExecutableError.MissingPath:
+            Run run;
+            RedshiftInfo.Foreground = Brushes.Black;
+            RedshiftInfo.Inlines.Clear();
+
+            run = new Run("The required Redshift executable can be downloaded ");
+            RedshiftInfo.Inlines.Add(run);
+
+            run = new Run("here on Github");
+            Hyperlink github = new Hyperlink(run);
+            github.NavigateUri = new System.Uri(Main.RELEASES_PAGE);
+            github.RequestNavigate += Hyperlink_RequestNavigate;
+            RedshiftInfo.Inlines.Add(github);
+
+            run = new Run(".");
+            RedshiftInfo.Inlines.Add(run);
+            break;
           case Redshift.ExecutableError.NotFound:
             RedshiftInfo.Foreground = Brushes.Red;
-            RedshiftInfo.Content = "Invalid path to Redshift executable.";
+            RedshiftInfo.Text = "Invalid path to Redshift executable.";
             break;
           case Redshift.ExecutableError.WrongApplication:
             RedshiftInfo.Foreground = Brushes.Red;
-            RedshiftInfo.Content = "Executable seems not to be a valid Redshift binary.";
+            RedshiftInfo.Text = "Executable seems not to be a valid Redshift binary.";
             break;
           case Redshift.ExecutableError.WrongVersion:
             RedshiftInfo.Foreground = Brushes.Red;
-            RedshiftInfo.Content = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
+            RedshiftInfo.Text = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
             break;
           case Redshift.ExecutableError.Ok:
             RedshiftInfo.Foreground = Brushes.Green;
-            RedshiftInfo.Content = "Redshift executable is suitable.";
+            RedshiftInfo.Text = "Redshift executable is suitable.";
             break;
         }
         SetOkButtonEnabled();

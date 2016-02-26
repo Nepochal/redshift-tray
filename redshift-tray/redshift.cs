@@ -78,6 +78,12 @@ namespace redshift_tray
     {
       Main.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
 
+      if(path == string.Empty)
+      {
+        Main.WriteLogMessage("No redshift path set", DebugConsole.LogType.Info);
+        return ExecutableError.MissingPath;
+      }
+
       if(!File.Exists(path))
       {
         Main.WriteLogMessage("Redshift executable not found", DebugConsole.LogType.Error);
@@ -230,7 +236,8 @@ namespace redshift_tray
       Ok,
       NotFound,
       WrongVersion,
-      WrongApplication
+      WrongApplication,
+      MissingPath
     }
 
   }

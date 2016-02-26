@@ -21,6 +21,7 @@ namespace redshift_tray
   {
 
     public const string VERSION = "0.4.2a";
+    public const string RELEASES_PAGE = "https://github.com/jonls/redshift/releases";
 
     private static DebugConsole debugConsole;
 

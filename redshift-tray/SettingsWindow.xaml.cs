@@ -20,6 +20,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Core.Input;
+using System.Linq;
 
 namespace redshift_tray
 {
@@ -158,6 +159,25 @@ namespace redshift_tray
       return (_ExecutableErrorState == Redshift.ExecutableError.Ok);
     }
 
+    private void ImportConfig(string file)
+    {
+      string[] config = File.ReadAllLines(file);
+
+      var items = (
+        from s in config
+        where !s.StartsWith(";") && s.Contains("=")
+        select s.Split('=')
+        ).Select(s => new { key = s[0], value = s[1].Split(';')[0] });
+
+      foreach(var item in items)
+      {
+        switch(item.key)
+        {
+
+        }
+      }
+    }
+
     private void SetOkButtonEnabled()
     {
       OkButton.IsEnabled = CheckConfig();
@@ -201,7 +221,7 @@ namespace redshift_tray
 
       if((bool)openFileDialog.ShowDialog())
       {
-
+        ImportConfig(openFileDialog.FileName);
       }
     }
 

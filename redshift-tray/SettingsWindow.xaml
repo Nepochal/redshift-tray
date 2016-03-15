@@ -22,15 +22,20 @@
     </Style>
   </Window.Resources>
   <DockPanel Margin="0,0,0,8">
-    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,11,11">
-      <StackPanel.Resources>
+    <DockPanel DockPanel.Dock="Bottom">
+      <DockPanel.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
           <Setter Property="Margin" Value="7,0,0,0"></Setter>
         </Style>
-      </StackPanel.Resources>
-      <Button Content="OK" Name="OkButton" Click="OkButton_Click" />
-      <Button Content="Cancel" IsCancel="True"/>
-    </StackPanel>
+      </DockPanel.Resources>
+      <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="4,0,0,11">
+        <Button Content="Import redshift.conf" Width="130" Name="ImportButton" />
+      </StackPanel>
+      <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,11,11">
+        <Button Content="OK" Name="OkButton" Click="OkButton_Click" />
+        <Button Content="Cancel" IsCancel="True"/>
+      </StackPanel>
+    </DockPanel>
     <StackPanel Orientation="Vertical" Margin="11,0">
       <GroupBox Header="General">
         <StackPanel Orientation="Vertical">

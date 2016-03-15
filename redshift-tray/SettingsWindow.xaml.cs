@@ -192,6 +192,19 @@ namespace redshift_tray
       }
     }
 
+    private void ImportButton_Click(object sender, RoutedEventArgs e)
+    {
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      openFileDialog.Title = "Import redshift config";
+      openFileDialog.Filter = "redshift.conf|redshift.conf|All files|*.*";
+      openFileDialog.CheckFileExists = true;
+
+      if((bool)openFileDialog.ShowDialog())
+      {
+
+      }
+    }
+
     private void OkButton_Click(object sender, RoutedEventArgs e)
     {
       SaveConfig();

@@ -29,7 +29,7 @@
         </Style>
       </DockPanel.Resources>
       <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="4,0,0,11">
-        <Button Content="Import redshift.conf" Width="130" Name="ImportButton" />
+        <Button Content="Import redshift.conf" Width="130" Name="ImportButton" Click="ImportButton_Click" />
       </StackPanel>
       <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,11,11">
         <Button Content="OK" Name="OkButton" Click="OkButton_Click" />

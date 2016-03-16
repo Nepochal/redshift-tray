@@ -1,4 +1,5 @@
-﻿/* This file is part of redshift-tray.
+﻿using Microsoft.Win32;
+/* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +14,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,33 @@ namespace redshift_tray
 
   static class Common
   {
+
+    public static bool Autostart
+    {
+      get
+      {
+        RegistryKey regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", false);
+        return regPath.GetValue("Redshift Tray") != null;
+      }
+      set
+      {
+        if(Autostart == value)
+        {
+          return;
+        }
+
+        RegistryKey regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        switch(value)
+        {
+          case true:
+            regPath.SetValue("Redshift Tray", Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.FriendlyName));
+            break;
+          case false:
+            regPath.DeleteValue("Redshift Tray");
+            break;
+        }
+      }
+    }
 
     public static bool isOutOfBounds(double x, double y)
     {

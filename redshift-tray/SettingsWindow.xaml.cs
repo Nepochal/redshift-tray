@@ -173,7 +173,92 @@ namespace redshift_tray
       {
         switch(item.key)
         {
+          case "lat":
+            decimal latitude;
 
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out latitude))
+            {
+              Latitude.Value = (decimal)latitude;
+            }
+            break;
+          case "lon":
+            decimal longitude;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out longitude))
+            {
+              Longitude.Value = (decimal)longitude;
+            }
+            break;
+          case "temp-day":
+            int tempDay;
+
+            if(int.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out tempDay))
+            {
+              TemperatureDay.Value = (int)tempDay;
+            }
+            break;
+          case "temp-night":
+            int tempNight;
+
+            if(int.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out tempNight))
+            {
+              TemperatureNight.Value = (int)tempNight;
+            }
+            break;
+          case "transition":
+            Transition.IsChecked = (item.value == "1");
+            break;
+          case "brightness":
+            decimal brightness;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out brightness))
+            {
+              BrightnessDay.Value = (decimal)brightness;
+              BrightnessNight.Value = (decimal)brightness;
+            }
+            break;
+          case "brightness-day":
+            decimal brightnessDay;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out brightnessDay))
+            {
+              BrightnessDay.Value = (decimal)brightnessDay;
+            }
+            break;
+          case "brightness-night":
+            decimal brightnessNight;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out brightnessNight))
+            {
+              BrightnessNight.Value = (decimal)brightnessNight;
+            }
+            break;
+          case "gamma":
+          case "gamma-day":
+            string[] gammaS = item.value.Split(':');
+            decimal[] gammaD = new decimal[gammaS.Length];
+            for(int i = 0; i < gammaS.Length; i++)
+            {
+              if(!decimal.TryParse(gammaS[i], System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out gammaD[i]))
+              {
+                break;
+              }
+            }
+
+            if(gammaD.Length == 1)
+            {
+              GammaRed.Value = gammaD[0];
+              GammaGreen.Value = gammaD[0];
+              GammaBlue.Value = gammaD[0];
+            }
+            else if(gammaD.Length == 3)
+            {
+              GammaRed.Value = gammaD[0];
+              GammaGreen.Value = gammaD[1];
+              GammaBlue.Value = gammaD[2];
+            }
+
+            break;
         }
       }
     }

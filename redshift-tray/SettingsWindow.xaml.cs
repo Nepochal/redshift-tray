@@ -122,6 +122,7 @@ namespace redshift_tray
 
       settings.RedshiftAppPath = RedshiftPath.Text;
       settings.RedshiftEnabledOnStart = (bool)EnabledOnStart.IsChecked;
+      Common.Autostart = (bool)Autostart.IsChecked;
       settings.RedshiftLatitude = (decimal)Latitude.Value;
       settings.RedshiftLongitude = (decimal)Longitude.Value;
       settings.RedshiftTemperatureDay = (int)TemperatureDay.Value;
@@ -142,6 +143,7 @@ namespace redshift_tray
 
       RedshiftPath.Text = settings.RedshiftAppPath;
       EnabledOnStart.IsChecked = settings.RedshiftEnabledOnStart;
+      Autostart.IsChecked = Common.Autostart;
       Latitude.Value = settings.RedshiftLatitude;
       Longitude.Value = settings.RedshiftLongitude;
       TemperatureDay.Value = settings.RedshiftTemperatureDay;

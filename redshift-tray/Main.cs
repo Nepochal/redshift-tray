@@ -69,8 +69,6 @@ namespace redshift_tray
 
     public bool Initialize()
     {
-      Common.Autostart = true;
-
       LoadSettings();
       if(!CheckSettings())
       {

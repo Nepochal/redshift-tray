@@ -57,13 +57,18 @@ namespace redshift_tray
 
     public static AutoLocation DetectLocation()
     {
+      Main.WriteLogMessage("Detecting location via API.", DebugConsole.LogType.Info);
+
       AutoLocation returnValue = new AutoLocation();
 
       try
       {
+        Main.WriteLogMessage(string.Format("Pinging {0}", Main.GEO_API_DOMAIN), DebugConsole.LogType.Info);
+
         PingReply pingReply = new Ping().Send(Main.GEO_API_DOMAIN, 5000);
         if(pingReply.Status != IPStatus.Success)
         {
+          Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
           returnValue.Success = false;
           returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
           return returnValue;
@@ -71,6 +76,7 @@ namespace redshift_tray
 
         if(pingReply.Address.ToString().Split('.')[0] == "127")
         {
+          Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
           returnValue.Success = false;
           returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert yout location manually.", Environment.NewLine);
           return returnValue;
@@ -78,8 +84,31 @@ namespace redshift_tray
       }
       catch(PingException)
       {
+        Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
         returnValue.Success = false;
         returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
+        return returnValue;
+      }
+
+      try
+      {
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Main.GEO_API_TARGET);
+        request.Proxy = null;
+
+        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        if(response.StatusCode != HttpStatusCode.OK)
+        {
+          Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+          returnValue.Success = false;
+          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
+          return returnValue;
+        }
+      }
+      catch (WebException)
+      {
+        Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+        returnValue.Success = false;
+        returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
         return returnValue;
       }
 

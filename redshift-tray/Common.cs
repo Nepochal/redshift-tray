@@ -79,7 +79,7 @@ namespace redshift_tray
         {
           Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
           returnValue.Success = false;
-          returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert yout location manually.", Environment.NewLine);
+          returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert your location manually or allow connections to {1}.", Environment.NewLine, Main.GEO_API_DOMAIN);
           return returnValue;
         }
       }

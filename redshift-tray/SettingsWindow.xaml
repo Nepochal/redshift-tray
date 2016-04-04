@@ -59,7 +59,7 @@
         <StackPanel Orientation="Vertical">
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Auto-detect:"/>
-            <Button Content="Detect" Name="DetectLocationButton" Style="{StaticResource PropertyValueStyle}" Width="75" Height="23" />
+            <Button Content="Detect" Name="DetectLocationButton" Style="{StaticResource PropertyValueStyle}" Width="75" Height="23" Click="DetectLocationButton_Click" />
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Latitude:"/>

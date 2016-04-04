@@ -21,6 +21,7 @@ using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Core.Input;
 using System.Linq;
+using System.Windows.Input;
 
 namespace redshift_tray
 {
@@ -297,6 +298,25 @@ namespace redshift_tray
         RedshiftPath.Text = openFileDialog.FileName;
         ExecutableErrorState = Redshift.CheckExecutable(RedshiftPath.Text);
       }
+    }
+
+    private void DetectLocationButton_Click(object sender, RoutedEventArgs e)
+    {
+      Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+      AutoLocation autoLocation = Common.DetectLocation();
+
+      if(!autoLocation.Success)
+      {
+        System.Windows.MessageBox.Show(autoLocation.Errortext, "Error while detecting location", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      else
+      {
+        Latitude.Value = autoLocation.Latitude;
+        Longitude.Value = autoLocation.Longitude;
+      }
+
+      Mouse.OverrideCursor = null;
     }
 
     private void ImportButton_Click(object sender, RoutedEventArgs e)

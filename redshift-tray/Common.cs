@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-/* This file is part of redshift-tray.
+﻿/* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -12,6 +11,7 @@
    along with redshift-tray.  If not, see <http://www.gnu.org/licenses/>.
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;

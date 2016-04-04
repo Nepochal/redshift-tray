@@ -16,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -53,6 +55,30 @@ namespace redshift_tray
       }
     }
 
+    public static AutoLocation DetectLocation()
+    {
+      AutoLocation returnValue = new AutoLocation();
+
+      try
+      {
+        PingReply pingReply = new Ping().Send(Main.GEO_API_DOMAIN, 5000);
+        if(pingReply.Status != IPStatus.Success)
+        {
+          returnValue.Success = false;
+          returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
+          return returnValue;
+        }
+      }
+      catch(PingException)
+      {
+        returnValue.Success = false;
+        returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
+        return returnValue;
+      }
+
+      return returnValue;
+    }
+
     public static bool isOutOfBounds(double x, double y)
     {
       if(x <= SystemParameters.VirtualScreenLeft) return true;
@@ -83,6 +109,14 @@ namespace redshift_tray
       return Application.Current.Windows.OfType<T>().Any();
     }
 
+  }
+
+  public struct AutoLocation
+  {
+    public bool Success;
+    public decimal Latitude;
+    public decimal Longitude;
+    public string Errortext;
   }
 
   public enum Status

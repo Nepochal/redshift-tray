@@ -21,7 +21,11 @@ namespace redshift_tray
   {
 
     public const string VERSION = "0.5.0a";
+
     public const string RELEASES_PAGE = "https://github.com/jonls/redshift/releases";
+
+    public const string GEO_API_DOMAIN = "ip-api.com";
+    public const string GEO_API_TARGET = "http://ip-api.com/line/?fields=16576";
 
     private static DebugConsole debugConsole;
 

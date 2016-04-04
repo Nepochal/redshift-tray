@@ -68,6 +68,13 @@ namespace redshift_tray
           returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
           return returnValue;
         }
+
+        if(pingReply.Address.ToString().Split('.')[0] == "127")
+        {
+          returnValue.Success = false;
+          returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert yout location manually.", Environment.NewLine);
+          return returnValue;
+        }
       }
       catch(PingException)
       {

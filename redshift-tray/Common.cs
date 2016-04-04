@@ -14,6 +14,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -90,12 +91,17 @@ namespace redshift_tray
         return returnValue;
       }
 
+      HttpWebResponse response = null;
+      StreamReader reader = null;
+      string latitude;
+      string longitude;
+
       try
       {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Main.GEO_API_TARGET);
         request.Proxy = null;
 
-        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        response = (HttpWebResponse)request.GetResponse();
         if(response.StatusCode != HttpStatusCode.OK)
         {
           Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
@@ -103,14 +109,42 @@ namespace redshift_tray
           returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
           return returnValue;
         }
+
+        reader = new StreamReader(response.GetResponseStream());
+        if(reader.EndOfStream || reader.ReadLine() != "success")
+        {
+          Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+          returnValue.Success = false;
+          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
+          return returnValue;
+        }
+
+        latitude = reader.ReadLine();
+        longitude = reader.ReadLine();
       }
-      catch (WebException)
+      catch(WebException)
       {
         Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
         returnValue.Success = false;
         returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
         return returnValue;
       }
+      finally
+      {
+        if(response != null)
+        {
+          response.Close();
+        }
+        if(reader != null)
+        {
+          reader.Close();
+        }
+      }
+
+      Main.WriteLogMessage("Location detected", DebugConsole.LogType.Info);
+      returnValue.Success = true;
+      returnValue.Latitude = decimal.Parse(latitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
+      returnValue.Longitude = decimal.Parse(longitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
 
       return returnValue;
     }

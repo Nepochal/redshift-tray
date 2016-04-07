@@ -74,7 +74,7 @@ namespace redshift_tray
           returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
           return returnValue;
         }
-        if(IPAddress.IsLoopback(pingReply.Address))
+        if(IPAddress.IsLoopback(pingReply.Address) || pingReply.Address.Equals(IPAddress.Any))
         {
           Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
           returnValue.Success = false;

@@ -1,4 +1,5 @@
-﻿using redshift_tray.Properties;
+﻿using Microsoft.Win32;
+using redshift_tray.Properties;
 /* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -163,7 +164,11 @@ namespace redshift_tray
       {
         Instance.OnRedshiftQuit += onRedshiftQuit;
       }
+
+      SystemEvents.SessionEnding -= Instance.SystemEvents_SessionEnding;
       Instance.Start();
+      SystemEvents.SessionEnding += Instance.SystemEvents_SessionEnding;
+
       return Instance;
     }
 
@@ -178,7 +183,6 @@ namespace redshift_tray
         Instance.RedshiftProcess.Kill();
         Instance.RedshiftQuit(true);
       }
-
       Instance = new Redshift(path, Args);
 
       return Instance;
@@ -220,6 +224,7 @@ namespace redshift_tray
       if(isRunning)
       {
         Main.WriteLogMessage("Stopped redshift instance.", DebugConsole.LogType.Info);
+        SystemEvents.SessionEnding -= SystemEvents_SessionEnding;
         RedshiftProcess.Exited -= RedshiftProcess_Crashed;
         RedshiftProcess.Kill();
         RedshiftQuit(true);
@@ -250,6 +255,11 @@ namespace redshift_tray
       Main.WriteLogMessage(output, DebugConsole.LogType.Redshift);
 
       return output;
+    }
+
+    void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+    {
+      RedshiftProcess.Exited -= RedshiftProcess_Crashed;
     }
 
     void RedshiftProcess_Crashed(object sender, EventArgs e)

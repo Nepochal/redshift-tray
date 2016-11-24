@@ -119,42 +119,15 @@ namespace redshift_tray
 
     private void SaveConfig()
     {
-      Settings settings = Settings.Default;
-
-      settings.RedshiftAppPath = RedshiftPath.Text;
-      settings.RedshiftEnabledOnStart = (bool)EnabledOnStart.IsChecked;
       Common.Autostart = (bool)Autostart.IsChecked;
-      settings.RedshiftLatitude = (decimal)Latitude.Value;
-      settings.RedshiftLongitude = (decimal)Longitude.Value;
-      settings.RedshiftTemperatureDay = (int)TemperatureDay.Value;
-      settings.RedshiftTemperatureNight = (int)TemperatureNight.Value;
-      settings.RedshiftTransition = (bool)Transition.IsChecked;
-      settings.RedshiftBrightnessDay = (decimal)BrightnessDay.Value;
-      settings.RedshiftBrightnessNight = (decimal)BrightnessNight.Value;
-      settings.RedshiftGammaRed = (decimal)GammaRed.Value;
-      settings.RedshiftGammaGreen = (decimal)GammaGreen.Value;
-      settings.RedshiftGammaBlue = (decimal)GammaBlue.Value;
 
       Settings.Default.Save();
     }
 
     private void LoadConfig()
     {
-      Settings settings = Settings.Default;
-
-      RedshiftPath.Text = settings.RedshiftAppPath;
-      EnabledOnStart.IsChecked = settings.RedshiftEnabledOnStart;
+      DataContext = Settings.Default;
       Autostart.IsChecked = Common.Autostart;
-      Latitude.Value = settings.RedshiftLatitude;
-      Longitude.Value = settings.RedshiftLongitude;
-      TemperatureDay.Value = settings.RedshiftTemperatureDay;
-      TemperatureNight.Value = settings.RedshiftTemperatureNight;
-      Transition.IsChecked = settings.RedshiftTransition;
-      BrightnessDay.Value = settings.RedshiftBrightnessDay;
-      BrightnessNight.Value = settings.RedshiftBrightnessNight;
-      GammaRed.Value = settings.RedshiftGammaRed;
-      GammaGreen.Value = settings.RedshiftGammaGreen;
-      GammaBlue.Value = settings.RedshiftGammaBlue;
     }
 
     private bool CheckConfig()
@@ -295,14 +268,15 @@ namespace redshift_tray
 
       if((bool)openFileDialog.ShowDialog())
       {
-        RedshiftPath.Text = openFileDialog.FileName;
+        Settings.Default.RedshiftAppPath = openFileDialog.FileName;
+
         ExecutableErrorState = Redshift.CheckExecutable(RedshiftPath.Text);
       }
     }
 
     private void DetectLocationButton_Click(object sender, RoutedEventArgs e)
     {
-      Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+      Mouse.OverrideCursor = Cursors.Wait;
 
       AutoLocation autoLocation = Common.DetectLocation();
 
@@ -312,8 +286,8 @@ namespace redshift_tray
       }
       else
       {
-        Latitude.Value = autoLocation.Latitude;
-        Longitude.Value = autoLocation.Longitude;
+        Settings.Default.RedshiftLatitude = autoLocation.Latitude;
+        Settings.Default.RedshiftLongitude = autoLocation.Longitude;
       }
 
       Mouse.OverrideCursor = null;

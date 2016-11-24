@@ -45,11 +45,13 @@
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Redshift path:"/>
             <Button Style="{StaticResource ButtonStyleBrowser}" Content="..." Click="ButtonRedshift_Click"/>
+            <TextBox x:Name="RedshiftPath" LostFocus="redshiftPath_LostFocus" Text="{Binding RedshiftAppPath}"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <TextBlock Padding="5" TextWrapping="WrapWithOverflow" x:Name="RedshiftInfo"><Run Text="The required Redshift executable can be downloaded "/><Hyperlink NavigateUri="https://github.com/jonls/redshift/releases" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="here on Github"/></Hyperlink><Run Text="."/></TextBlock>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Enabled on startup" IsChecked="{Binding RedshiftEnabledOnStart}" x:Name="EnabledOnStart" />
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Auto start after boot" IsChecked="False" x:Name="Autostart" />
@@ -64,9 +66,11 @@
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Latitude:"/>
+            <ext:DecimalUpDown x:Name="Latitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-90" Maximum="90" Increment="1" Value="{Binding RedshiftLatitude}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Longitude:"/>
+            <ext:DecimalUpDown x:Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-180" Maximum="180" Increment="1" Value="{Binding RedshiftLongitude}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
         </StackPanel>
       </GroupBox>
@@ -74,11 +78,14 @@
         <StackPanel Orientation="Vertical">
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
+            <ext:IntegerUpDown x:Name="TemperatureDay" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="{Binding RedshiftTemperatureDay}"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Night:"/>
+            <ext:IntegerUpDown x:Name="TemperatureNight" Style="{StaticResource PropertyValueStyle}" Width="70" Minimum="1000" Maximum="25000" Increment="100" Value="{Binding RedshiftTemperatureNight}"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Smooth transitions" IsChecked="{Binding RedshiftTransition}" x:Name="Transition" />
           </DockPanel>
         </StackPanel>
       </GroupBox>
@@ -86,9 +93,11 @@
         <StackPanel Orientation="Vertical">
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Day:"/>
+            <ext:DecimalUpDown x:Name="BrightnessDay" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="1" Increment="0.1" Value="{Binding RedshiftBrightnessDay}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Night:"/>
+            <ext:DecimalUpDown x:Name="BrightnessNight" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="1" Increment="0.1" Value="{Binding RedshiftBrightnessNight}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
         </StackPanel>
       </GroupBox>
@@ -96,12 +105,15 @@
         <StackPanel Orientation="Vertical">
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Red:"/>
+            <ext:DecimalUpDown x:Name="GammaRed" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="10" Increment="0.1" Value="{Binding RedshiftGammaRed}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Green:"/>
+            <ext:DecimalUpDown x:Name="GammaGreen" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="10" Increment="0.1" Value="{Binding RedshiftGammaGreen}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Blue:"/>
+            <ext:DecimalUpDown x:Name="GammaBlue" Style="{StaticResource PropertyValueStyle}" Width="60" FormatString="F2" CultureInfo="en-US" Minimum="0.1" Maximum="10" Increment="0.1" Value="{Binding RedshiftGammaBlue}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
         </StackPanel>
       </GroupBox>

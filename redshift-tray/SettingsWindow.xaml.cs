@@ -13,10 +13,15 @@
 */
 using Microsoft.Win32;
 using redshift_tray.Properties;
+using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
+using Xceed.Wpf.Toolkit.Core.Input;
+using System.Linq;
+using System.Windows.Input;
 
 namespace redshift_tray
 {
@@ -33,21 +38,38 @@ namespace redshift_tray
         _ExecutableErrorState = value;
         switch(value)
         {
+          case Redshift.ExecutableError.MissingPath:
+            Run run;
+            RedshiftInfo.Foreground = Brushes.Black;
+            RedshiftInfo.Inlines.Clear();
+
+            run = new Run("The required Redshift executable can be downloaded ");
+            RedshiftInfo.Inlines.Add(run);
+
+            run = new Run("here on Github");
+            Hyperlink github = new Hyperlink(run);
+            github.NavigateUri = new System.Uri(Main.RELEASES_PAGE);
+            github.RequestNavigate += Hyperlink_RequestNavigate;
+            RedshiftInfo.Inlines.Add(github);
+
+            run = new Run(".");
+            RedshiftInfo.Inlines.Add(run);
+            break;
           case Redshift.ExecutableError.NotFound:
             RedshiftInfo.Foreground = Brushes.Red;
-            RedshiftInfo.Content = "Invalid path to Redshift executable.";
+            RedshiftInfo.Text = "Invalid path to Redshift executable.";
             break;
           case Redshift.ExecutableError.WrongApplication:
             RedshiftInfo.Foreground = Brushes.Red;
-            RedshiftInfo.Content = "Executable seems not to be a valid Redshift binary.";
+            RedshiftInfo.Text = "Executable seems not to be a valid Redshift binary.";
             break;
           case Redshift.ExecutableError.WrongVersion:
             RedshiftInfo.Foreground = Brushes.Red;
-            RedshiftInfo.Content = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
+            RedshiftInfo.Text = string.Format("The Redshift version is be too old. Please use at least version {0}.{1}.", Redshift.MIN_REDSHIFT_VERSION[0], Redshift.MIN_REDSHIFT_VERSION[1]);
             break;
           case Redshift.ExecutableError.Ok:
             RedshiftInfo.Foreground = Brushes.Green;
-            RedshiftInfo.Content = "Redshift executable is suitable.";
+            RedshiftInfo.Text = "Redshift executable is suitable.";
             break;
         }
         SetOkButtonEnabled();
@@ -97,29 +119,151 @@ namespace redshift_tray
 
     private void SaveConfig()
     {
-      Settings.Default.RedshiftAppPath = RedshiftPath.Text;
-      Settings.Default.RedshiftLatitude = (decimal)Latitude.Value;
-      Settings.Default.RedshiftLongitude = (decimal)Longitude.Value;
-      Settings.Default.RedshiftTemperatureDay = (int)TemperatureDay.Value;
-      Settings.Default.RedshiftTemperatureNight = (int)TemperatureNight.Value;
-      Settings.Default.RedshiftTransition = (bool)Transition.IsChecked;
+      Settings settings = Settings.Default;
+
+      settings.RedshiftAppPath = RedshiftPath.Text;
+      settings.RedshiftEnabledOnStart = (bool)EnabledOnStart.IsChecked;
+      Common.Autostart = (bool)Autostart.IsChecked;
+      settings.RedshiftLatitude = (decimal)Latitude.Value;
+      settings.RedshiftLongitude = (decimal)Longitude.Value;
+      settings.RedshiftTemperatureDay = (int)TemperatureDay.Value;
+      settings.RedshiftTemperatureNight = (int)TemperatureNight.Value;
+      settings.RedshiftTransition = (bool)Transition.IsChecked;
+      settings.RedshiftBrightnessDay = (decimal)BrightnessDay.Value;
+      settings.RedshiftBrightnessNight = (decimal)BrightnessNight.Value;
+      settings.RedshiftGammaRed = (decimal)GammaRed.Value;
+      settings.RedshiftGammaGreen = (decimal)GammaGreen.Value;
+      settings.RedshiftGammaBlue = (decimal)GammaBlue.Value;
 
       Settings.Default.Save();
     }
 
     private void LoadConfig()
     {
-      RedshiftPath.Text = Settings.Default.RedshiftAppPath;
-      Latitude.Value = Settings.Default.RedshiftLatitude;
-      Longitude.Value = Settings.Default.RedshiftLongitude;
-      TemperatureDay.Value = Settings.Default.RedshiftTemperatureDay;
-      TemperatureNight.Value = Settings.Default.RedshiftTemperatureNight;
-      Transition.IsChecked = Settings.Default.RedshiftTransition;
+      Settings settings = Settings.Default;
+
+      RedshiftPath.Text = settings.RedshiftAppPath;
+      EnabledOnStart.IsChecked = settings.RedshiftEnabledOnStart;
+      Autostart.IsChecked = Common.Autostart;
+      Latitude.Value = settings.RedshiftLatitude;
+      Longitude.Value = settings.RedshiftLongitude;
+      TemperatureDay.Value = settings.RedshiftTemperatureDay;
+      TemperatureNight.Value = settings.RedshiftTemperatureNight;
+      Transition.IsChecked = settings.RedshiftTransition;
+      BrightnessDay.Value = settings.RedshiftBrightnessDay;
+      BrightnessNight.Value = settings.RedshiftBrightnessNight;
+      GammaRed.Value = settings.RedshiftGammaRed;
+      GammaGreen.Value = settings.RedshiftGammaGreen;
+      GammaBlue.Value = settings.RedshiftGammaBlue;
     }
 
     private bool CheckConfig()
     {
       return (_ExecutableErrorState == Redshift.ExecutableError.Ok);
+    }
+
+    private void ImportConfig(string file)
+    {
+      string[] config = File.ReadAllLines(file);
+
+      var items = (
+        from s in config
+        where !s.StartsWith(";") && s.Contains("=")
+        select s.Split('=')
+        ).Select(s => new { key = s[0], value = s[1].Split(';')[0] });
+
+      foreach(var item in items)
+      {
+        switch(item.key)
+        {
+          case "lat":
+            decimal latitude;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out latitude))
+            {
+              Latitude.Value = (decimal)latitude;
+            }
+            break;
+          case "lon":
+            decimal longitude;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out longitude))
+            {
+              Longitude.Value = (decimal)longitude;
+            }
+            break;
+          case "temp-day":
+            int tempDay;
+
+            if(int.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out tempDay))
+            {
+              TemperatureDay.Value = (int)tempDay;
+            }
+            break;
+          case "temp-night":
+            int tempNight;
+
+            if(int.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out tempNight))
+            {
+              TemperatureNight.Value = (int)tempNight;
+            }
+            break;
+          case "transition":
+            Transition.IsChecked = (item.value == "1");
+            break;
+          case "brightness":
+            decimal brightness;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out brightness))
+            {
+              BrightnessDay.Value = (decimal)brightness;
+              BrightnessNight.Value = (decimal)brightness;
+            }
+            break;
+          case "brightness-day":
+            decimal brightnessDay;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out brightnessDay))
+            {
+              BrightnessDay.Value = (decimal)brightnessDay;
+            }
+            break;
+          case "brightness-night":
+            decimal brightnessNight;
+
+            if(decimal.TryParse(item.value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out brightnessNight))
+            {
+              BrightnessNight.Value = (decimal)brightnessNight;
+            }
+            break;
+          case "gamma":
+          case "gamma-day":
+            string[] gammaS = item.value.Split(':');
+            decimal[] gammaD = new decimal[gammaS.Length];
+            for(int i = 0; i < gammaS.Length; i++)
+            {
+              if(!decimal.TryParse(gammaS[i], System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out gammaD[i]))
+              {
+                break;
+              }
+            }
+
+            if(gammaD.Length == 1)
+            {
+              GammaRed.Value = gammaD[0];
+              GammaGreen.Value = gammaD[0];
+              GammaBlue.Value = gammaD[0];
+            }
+            else if(gammaD.Length == 3)
+            {
+              GammaRed.Value = gammaD[0];
+              GammaGreen.Value = gammaD[1];
+              GammaBlue.Value = gammaD[2];
+            }
+
+            break;
+        }
+      }
     }
 
     private void SetOkButtonEnabled()
@@ -156,6 +300,38 @@ namespace redshift_tray
       }
     }
 
+    private void DetectLocationButton_Click(object sender, RoutedEventArgs e)
+    {
+      Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+      AutoLocation autoLocation = Common.DetectLocation();
+
+      if(!autoLocation.Success)
+      {
+        System.Windows.MessageBox.Show(autoLocation.Errortext, "Error while detecting location", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      else
+      {
+        Latitude.Value = autoLocation.Latitude;
+        Longitude.Value = autoLocation.Longitude;
+      }
+
+      Mouse.OverrideCursor = null;
+    }
+
+    private void ImportButton_Click(object sender, RoutedEventArgs e)
+    {
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      openFileDialog.Title = "Import redshift config";
+      openFileDialog.Filter = "redshift.conf|redshift.conf|All files|*.*";
+      openFileDialog.CheckFileExists = true;
+
+      if((bool)openFileDialog.ShowDialog())
+      {
+        ImportConfig(openFileDialog.FileName);
+      }
+    }
+
     private void OkButton_Click(object sender, RoutedEventArgs e)
     {
       SaveConfig();
@@ -166,6 +342,31 @@ namespace redshift_tray
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
       SavePosition();
+    }
+
+    private void Decimal_InputValidationError(object sender, InputValidationErrorEventArgs e)
+    {
+      DecimalUpDown dSender = (DecimalUpDown)sender;
+
+      string value = dSender.Text;
+      value = value.Replace(',', '.');
+
+      decimal parseValue;
+      if(decimal.TryParse(value, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"), out parseValue))
+      {
+        if(parseValue > dSender.Maximum)
+        {
+          dSender.Value = dSender.Maximum;
+        }
+        else if(parseValue < dSender.Minimum)
+        {
+          dSender.Value = dSender.Minimum;
+        }
+        else
+        {
+          dSender.Value = parseValue;
+        }
+      }
     }
 
   }

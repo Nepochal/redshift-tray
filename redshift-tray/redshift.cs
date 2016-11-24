@@ -1,4 +1,5 @@
-﻿using redshift_tray.Properties;
+﻿using Microsoft.Win32;
+using redshift_tray.Properties;
 /* This file is part of redshift-tray.
    Redshift-tray is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,6 +25,9 @@ namespace redshift_tray
   {
     public readonly static int[] MIN_REDSHIFT_VERSION = { 1, 10 };
 
+    public const string METHOD_WINGDI = "wingdi";
+    public const string METHOD_DUMMY = "dummy";
+
     private static Redshift Instance;
 
     private Process RedshiftProcess;
@@ -48,10 +52,13 @@ namespace redshift_tray
       get { return !RedshiftProcess.HasExited; }
     }
 
-    public static string[] GetArgsBySettings()
+    public static string[] GetArgsBySettings(bool useDummyMethod)
     {
       Settings settings = Settings.Default;
       List<string> returnValue = new List<string>();
+
+      //Method
+      returnValue.Add(string.Format("-m {0}", useDummyMethod ? METHOD_DUMMY : METHOD_WINGDI));
 
       //Location
       returnValue.Add(string.Format("-l {0}:{1}", settings.RedshiftLatitude.ToString().Replace(',', '.'), settings.RedshiftLongitude.ToString().Replace(',', '.')));
@@ -65,12 +72,24 @@ namespace redshift_tray
         returnValue.Add("-r");
       }
 
+      //Brightness
+      returnValue.Add(string.Format("-b {0}:{1}", settings.RedshiftBrightnessDay.ToString().Replace(',', '.'), settings.RedshiftBrightnessNight.ToString().Replace(',', '.')));
+
+      //Gamma Correction
+      returnValue.Add(string.Format("-g {0}:{1}:{2}", settings.RedshiftGammaRed.ToString().Replace(',', '.'), settings.RedshiftGammaGreen.ToString().Replace(',', '.'), settings.RedshiftGammaBlue.ToString().Replace(',', '.')));
+
       return returnValue.ToArray();
     }
 
     public static ExecutableError CheckExecutable(string path)
     {
       Main.WriteLogMessage("Checking redshift executable", DebugConsole.LogType.Info);
+
+      if(path == string.Empty)
+      {
+        Main.WriteLogMessage("No redshift path set", DebugConsole.LogType.Info);
+        return ExecutableError.MissingPath;
+      }
 
       if(!File.Exists(path))
       {
@@ -118,6 +137,26 @@ namespace redshift_tray
       return (majorversion == MIN_REDSHIFT_VERSION[0] && minorVersion >= MIN_REDSHIFT_VERSION[1]);
     }
 
+    public static void KillAllRunningInstances()
+    {
+      Main.WriteLogMessage("Looking for running redshift instances.", DebugConsole.LogType.Info);
+      foreach(Process redshift in Process.GetProcessesByName("redshift"))
+      {
+        if(!redshift.HasExited)
+        {
+          try
+          {
+            redshift.Kill();
+            Main.WriteLogMessage("Killed previous redshift process.", DebugConsole.LogType.Info);
+          }
+          catch
+          {
+            Main.WriteLogMessage("Was not able to kill redshift process.", DebugConsole.LogType.Error);
+          }
+        }
+      }
+    }
+
     public static Redshift StartContinuous(string path, RedshiftQuitHandler onRedshiftQuit = null, params string[] Args)
     {
       InitializeContinuousStart(path, Args);
@@ -125,7 +164,11 @@ namespace redshift_tray
       {
         Instance.OnRedshiftQuit += onRedshiftQuit;
       }
+
+      SystemEvents.SessionEnding -= Instance.SystemEvents_SessionEnding;
       Instance.Start();
+      SystemEvents.SessionEnding += Instance.SystemEvents_SessionEnding;
+
       return Instance;
     }
 
@@ -140,7 +183,6 @@ namespace redshift_tray
         Instance.RedshiftProcess.Kill();
         Instance.RedshiftQuit(true);
       }
-
       Instance = new Redshift(path, Args);
 
       return Instance;
@@ -182,6 +224,7 @@ namespace redshift_tray
       if(isRunning)
       {
         Main.WriteLogMessage("Stopped redshift instance.", DebugConsole.LogType.Info);
+        SystemEvents.SessionEnding -= SystemEvents_SessionEnding;
         RedshiftProcess.Exited -= RedshiftProcess_Crashed;
         RedshiftProcess.Kill();
         RedshiftQuit(true);
@@ -214,6 +257,11 @@ namespace redshift_tray
       return output;
     }
 
+    void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+    {
+      RedshiftProcess.Exited -= RedshiftProcess_Crashed;
+    }
+
     void RedshiftProcess_Crashed(object sender, EventArgs e)
     {
       RedshiftQuit(false);
@@ -224,7 +272,8 @@ namespace redshift_tray
       Ok,
       NotFound,
       WrongVersion,
-      WrongApplication
+      WrongApplication,
+      MissingPath
     }
 
   }

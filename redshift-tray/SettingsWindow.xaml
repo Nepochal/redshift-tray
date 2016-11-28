@@ -45,7 +45,7 @@
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Redshift path:"/>
             <Button Style="{StaticResource ButtonStyleBrowser}" Content="..." Click="ButtonRedshift_Click"/>
-            <TextBox x:Name="RedshiftPath" LostFocus="redshiftPath_LostFocus" Text="{Binding RedshiftAppPath}"/>
+            <TextBox x:Name="RedshiftPath" VerticalContentAlignment="Center" LostFocus="redshiftPath_LostFocus" Text="{Binding RedshiftAppPath}"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <TextBlock Padding="5" TextWrapping="WrapWithOverflow" x:Name="RedshiftInfo"><Run Text="The required Redshift executable can be downloaded "/><Hyperlink NavigateUri="https://github.com/jonls/redshift/releases" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="here on Github"/></Hyperlink><Run Text="."/></TextBlock>

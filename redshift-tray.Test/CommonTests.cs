@@ -10,8 +10,8 @@ namespace redshift_tray.Test
         public void LocationCanBeParsed()
         {
             var autoLocation = Common.ParseLocation("50.8476", "4.3428");
-            Assert.AreEqual(50.8476d, autoLocation.Latitude);
-            Assert.AreEqual(4.3428d, autoLocation.Longitude);
+            Assert.AreEqual(50.8476M, autoLocation.Latitude);
+            Assert.AreEqual(4.3428M, autoLocation.Longitude);
         }
     }
 }

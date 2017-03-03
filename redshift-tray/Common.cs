@@ -150,8 +150,8 @@ namespace redshift_tray
         {
            var returnValue = new AutoLocation();
             returnValue.Success = true;
-            returnValue.Latitude = decimal.Parse(latitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
-            returnValue.Longitude = decimal.Parse(longitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
+            returnValue.Latitude = decimal.Parse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture);
+            returnValue.Longitude = decimal.Parse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture);
             return returnValue;
         }
 

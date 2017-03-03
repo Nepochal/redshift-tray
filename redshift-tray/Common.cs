@@ -185,6 +185,7 @@ namespace redshift_tray
     {
       return Application.Current.Windows.OfType<T>().Any();
     }
+
   }
 
   public struct AutoLocation
@@ -200,4 +201,5 @@ namespace redshift_tray
     Automatic,
     Off
   }
+
 }

@@ -57,98 +57,105 @@ namespace redshift_tray
     }
 
     public static AutoLocation DetectLocation()
-    {
-      Main.WriteLogMessage("Detecting location via API.", DebugConsole.LogType.Info);
-
-      AutoLocation returnValue = new AutoLocation();
-
-      try
-      {
-        Main.WriteLogMessage(string.Format("Pinging {0}", Main.GEO_API_DOMAIN), DebugConsole.LogType.Info);
-
-        PingReply pingReply = new Ping().Send(Main.GEO_API_DOMAIN, 5000);
-        if(pingReply.Status != IPStatus.Success)
         {
-          Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
-          return returnValue;
+            Main.WriteLogMessage("Detecting location via API.", DebugConsole.LogType.Info);
+
+            AutoLocation returnValue = new AutoLocation();
+
+            try
+            {
+                Main.WriteLogMessage(string.Format("Pinging {0}", Main.GEO_API_DOMAIN), DebugConsole.LogType.Info);
+
+                PingReply pingReply = new Ping().Send(Main.GEO_API_DOMAIN, 5000);
+                if (pingReply.Status != IPStatus.Success)
+                {
+                    Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
+                    returnValue.Success = false;
+                    returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
+                    return returnValue;
+                }
+                if (IPAddress.IsLoopback(pingReply.Address) || pingReply.Address.Equals(IPAddress.Any))
+                {
+                    Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
+                    returnValue.Success = false;
+                    returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert your location manually or allow connections to {1}.", Environment.NewLine, Main.GEO_API_DOMAIN);
+                    return returnValue;
+                }
+            }
+            catch (PingException)
+            {
+                Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
+                returnValue.Success = false;
+                returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
+                return returnValue;
+            }
+
+            HttpWebResponse response = null;
+            StreamReader reader = null;
+            string latitude;
+            string longitude;
+
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Main.GEO_API_TARGET);
+                request.Proxy = null;
+
+                response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+                    returnValue.Success = false;
+                    returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
+                    return returnValue;
+                }
+
+                reader = new StreamReader(response.GetResponseStream());
+                if (reader.EndOfStream || reader.ReadLine() != "success")
+                {
+                    Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+                    returnValue.Success = false;
+                    returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
+                    return returnValue;
+                }
+
+                latitude = reader.ReadLine();
+                longitude = reader.ReadLine();
+            }
+            catch (WebException)
+            {
+                Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+                returnValue.Success = false;
+                returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
+                return returnValue;
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
+
+            Main.WriteLogMessage("Location detected", DebugConsole.LogType.Info);
+            returnValue = ParseLocation(latitude, longitude);
+
+            return returnValue;
         }
-        if(IPAddress.IsLoopback(pingReply.Address) || pingReply.Address.Equals(IPAddress.Any))
+
+        private static AutoLocation ParseLocation(string latitude, string longitude)
         {
-          Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert your location manually or allow connections to {1}.", Environment.NewLine, Main.GEO_API_DOMAIN);
-          return returnValue;
-        }
-      }
-      catch(PingException)
-      {
-        Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
-        returnValue.Success = false;
-        returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
-        return returnValue;
-      }
-
-      HttpWebResponse response = null;
-      StreamReader reader = null;
-      string latitude;
-      string longitude;
-
-      try
-      {
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Main.GEO_API_TARGET);
-        request.Proxy = null;
-
-        response = (HttpWebResponse)request.GetResponse();
-        if(response.StatusCode != HttpStatusCode.OK)
-        {
-          Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
-          return returnValue;
+           var returnValue = new AutoLocation();
+            returnValue.Success = true;
+            returnValue.Latitude = decimal.Parse(latitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
+            returnValue.Longitude = decimal.Parse(longitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
+            return returnValue;
         }
 
-        reader = new StreamReader(response.GetResponseStream());
-        if(reader.EndOfStream || reader.ReadLine() != "success")
-        {
-          Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
-          return returnValue;
-        }
-
-        latitude = reader.ReadLine();
-        longitude = reader.ReadLine();
-      }
-      catch(WebException)
-      {
-        Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
-        returnValue.Success = false;
-        returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
-        return returnValue;
-      }
-      finally
-      {
-        if(response != null)
-        {
-          response.Close();
-        }
-        if(reader != null)
-        {
-          reader.Close();
-        }
-      }
-
-      Main.WriteLogMessage("Location detected", DebugConsole.LogType.Info);
-      returnValue.Success = true;
-      returnValue.Latitude = decimal.Parse(latitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
-      returnValue.Longitude = decimal.Parse(longitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
-
-      return returnValue;
-    }
-
-    public static bool isOutOfBounds(double x, double y)
+        public static bool isOutOfBounds(double x, double y)
     {
       if(x <= SystemParameters.VirtualScreenLeft) return true;
       if(y <= SystemParameters.VirtualScreenTop) return true;

@@ -146,7 +146,7 @@ namespace redshift_tray
             return returnValue;
         }
 
-        private static AutoLocation ParseLocation(string latitude, string longitude)
+        public static AutoLocation ParseLocation(string latitude, string longitude)
         {
            var returnValue = new AutoLocation();
             returnValue.Success = true;

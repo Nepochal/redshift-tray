@@ -46,8 +46,7 @@ namespace redshift_tray
         switch(value)
         {
           case true:
-            regPath.SetValue("Redshift Tray",
-              Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.FriendlyName));
+            regPath.SetValue("Redshift Tray", Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.FriendlyName));
             break;
           case false:
             regPath.DeleteValue("Redshift Tray");
@@ -71,20 +70,14 @@ namespace redshift_tray
         {
           Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
           returnValue.Success = false;
-          returnValue.Errortext =
-            string.Format(
-              "Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.",
-              Environment.NewLine);
+          returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
           return returnValue;
         }
         if(IPAddress.IsLoopback(pingReply.Address) || pingReply.Address.Equals(IPAddress.Any))
         {
           Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
           returnValue.Success = false;
-          returnValue.Errortext =
-            string.Format(
-              "The location provider is blocked by your proxy or hosts-file.{0}Please insert your location manually or allow connections to {1}.",
-              Environment.NewLine, Main.GEO_API_DOMAIN);
+          returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert your location manually or allow connections to {1}.", Environment.NewLine, Main.GEO_API_DOMAIN);
           return returnValue;
         }
       }
@@ -92,10 +85,7 @@ namespace redshift_tray
       {
         Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
         returnValue.Success = false;
-        returnValue.Errortext =
-          string.Format(
-            "Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.",
-            Environment.NewLine);
+        returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
         return returnValue;
       }
 
@@ -114,9 +104,7 @@ namespace redshift_tray
         {
           Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
           returnValue.Success = false;
-          returnValue.Errortext =
-            string.Format("An error on the server side of the location provider occured.{0}Please try again later.",
-              Environment.NewLine);
+          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
           return returnValue;
         }
 
@@ -125,9 +113,7 @@ namespace redshift_tray
         {
           Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
           returnValue.Success = false;
-          returnValue.Errortext =
-            string.Format("An error on the server side of the location provider occured.{0}Please try again later.",
-              Environment.NewLine);
+          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
           return returnValue;
         }
 

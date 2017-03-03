@@ -26,8 +26,10 @@ using System.Windows;
 
 namespace redshift_tray
 {
+
   static class Common
   {
+
     public static bool Autostart
     {
       get
@@ -96,10 +98,10 @@ namespace redshift_tray
 
       try
       {
-        HttpWebRequest request = (HttpWebRequest) WebRequest.Create(Main.GEO_API_TARGET);
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Main.GEO_API_TARGET);
         request.Proxy = null;
 
-        response = (HttpWebResponse) request.GetResponse();
+        response = (HttpWebResponse)request.GetResponse();
         if(response.StatusCode != HttpStatusCode.OK)
         {
           Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
@@ -124,9 +126,7 @@ namespace redshift_tray
       {
         Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
         returnValue.Success = false;
-        returnValue.Errortext =
-          string.Format("An error on the server side of the location provider occured.{0}Please try again later.",
-            Environment.NewLine);
+        returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
         return returnValue;
       }
       finally

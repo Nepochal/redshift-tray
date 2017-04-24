@@ -11,6 +11,7 @@
    along with redshift-tray.  If not, see <http://www.gnu.org/licenses/>.
    Copyright (c) Michael Scholz <development@mischolz.de>
 */
+
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -141,10 +142,17 @@ namespace redshift_tray
       }
 
       Main.WriteLogMessage("Location detected", DebugConsole.LogType.Info);
-      returnValue.Success = true;
-      returnValue.Latitude = decimal.Parse(latitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
-      returnValue.Longitude = decimal.Parse(longitude, System.Globalization.NumberStyles.Float, new CultureInfo("en-US"));
+      returnValue = ParseLocation(latitude, longitude);
 
+      return returnValue;
+    }
+
+    public static AutoLocation ParseLocation(string latitude, string longitude)
+    {
+      var returnValue = new AutoLocation();
+      returnValue.Success = true;
+      returnValue.Latitude = decimal.Parse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture);
+      returnValue.Longitude = decimal.Parse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture);
       return returnValue;
     }
 

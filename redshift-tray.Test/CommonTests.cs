@@ -13,5 +13,13 @@ namespace redshift_tray.Test
       Assert.AreEqual(50.8476M, autoLocation.Latitude);
       Assert.AreEqual(4.3428M, autoLocation.Longitude);
     }
+
+    [TestMethod]
+    public void LocationCanBeDetermined()
+    {
+      AutoLocation autoLocation = Common.DetectLocation();
+      Assert.IsTrue(autoLocation.Success);
+    }
+
   }
 }

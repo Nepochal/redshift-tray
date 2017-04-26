@@ -52,7 +52,10 @@ namespace redshift_tray
 
     public static void WriteLogMessage(string message, DebugConsole.LogType logType)
     {
-      debugConsole.WriteLog(message, logType);
+      if(debugConsole != null)
+      {
+        debugConsole.WriteLog(message, logType);
+      }
     }
 
     public Main(bool dummyMethod)

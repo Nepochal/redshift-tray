@@ -12,7 +12,7 @@
             <TextBlock Margin="5,0" TextWrapping="WrapWithOverflow" Width="255">
               <Run FontSize="15" FontWeight="Bold">Redshift Tray</Run><LineBreak />
               <Run Name="Version" Text="Version #.#.#" /><LineBreak />
-              © 2016 by Michael Scholz<LineBreak />
+              © 2016-2017 by Michael Scholz<LineBreak />
               <Hyperlink NavigateUri="https://mischolz.de" RequestNavigate="RequestNavigate">https://mischolz.de</Hyperlink>
               <LineBreak /><LineBreak />
               Redshift tray is licensed under the <Hyperlink NavigateUri="https://raw.githubusercontent.com/Nepochal/redshift-tray/master/LICENSE.txt" RequestNavigate="RequestNavigate">MIT</Hyperlink>.<LineBreak />

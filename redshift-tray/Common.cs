@@ -59,7 +59,7 @@ namespace redshift_tray
       try
       {
         Main.WriteLogMessage(string.Format("Pinging {0}", Main.GEO_API_DOMAIN), DebugConsole.LogType.Info);
-        using(var ping = new Ping()) { 
+        using(Ping ping = new Ping()) { 
           PingReply pingReply = ping.Send(Main.GEO_API_DOMAIN, 5000);
           if(pingReply.Status != IPStatus.Success)
           {
@@ -134,7 +134,7 @@ namespace redshift_tray
 
     public static AutoLocation ParseLocation(string latitude, string longitude)
     {
-      var returnValue = new AutoLocation();
+      AutoLocation returnValue = new AutoLocation();
       returnValue.Success = true;
       returnValue.Latitude = decimal.Parse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture);
       returnValue.Longitude = decimal.Parse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture);

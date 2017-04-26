@@ -23,8 +23,10 @@ namespace redshift_tray
     {
       get
       {
-        RegistryKey regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", false);
-        return regPath.GetValue("Redshift Tray") != null;
+        using (RegistryKey regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", false))
+        {
+          return regPath.GetValue("Redshift Tray") != null;
+        }
       }
       set
       {
@@ -33,15 +35,17 @@ namespace redshift_tray
           return;
         }
 
-        RegistryKey regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-        switch(value)
-        {
-          case true:
-            regPath.SetValue("Redshift Tray", Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.FriendlyName));
-            break;
-          case false:
-            regPath.DeleteValue("Redshift Tray");
-            break;
+        using (RegistryKey regPath = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)) { 
+          switch(value)
+          {
+            case true:
+              regPath.SetValue("Redshift Tray",
+                Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, System.AppDomain.CurrentDomain.FriendlyName));
+              break;
+            case false:
+              regPath.DeleteValue("Redshift Tray");
+              break;
+          }
         }
       }
     }
@@ -55,21 +59,22 @@ namespace redshift_tray
       try
       {
         Main.WriteLogMessage(string.Format("Pinging {0}", Main.GEO_API_DOMAIN), DebugConsole.LogType.Info);
-
-        PingReply pingReply = new Ping().Send(Main.GEO_API_DOMAIN, 5000);
-        if(pingReply.Status != IPStatus.Success)
-        {
-          Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
-          return returnValue;
-        }
-        if(IPAddress.IsLoopback(pingReply.Address) || pingReply.Address.Equals(IPAddress.Any))
-        {
-          Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert your location manually or allow connections to {1}.", Environment.NewLine, Main.GEO_API_DOMAIN);
-          return returnValue;
+        using(var ping = new Ping()) { 
+          PingReply pingReply = ping.Send(Main.GEO_API_DOMAIN, 5000);
+          if(pingReply.Status != IPStatus.Success)
+          {
+            Main.WriteLogMessage("API is not reachable.", DebugConsole.LogType.Error);
+            returnValue.Success = false;
+            returnValue.Errortext = string.Format("Location provider is not reachable.{0}Please make sure that your internet connection works properly and try again in a few minutes.", Environment.NewLine);
+            return returnValue;
+          }
+          if(IPAddress.IsLoopback(pingReply.Address) || pingReply.Address.Equals(IPAddress.Any))
+          {
+            Main.WriteLogMessage("API is routed to localhost.", DebugConsole.LogType.Error);
+            returnValue.Success = false;
+            returnValue.Errortext = string.Format("The location provider is blocked by your proxy or hosts-file.{0}Please insert your location manually or allow connections to {1}.", Environment.NewLine, Main.GEO_API_DOMAIN);
+            return returnValue;
+          }
         }
       }
       catch(PingException)
@@ -80,8 +85,7 @@ namespace redshift_tray
         return returnValue;
       }
 
-      HttpWebResponse response = null;
-      StreamReader reader = null;
+      
       string latitude;
       string longitude;
 
@@ -90,26 +94,29 @@ namespace redshift_tray
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Main.GEO_API_TARGET);
         request.Proxy = null;
 
-        response = (HttpWebResponse)request.GetResponse();
-        if(response.StatusCode != HttpStatusCode.OK)
+        using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
         {
-          Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
-          return returnValue;
-        }
+          if(response.StatusCode != HttpStatusCode.OK)
+          {
+            Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+            returnValue.Success = false;
+            returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
+            return returnValue;
+          }
 
-        reader = new StreamReader(response.GetResponseStream());
-        if(reader.EndOfStream || reader.ReadLine() != "success")
-        {
-          Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
-          returnValue.Success = false;
-          returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
-          return returnValue;
-        }
+          using (StreamReader reader = new StreamReader(response.GetResponseStream())) { 
+            if (reader.EndOfStream || reader.ReadLine() != "success")
+            {
+              Main.WriteLogMessage("A server side error occured.", DebugConsole.LogType.Error);
+              returnValue.Success = false;
+              returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
+              return returnValue;
+            }
 
-        latitude = reader.ReadLine();
-        longitude = reader.ReadLine();
+            latitude = reader.ReadLine();
+            longitude = reader.ReadLine();
+          }
+        }
       }
       catch(WebException)
       {
@@ -117,17 +124,6 @@ namespace redshift_tray
         returnValue.Success = false;
         returnValue.Errortext = string.Format("An error on the server side of the location provider occured.{0}Please try again later.", Environment.NewLine);
         return returnValue;
-      }
-      finally
-      {
-        if(response != null)
-        {
-          response.Close();
-        }
-        if(reader != null)
-        {
-          reader.Close();
-        }
       }
 
       Main.WriteLogMessage("Location detected", DebugConsole.LogType.Info);

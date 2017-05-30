@@ -71,8 +71,13 @@ namespace redshift_tray
       {
         return false;
       }
+      if(Settings.Default.RedshiftLocateOnStart)
+      {
+        UpdateAutoLocation();
+      }
 
       Redshift.KillAllRunningInstances();
+
       ProgramStatus = Settings.RedshiftEnabledOnStart ? Status.Automatic : Status.Off;
       StartTrayIcon();
 
@@ -104,6 +109,21 @@ namespace redshift_tray
         }
       }
       return true;
+    }
+
+    private bool UpdateAutoLocation()
+    {
+      AutoLocation autoLocation = Common.DetectLocation();
+
+      if(autoLocation.Success)
+      {
+        Settings.Default.RedshiftLatitude = autoLocation.Latitude;
+        Settings.Default.RedshiftLongitude = autoLocation.Longitude;
+        Settings.Default.Save();
+        return true;
+      }
+
+      return false;
     }
 
     private void StartRedshiftAutomatic()

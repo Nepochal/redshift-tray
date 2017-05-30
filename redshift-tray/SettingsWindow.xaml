@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ext="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:properties="clr-namespace:redshift_tray.Properties" x:Class="redshift_tray.SettingsWindow"
-        Title="Settings" Height="665.48" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        Title="Settings" Height="685" Width="560" Icon="redshift-tray.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
   <Window.Resources>
     <Style x:Key="PropertyValueStyle" TargetType="{x:Type Control}">
       <Setter Property="DockPanel.Dock" Value="Left"/>
@@ -71,6 +71,9 @@
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
             <Label Style="{StaticResource LabelStyle}" Content="Longitude:"/>
             <ext:DecimalUpDown x:Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-180" Maximum="180" Increment="1" Value="{Binding RedshiftLongitude}" InputValidationError="Decimal_InputValidationError"/>
+          </DockPanel>
+          <DockPanel Style="{StaticResource DockPanelStyleSetting}">
+            <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Auto-detect on each startup" IsChecked="False" x:Name="LocateOnStart" />
           </DockPanel>
         </StackPanel>
       </GroupBox>

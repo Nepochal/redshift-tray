@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("mischolz.de")]
 [assembly: AssemblyProduct("Redshift Tray")]
-[assembly: AssemblyCopyright("Copyright © Michael Scholz 2016")]
+[assembly: AssemblyCopyright("Copyright © Michael Scholz 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

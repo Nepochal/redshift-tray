@@ -73,7 +73,7 @@
             <ext:DecimalUpDown x:Name="Longitude" Style="{StaticResource PropertyValueStyle}" Width="120" FormatString="F7" CultureInfo="en-US" Minimum="-180" Maximum="180" Increment="1" Value="{Binding RedshiftLongitude}" InputValidationError="Decimal_InputValidationError"/>
           </DockPanel>
           <DockPanel Style="{StaticResource DockPanelStyleSetting}">
-            <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Auto-detect on each startup" IsChecked="False" x:Name="LocateOnStart" />
+            <CheckBox Margin="5,0" VerticalAlignment="Center" Content="Auto-detect on each startup" IsChecked="{Binding RedshiftLocateOnStart}" x:Name="LocateOnStart" />
           </DockPanel>
         </StackPanel>
       </GroupBox>

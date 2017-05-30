@@ -10,7 +10,7 @@ namespace redshift_tray
   class Main
   {
 
-    public const string VERSION = "0.7.0-beta";
+    public const string VERSION = "1.0.0";
 
     public const string RELEASES_PAGE = "https://github.com/jonls/redshift/releases";
 

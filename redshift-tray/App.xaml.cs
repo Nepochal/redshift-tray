@@ -4,6 +4,8 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace redshift_tray
 {
@@ -19,6 +21,12 @@ namespace redshift_tray
       else
       {
         bool dummyMethod = e.Args.Any(arg => (arg.ToLower() == "/dummy"));
+
+        if(e.Args.Any(arg => (arg.ToLower() == "/swrender")))
+        {
+          RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+        }
+
         Main main = new Main(dummyMethod);
 
         if(!main.Initialize())
